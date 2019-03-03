@@ -1,0 +1,129 @@
+﻿<ContentDialog x:Name="CategoryEditor" x:Uid="CategoryEditor"
+    x:Class="RecipeBrowser.DefineCategoryDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:RecipeBrowser.ValueConverters"
+    xmlns:viewmodels="using:RecipeBrowser.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="TITLE"
+    PrimaryButtonText="SAVE"
+    SecondaryButtonText="CANCEL"
+    PrimaryButtonClick="SaveButtonClick"
+    SecondaryButtonClick="CancelButtonClick"
+    IsPrimaryButtonEnabled="True" >
+
+    <ContentDialog.Resources>
+        <converters:ColorToBrushConverter x:Key="colorToBrushConverter"/>
+        <Flyout x:Key="BackgroundColorFlyout">
+            <Grid Width="300">
+                <ColorPicker  Grid.Row="5" 
+                        IsColorSliderVisible="True"
+                        IsColorChannelTextInputVisible="True"
+                        IsHexInputVisible="False"
+                        IsAlphaEnabled="True"
+                        IsAlphaSliderVisible="True"
+                        IsAlphaTextInputVisible="True" 
+                        Color="{x:Bind BackgroundColor,Mode=TwoWay}"/>
+            </Grid>
+        </Flyout>
+
+        <Flyout x:Key="ForegroundColorFlyout">
+            <Grid Width="300">
+                <ColorPicker  Grid.Row="5" 
+                        IsColorSliderVisible="True"
+                        IsColorChannelTextInputVisible="True"
+                        IsHexInputVisible="False"
+                        IsAlphaEnabled="True"
+                        IsAlphaSliderVisible="True"
+                        IsAlphaTextInputVisible="True" 
+                        Color="{x:Bind ForegroundColor,Mode=TwoWay}"/>
+            </Grid>
+        </Flyout>
+
+        <DataTemplate x:Key="TagPaletteTemplate" x:DataType="viewmodels:TagDirectoryViewModel">
+            <Border Margin="0,0" BorderThickness="1,1,1,1" CornerRadius="15,15,15,15" BorderBrush="Black"
+                        Background="{x:Bind Background,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}">
+                    <TextBlock VerticalAlignment="Center" 
+                               Style="{StaticResource WrappedItemTextStyle}"
+                               Foreground="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                               Text="{x:Bind Tag}" />
+            </Border>
+        </DataTemplate>
+
+        <Flyout x:Key="TagPaletteFlyout">
+            <Grid Height="600" Width="200">
+                <ListView x:Name="TagPaletteListView"
+                          ItemsSource="{x:Bind TagPalette,Mode=OneWay}" 
+                          ItemTemplate="{StaticResource TagPaletteTemplate}"
+                          IsItemClickEnabled="True"
+                          />
+            </Grid>
+        </Flyout>
+    </ContentDialog.Resources>
+
+    <Grid BorderBrush="{StaticResource MenuBarBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" Orientation="Vertical" Margin="0,10,0,0" >
+            <TextBlock x:Name="CategoryLabel" x:Uid="CategoryLabel" Text="Kategorie:"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center"  Margin="0" />
+            <!--<TextBox x:Name="TitleEditor" Text="{x:Bind CategoryName,Mode=TwoWay}" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="300"/>-->
+            <TextBox x:Name="TitleEditor" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Width="300"/>
+        </StackPanel>
+
+        <TextBlock x:Name="ErrorMessageDisplay" Grid.Row="1" VerticalAlignment="Center"/>
+
+        <Border BorderBrush="Black" Grid.Row="2" BorderThickness="1" HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="300" >
+            <Image x:Name="CategoryImage"/>
+        </Border>
+
+        <Button x:Uid="GetCategoryImage" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,20,0,0" Click="LoadCategoryImage_Click"/>
+
+        <Grid x:Name="ColorSettings" Grid.Row="4" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="1,1,1,1" CornerRadius="15,15,15,15"
+                    BorderBrush="{x:Bind ForegroundColor,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}" 
+                    Background="{x:Bind BackgroundColor,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                    Height="35">
+                <TextBlock VerticalAlignment="Center" 
+                           Foreground="{x:Bind ForegroundColor,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                            Style="{StaticResource WrappedItemTextStyle}"
+                            Text="{x:Bind CategoryName,Mode=OneWay}" />
+            </Border>
+            <AppBarButton x:Name="DisplayTagPalette" Grid.Row="0" Grid.Column="3" Icon="Edit" Flyout="{StaticResource TagPaletteFlyout}"  />
+
+            <TextBlock x:Uid="Background" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock x:Uid="Foreground" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+            <Border Height="20" Grid.Row="2" Grid.Column="0" BorderThickness="1" BorderBrush="{StaticResource MenuBarForegroundBrush}">
+                <Rectangle  Fill="{x:Bind BackgroundColor,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}" Width="50" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Border>
+            <AppBarButton Grid.Row="2" Grid.Column="1" Icon="Edit" Flyout="{StaticResource BackgroundColorFlyout}" />
+
+            <Border Height="20" Grid.Row="2" Grid.Column="2" BorderThickness="1" BorderBrush="{StaticResource MenuBarForegroundBrush}">
+                <Rectangle Fill="{x:Bind ForegroundColor,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}" Width="50" Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Border>
+            <AppBarButton Grid.Row="2" Grid.Column="3" Icon="Edit" Flyout="{StaticResource ForegroundColorFlyout}"  />
+
+        </Grid>
+    </Grid>
+</ContentDialog>

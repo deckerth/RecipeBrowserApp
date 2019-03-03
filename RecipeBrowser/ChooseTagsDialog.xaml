@@ -1,0 +1,40 @@
+﻿<ContentDialog
+    x:Class="RecipeBrowser.ChooseTagsDialog"
+    x:Uid="ChooseTagsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:viewmodels="using:RecipeBrowser.ViewModels"
+    xmlns:converters="using:RecipeBrowser.ValueConverters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <ContentDialog.Resources>
+        <converters:ColorToBrushConverter x:Key="colorToBrushConverter"/>
+        <DataTemplate x:Key="TagDataTemplate" x:DataType="viewmodels:RecipeTagViewModel">
+            <Border Margin="0,0" BorderThickness="1,1,1,1" CornerRadius="15,15,15,15" 
+                    BorderBrush="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}" 
+                    Background="{x:Bind Background,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                    Height="35"
+                    >
+                <TextBlock VerticalAlignment="Center" 
+                           Foreground="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                           Style="{StaticResource WrappedItemTextStyle}"
+                           Text="{x:Bind Tag}" />
+            </Border>
+        </DataTemplate>
+    </ContentDialog.Resources>
+    
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <AutoSuggestBox x:Name="TagSearchPattern" QueryIcon="Find" />
+            <ListView x:Name="TagListView" Height="300" Margin="0,20,0,0"
+                  ItemTemplate="{StaticResource TagDataTemplate}"
+                  SelectionMode="Multiple"/>
+            <Button x:Name="CreateNewTag" x:Uid="CreateNewTag" Margin="0,20,0,0" />
+        </StackPanel>
+    </Grid>
+</ContentDialog>

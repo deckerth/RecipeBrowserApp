@@ -1,0 +1,24 @@
+Mit der Rezepte-App können Sie auf bequeme Weise Ihre Rezeptsammlung verwalten.
+
+Zunächst richten Sie die Kategorien ein, nach denen Sie Ihre Rezepte sortieren möchten. Danach fügen Sie entweder vorhandene Rezepte im PDF- oder RTF-Format hinzu, oder Sie geben Ihre Rezepte direkt mit dem integrierten Editor ein.
+
+Mit der Suchfunktion finden Sie einfach Ihr nächstes Kochrezept - kategorieübergreifend, oder innerhalb einer bestimmten Kategorie. Wenn Sie ein passendes Rezept gefunden haben, fügen Sie es der Liste der vorgemerkten Rezepte hinzu. 
+
+Dann fehlt nur noch eins: Kochen - die vier integrierten Timer unterstützen Sie dabei. Anschließend drücken Sie den "Zubereitet!" Knopf. Die App merkt sich, was sie gekocht haben. In der Zubereitungshistorie können Sie sich anschließend ansehen, was in den letzten Wochen, oder vor einem Jahr, auf den Tisch gekommen ist.
+
+Funktionsübersicht
+- Frei definierbare Kriterien (neu)
+- Integrierter Rezepteditor
+- Unterstützte Formate: PDF und RTF
+- Galeriefunktion: Hinterlegen Sie Fotos Ihrer zubereiteten Gerichte
+- Zubereitungshistorie
+- Favoritenliste
+- Timer
+- Rezeptvorlagen
+- Notizfunktion
+- Umfangreiche Hilfefunktion
+- Helles und dunkles Farbschema (neu)
+
+Tipps: 
+-       Die App enthält keine Rezepte. Sie können jedoch eine kleine Beispielsammlung von der Homepage herunterladen: http://deckerth.wix.com/recipebrowser
+-	Die Auflösung der Kategoriebilder sollte nicht zu groß sein um unnötige Ladezeiten zu vermeiden. Eine Breite von 200 Pixeln reicht aus.

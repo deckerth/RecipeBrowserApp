@@ -1,0 +1,18 @@
+﻿<ContentDialog x:Name="CaloriesEditor" x:Uid="CaloriesEditor"
+    x:Class="RecipeBrowser.EditCaloriesDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="TITLE"
+    PrimaryButtonText="OK"
+    SecondaryButtonText="CANCEL"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <TextBox x:Name="CaloriesTextBox" x:Uid="CaloriesTextBox" InputScope="Number"/>
+    </Grid>
+</ContentDialog>

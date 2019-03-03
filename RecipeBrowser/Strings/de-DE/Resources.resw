@@ -1,0 +1,826 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddToFavorites.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept vormerken</value>
+  </data>
+  <data name="AppManifestName" xml:space="preserve">
+    <value>Rezepte</value>
+  </data>
+  <data name="AppName.Text" xml:space="preserve">
+    <value>Rezepte</value>
+  </data>
+  <data name="AppSettings.Text" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CancelButton.Content" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CategoryDoesAlreadyExist" xml:space="preserve">
+    <value>Die angegebene Kategorie existiert bereits.</value>
+  </data>
+  <data name="CategoryEditor.PrimaryButtonText" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="CategoryEditor.SecondaryButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CategoryLabel.Text" xml:space="preserve">
+    <value>Kategorie:</value>
+  </data>
+  <data name="CategoryNameIsEmpty" xml:space="preserve">
+    <value>Der Kategoriename darf nicht leer sein.</value>
+  </data>
+  <data name="ChangeCategory.Label" xml:space="preserve">
+    <value>Kategorie ändern</value>
+  </data>
+  <data name="ChangeCategoryText.Text" xml:space="preserve">
+    <value>Kategorie ändern</value>
+  </data>
+  <data name="ChangeRootFolder.Content" xml:space="preserve">
+    <value>Startordner ändern</value>
+  </data>
+  <data name="CookedOn" xml:space="preserve">
+    <value>zubereitet am</value>
+  </data>
+  <data name="CreateNote" xml:space="preserve">
+    <value>Neue Notiz</value>
+  </data>
+  <data name="DateDescending.Text" xml:space="preserve">
+    <value>Datum, absteigend</value>
+  </data>
+  <data name="DefineCategoryPageTitle.Text" xml:space="preserve">
+    <value>Neue Kategorie</value>
+  </data>
+  <data name="DeleteRecipe.Text" xml:space="preserve">
+    <value>Rezept löschen</value>
+  </data>
+  <data name="DisplayNote" xml:space="preserve">
+    <value>Notiz anzeigen</value>
+  </data>
+  <data name="DontAsk" xml:space="preserve">
+    <value>Nicht noch einmal fragen</value>
+  </data>
+  <data name="DoYouWantToDelete" xml:space="preserve">
+    <value>Soll das Rezept gelöscht werden?</value>
+  </data>
+  <data name="DoYouWantToScan" xml:space="preserve">
+    <value>Die Datenbank wurde noch nicht initialisiert. Wollen Sie die Initialisierung jetzt vornehmen?</value>
+  </data>
+  <data name="EditCategories.Text" xml:space="preserve">
+    <value>Kategorien bearbeiten</value>
+  </data>
+  <data name="EditCategory.Text" xml:space="preserve">
+    <value>Kategorie bearbeiten</value>
+  </data>
+  <data name="EditCategoryTitle" xml:space="preserve">
+    <value>Kategorie bearbeiten</value>
+  </data>
+  <data name="FavoriteRecipes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vorgemerkte Rezepte</value>
+  </data>
+  <data name="FavoriteRecipesText.Text" xml:space="preserve">
+    <value>Vorgemerkte Rezepte</value>
+  </data>
+  <data name="FavoritesFolder" xml:space="preserve">
+    <value>Favoriten</value>
+  </data>
+  <data name="FolderSelectionText.Text" xml:space="preserve">
+    <value>Kategorie wechseln</value>
+  </data>
+  <data name="FullscreenView.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Vollbild</value>
+  </data>
+  <data name="FurtherOptions" xml:space="preserve">
+    <value>Weitere Einstellungen</value>
+  </data>
+  <data name="GetCategoryImage.Content" xml:space="preserve">
+    <value>Kategoriebild laden</value>
+  </data>
+  <data name="HistoryFolder" xml:space="preserve">
+    <value>Zubereitungshistorie</value>
+  </data>
+  <data name="Home.Text" xml:space="preserve">
+    <value>Kategorieübersicht</value>
+  </data>
+  <data name="LastCookedDescending.Text" xml:space="preserve">
+    <value>Zuletzt zubereitet, absteigend</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Nicht jetzt</value>
+  </data>
+  <data name="LogAsCooked.Label" xml:space="preserve">
+    <value>Zubereitet!</value>
+  </data>
+  <data name="LoggingSwitch.Header" xml:space="preserve">
+    <value>Anwendungsereignisse protokollieren</value>
+  </data>
+  <data name="MoveTo.Text" xml:space="preserve">
+    <value>Verschieben nach...</value>
+  </data>
+  <data name="NameAscending.Text" xml:space="preserve">
+    <value>Name, aufsteigend</value>
+  </data>
+  <data name="NewCategory.Text" xml:space="preserve">
+    <value>Neue Kategorie</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="NoteEditor.Header" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
+  <data name="OpenRecipe.Text" xml:space="preserve">
+    <value>Rezept öffnen</value>
+  </data>
+  <data name="OpenRootFolder" xml:space="preserve">
+    <value>Startordner auswählen</value>
+  </data>
+  <data name="Recipe" xml:space="preserve">
+    <value>Rezept</value>
+  </data>
+  <data name="RefreshRecipes.Text" xml:space="preserve">
+    <value>Liste aktualisieren</value>
+  </data>
+  <data name="RemoveRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept aus der Liste entfernen</value>
+  </data>
+  <data name="SaveButton.Content" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="SearchResultFolder" xml:space="preserve">
+    <value>Suchergebnisse</value>
+  </data>
+  <data name="SelectACategory" xml:space="preserve">
+    <value>Bitte zunächst eine Kategorie auswählen.</value>
+  </data>
+  <data name="SetRootFolder.Content" xml:space="preserve">
+    <value>Startordner festlegen</value>
+  </data>
+  <data name="SettingsFlyout.Title" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Share.Text" xml:space="preserve">
+    <value>Teilen</value>
+  </data>
+  <data name="ShowHistoryText.Text" xml:space="preserve">
+    <value>Historie</value>
+  </data>
+  <data name="ShowTimersText.Text" xml:space="preserve">
+    <value>Timer</value>
+  </data>
+  <data name="Timer.Text" xml:space="preserve">
+    <value>T I M E R</value>
+  </data>
+  <data name="Times" xml:space="preserve">
+    <value>Mal</value>
+  </data>
+  <data name="UnableToCreateCategory" xml:space="preserve">
+    <value>Die Kategorie konnte nicht angelegt werden.</value>
+  </data>
+  <data name="UnableToDelete" xml:space="preserve">
+    <value>Das Rezept konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="UnableToEditCategory" xml:space="preserve">
+    <value>Die Kategorie konnte nicht geändert werden.</value>
+  </data>
+  <data name="UnableToSaveNotes" xml:space="preserve">
+    <value>Die Änderungen konnten nicht gespeichert werden.</value>
+  </data>
+  <data name="UpToNow" xml:space="preserve">
+    <value>bislang</value>
+  </data>
+  <data name="WhichDestinationCategory.Text" xml:space="preserve">
+    <value>In welche Kategorie soll das Rezept verschoben werden?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="MoreEntries" xml:space="preserve">
+    <value>Mehr...</value>
+  </data>
+  <data name="CategoryFilter" xml:space="preserve">
+    <value>Kategoriefilter</value>
+  </data>
+  <data name="setFilter.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Nach Kategorie filtern</value>
+  </data>
+  <data name="addExternalRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept aus externer Quelle (z.B. Kochbuch) hinzufügen</value>
+  </data>
+  <data name="AddExternalRecipeDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="AddExternalRecipeDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="AddExternalRecipeDialog.Title" xml:space="preserve">
+    <value>Rezept hinzufügen</value>
+  </data>
+  <data name="deleteFilter.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Filter löschen</value>
+  </data>
+  <data name="ExternalRecipeCategory.Header" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="ExternalRecipeDate.Header" xml:space="preserve">
+    <value>Zubereitet am</value>
+  </data>
+  <data name="ExternalRecipeSource.PlaceholderText" xml:space="preserve">
+    <value>Rezeptquelle</value>
+  </data>
+  <data name="ExternalRecipeTitle.PlaceholderText" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="AddFirstRecipe.Text" xml:space="preserve">
+    <value>Die Galerie zu diesem Rezept ist leer</value>
+  </data>
+  <data name="ImageGalery.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bilder zu diesem Rezept</value>
+  </data>
+  <data name="UploadPicture.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bild hinzufügen</value>
+  </data>
+  <data name="DoYouWantToDeleteImage" xml:space="preserve">
+    <value>Möchten Sie das Bild löschen?</value>
+  </data>
+  <data name="ImageNotDeleted" xml:space="preserve">
+    <value>Das Bild konnte nicht gelöscht werden</value>
+  </data>
+  <data name="RecipeImage" xml:space="preserve">
+    <value>Rezeptfoto</value>
+  </data>
+  <data name="ImageGalery.Label" xml:space="preserve">
+    <value>Galerie</value>
+  </data>
+  <data name="ShowTimersPane.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Timer anzeigen</value>
+  </data>
+  <data name="RefreshGalery.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Galerie neu laden</value>
+  </data>
+  <data name="Settings.Text" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="SettingsDialog.Title" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="AddRecipe.Text" xml:space="preserve">
+    <value>Neues Rezept / neue Kategorie</value>
+  </data>
+  <data name="RecipeDoesAlreadyExist" xml:space="preserve">
+    <value>Ein Rezept mit diesem Namen ist bereits in der Sammlung enthalten</value>
+  </data>
+  <data name="RecipeNameEditor.PrimaryButtonText" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="RecipeNameEditor.SecondaryButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="RecipeNameEditor.Title" xml:space="preserve">
+    <value>Rezept hinzufügen</value>
+  </data>
+  <data name="RecipeNameIsEmpty" xml:space="preserve">
+    <value>Geben Sie einen Titel für das Rezept ein</value>
+  </data>
+  <data name="RecipeNameLabel.Text" xml:space="preserve">
+    <value>Rezepttitel</value>
+  </data>
+  <data name="ExportHistory.Text" xml:space="preserve">
+    <value>Historie exportieren</value>
+  </data>
+  <data name="ImportExportHistory.Text" xml:space="preserve">
+    <value>Historie exportieren / importieren</value>
+  </data>
+  <data name="ImportHistory.Text" xml:space="preserve">
+    <value>Historie importieren</value>
+  </data>
+  <data name="DoYouWantToRescan" xml:space="preserve">
+    <value>Möchten Sie die Datenbank neu aufbauen? Dieser Vorgang kann einige Minuten dauern.</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="RenameRecipe.Text" xml:space="preserve">
+    <value>Rezept umbenennen</value>
+  </data>
+  <data name="RenameRecipeText" xml:space="preserve">
+    <value>Rezept umbenennen</value>
+  </data>
+  <data name="AddExistingPdf.Text" xml:space="preserve">
+    <value>Vorhandene Datei hinzufügen</value>
+  </data>
+  <data name="AllFonts" xml:space="preserve">
+    <value>All fonts</value>
+  </data>
+  <data name="Automatic.Text" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="DesignColors.Text" xml:space="preserve">
+    <value>Designfarben</value>
+  </data>
+  <data name="DesignFonts" xml:space="preserve">
+    <value>Designschriftarten</value>
+  </data>
+  <data name="EnterNewRecipe.Text" xml:space="preserve">
+    <value>Neues Rezept eingeben</value>
+  </data>
+  <data name="FirstRow.Text" xml:space="preserve">
+    <value>Erste Zeile</value>
+  </data>
+  <data name="FontColor.Text" xml:space="preserve">
+    <value>Zeichenfarbe</value>
+  </data>
+  <data name="Hanging.Text" xml:space="preserve">
+    <value>Hängend</value>
+  </data>
+  <data name="Headings" xml:space="preserve">
+    <value>Überschriften</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>Kein Einzug</value>
+  </data>
+  <data name="RecentlyUsedFonts" xml:space="preserve">
+    <value>Zuletzt verwendet</value>
+  </data>
+  <data name="SpecialIndent.Text" xml:space="preserve">
+    <value>Sondereinzug</value>
+  </data>
+  <data name="StandardColors.Text" xml:space="preserve">
+    <value>Standardfarben</value>
+  </data>
+  <data name="TextBody" xml:space="preserve">
+    <value>Textkörper</value>
+  </data>
+  <data name="AlignmentCenter.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Zentriert</value>
+  </data>
+  <data name="AlignmentLeft.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Linksbündig</value>
+  </data>
+  <data name="AlignmentRight.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rechtsbündig</value>
+  </data>
+  <data name="Bold.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="DecreaseIndent.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Einzug verkleinern</value>
+  </data>
+  <data name="Enumerate.Text" xml:space="preserve">
+    <value>Nummerierung</value>
+  </data>
+  <data name="EnumerateButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Nummerierung</value>
+  </data>
+  <data name="EnumerationIndex.Text" xml:space="preserve">
+    <value>Nummerierungswert: </value>
+  </data>
+  <data name="FontFormatting.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Schriftartformatierung</value>
+  </data>
+  <data name="Header1.Text" xml:space="preserve">
+    <value>Überschrift 1</value>
+  </data>
+  <data name="HighLight.Text" xml:space="preserve">
+    <value>Hervorheben</value>
+  </data>
+  <data name="IncreaseIndent.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Einzug vergößern</value>
+  </data>
+  <data name="InsertImage.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Bild einfügen</value>
+  </data>
+  <data name="Italics.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Kursiv</value>
+  </data>
+  <data name="Itemize.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Aufzählung</value>
+  </data>
+  <data name="LineSpacing.Text" xml:space="preserve">
+    <value>Zeilenabstand</value>
+  </data>
+  <data name="Paragraph.Text" xml:space="preserve">
+    <value>Absatz</value>
+  </data>
+  <data name="ParagraphFormatting.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Absatzformatierung</value>
+  </data>
+  <data name="ParagraphTemplatesButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Absatzvorlagen</value>
+  </data>
+  <data name="Redo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="ResetFormat.Text" xml:space="preserve">
+    <value>Formatierung löschen</value>
+  </data>
+  <data name="Underline.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Unterstrichen</value>
+  </data>
+  <data name="Undo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rückgängig</value>
+  </data>
+  <data name="SaveRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept speichern</value>
+  </data>
+  <data name="SaveRecipeText.Text" xml:space="preserve">
+    <value>Rezept speichern</value>
+  </data>
+  <data name="LoadRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept laden</value>
+  </data>
+  <data name="LoadRecipeText.Text" xml:space="preserve">
+    <value>Rezept laden</value>
+  </data>
+  <data name="template1" xml:space="preserve">
+    <value>Rezeptvorlage Klassisch</value>
+  </data>
+  <data name="template2" xml:space="preserve">
+    <value>Rezeptvorlage Modern</value>
+  </data>
+  <data name="TemplatesFolder" xml:space="preserve">
+    <value>Rezeptvorlagen</value>
+  </data>
+  <data name="EditRecipe" xml:space="preserve">
+    <value>Rezept bearbeiten</value>
+  </data>
+  <data name="EditTemplate" xml:space="preserve">
+    <value>Vorlage bearbeiten</value>
+  </data>
+  <data name="TemplateChooserLabel.Text" xml:space="preserve">
+    <value>Rezeptvorlage:</value>
+  </data>
+  <data name="TitleCopiedToClipboard" xml:space="preserve">
+    <value>Der Titel wurde in die Zwischenablage kopiert.</value>
+  </data>
+  <data name="DoYouWantToSaveQuestion.Text" xml:space="preserve">
+    <value>Das Rezept wurde geändert. Möchten Sie die Änderungen speichern?</value>
+  </data>
+  <data name="EditFile.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Editieren</value>
+  </data>
+  <data name="AppHelp.Text" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="CannotEdit" xml:space="preserve">
+    <value>Dieser Ordner kann nicht geändert werden.</value>
+  </data>
+  <data name="HelpFolder" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="helpPattern" xml:space="preserve">
+    <value>HelpDE-</value>
+    <comment>7 Zeichen!</comment>
+  </data>
+  <data name="CategoryEditor.Title" xml:space="preserve">
+    <value>Kategorie hinzufügen</value>
+  </data>
+  <data name="BoldTitle" xml:space="preserve">
+    <value>Fett</value>
+  </data>
+  <data name="Heading1" xml:space="preserve">
+    <value>Überschrift 1</value>
+  </data>
+  <data name="Heading2" xml:space="preserve">
+    <value>Überschrift 2</value>
+  </data>
+  <data name="Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="SubTitle" xml:space="preserve">
+    <value>Untertitel</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Mal</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="TitleLarge" xml:space="preserve">
+    <value>Titel (groß)</value>
+  </data>
+  <data name="DoYouWantToSave.PrimaryButtonText" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="DoYouWantToSave.SecondaryButtonText" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="DoYouWantToSave.Title" xml:space="preserve">
+    <value>Editor beenden</value>
+  </data>
+  <data name="ImageGalleryMenuItem.Text" xml:space="preserve">
+    <value>Galerie</value>
+  </data>
+  <data name="SubCategory" xml:space="preserve">
+    <value>Unterkategorie</value>
+  </data>
+  <data name="NewSubCategory.Text" xml:space="preserve">
+    <value>Neue Unterkategorie</value>
+  </data>
+  <data name="SubCategoryName" xml:space="preserve">
+    <value>Name der Kategorie</value>
+  </data>
+  <data name="DeleteSubCategory.Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="FolderNameIsEmpty" xml:space="preserve">
+    <value>Geben Sie einen Namen für die Kategorie ein</value>
+  </data>
+  <data name="RenameSubCategory.Text" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="DoYouWantToDeleteFolder" xml:space="preserve">
+    <value>Möchten Sie die Unterkategorie löschen?</value>
+  </data>
+  <data name="FolderNotEmpty" xml:space="preserve">
+    <value>Die Unterkategorie ist nicht leer und kann deswegen nicht gelöscht werden.</value>
+  </data>
+  <data name="CannotDeleteFolder" xml:space="preserve">
+    <value>Der Ordner konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="NewSubCategoryText" xml:space="preserve">
+    <value>Neue Unterkategorie</value>
+  </data>
+  <data name="InternetLinkTextBox.Header" xml:space="preserve">
+    <value>Link:</value>
+  </data>
+  <data name="ScanAllFolders" xml:space="preserve">
+    <value>Alle Kategorien</value>
+  </data>
+  <data name="ScanAllFoldersQuestion" xml:space="preserve">
+    <value>Sollen die Rezepte in allen Kategorien untersucht werden?</value>
+  </data>
+  <data name="ScanForCalories.Text" xml:space="preserve">
+    <value>Kalorienangaben ermitteln</value>
+  </data>
+  <data name="ScanThisFolder" xml:space="preserve">
+    <value>Nur diese Kategorie</value>
+  </data>
+  <data name="ScanForCaloriesProgressContentDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Abbruch</value>
+  </data>
+  <data name="ScanForCaloriesProgressContentDialog.Title" xml:space="preserve">
+    <value>Ermitteln von Kalorienangaben</value>
+  </data>
+  <data name="ScanningCategory.Text" xml:space="preserve">
+    <value>Untersuche Rezepte in der Kategorie:</value>
+  </data>
+  <data name="ExportCaloricInfos.Text" xml:space="preserve">
+    <value>Kalorienangaben exportieren</value>
+  </data>
+  <data name="ImportCaloricInfos.Text" xml:space="preserve">
+    <value>Kalorienangaben importieren</value>
+  </data>
+  <data name="RestartAppForThemeChangeRequired" xml:space="preserve">
+    <value>Die Änderung des Farbschemas wird erst nach dem Neustart der App aktiv.</value>
+  </data>
+  <data name="ThemeComboBox.Header" xml:space="preserve">
+    <value>Farbschema</value>
+  </data>
+  <data name="ThemeDark.Content" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="ThemeLight.Content" xml:space="preserve">
+    <value>Hell</value>
+  </data>
+  <data name="CategoryModeText.Text" xml:space="preserve">
+    <value>Kategorien</value>
+  </data>
+  <data name="CriteriaModeText.Text" xml:space="preserve">
+    <value>Kriterien</value>
+  </data>
+  <data name="CategoriesPageTitle" xml:space="preserve">
+    <value>Rezepte</value>
+  </data>
+  <data name="CreateTagTitle" xml:space="preserve">
+    <value>Neues Kriterium</value>
+  </data>
+  <data name="CriteriaPageTitle" xml:space="preserve">
+    <value>Kriterien</value>
+  </data>
+  <data name="EditTagTitle" xml:space="preserve">
+    <value>Kriterium ändern</value>
+  </data>
+  <data name="SelectATag" xml:space="preserve">
+    <value>Bitte zunächst ein Kriterium auswählen.</value>
+  </data>
+  <data name="TagLabel" xml:space="preserve">
+    <value>Kriterium</value>
+  </data>
+  <data name="UnableToCreateTag" xml:space="preserve">
+    <value>Das Kriterium konnte nicht angelegt werden.</value>
+  </data>
+  <data name="UnableToEditTag" xml:space="preserve">
+    <value>Das Kriterium konnte nicht geändert werden.</value>
+  </data>
+  <data name="AddToFavorites.Label" xml:space="preserve">
+    <value>Vormerken</value>
+  </data>
+  <data name="ChangeCategoryCommand.Label" xml:space="preserve">
+    <value>Kategorie ändern</value>
+  </data>
+  <data name="DeleteRecipeCommand.Label" xml:space="preserve">
+    <value>Rezept löschen</value>
+  </data>
+  <data name="EditFile.Label" xml:space="preserve">
+    <value>Editieren</value>
+  </data>
+  <data name="EditNote.Label" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ExportDatabaseCommand.Label" xml:space="preserve">
+    <value>Datenbank exportieren</value>
+  </data>
+  <data name="FullscreenView.Label" xml:space="preserve">
+    <value>Vollbild</value>
+  </data>
+  <data name="ImportDatabaseCommand.Label" xml:space="preserve">
+    <value>Datenbank importieren</value>
+  </data>
+  <data name="OpenRecipeCommand.Label" xml:space="preserve">
+    <value>Öffnen</value>
+  </data>
+  <data name="RemoveRecipe.Label" xml:space="preserve">
+    <value>Vormerken rückgangig</value>
+  </data>
+  <data name="RenameRecipeCommand.Label" xml:space="preserve">
+    <value>Rezept umbenennen</value>
+  </data>
+  <data name="ScanForCaloriesCommand.Label" xml:space="preserve">
+    <value>Kalorienangaben ermitteln</value>
+  </data>
+  <data name="ChooseTagsDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="ChooseTagsDialog.SecondaryButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="ChooseTagsDialog.Title" xml:space="preserve">
+    <value>Kriterien</value>
+  </data>
+  <data name="CriteriaSelectionText.Text" xml:space="preserve">
+    <value>Kriterium wählen</value>
+  </data>
+  <data name="EditTags.Label" xml:space="preserve">
+    <value>Kriterien ändern</value>
+  </data>
+  <data name="CategoryNotEmpty" xml:space="preserve">
+    <value>Die Kategorie enthält Rezepte oder Unterkategorien und kann deswegen nicht gelöscht werden.</value>
+  </data>
+  <data name="DoYouWantToDeleteCategory" xml:space="preserve">
+    <value>Möchten Sie die Kategorie löschen?</value>
+  </data>
+  <data name="DoYouWantToDeleteTag" xml:space="preserve">
+    <value>Möchten Sie das Kriterium löschen?</value>
+  </data>
+  <data name="LastCookedDateAlreadyStored" xml:space="preserve">
+    <value>Das Zubereitungsdateum ist bereits in der Datenbank gespeichert.</value>
+  </data>
+  <data name="CaloriesEditor.PrimaryButtonText" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="CaloriesEditor.SecondaryButtonText" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CaloriesEditor.Title" xml:space="preserve">
+    <value>Kalorienangabe ändern</value>
+  </data>
+  <data name="CaloriesTextBox.Header" xml:space="preserve">
+    <value>Kalorien (kcal)</value>
+  </data>
+  <data name="ChangeCaloriesCommand.Label" xml:space="preserve">
+    <value>Kalorienangabe ändern</value>
+  </data>
+  <data name="ShareCommand.Label" xml:space="preserve">
+    <value>Teilen</value>
+  </data>
+  <data name="Background.Text" xml:space="preserve">
+    <value>Hintergrund</value>
+  </data>
+  <data name="Foreground.Text" xml:space="preserve">
+    <value>Vordergrund</value>
+  </data>
+  <data name="CreateNewTag.Content" xml:space="preserve">
+    <value>Neues Kriterium</value>
+  </data>
+</root>

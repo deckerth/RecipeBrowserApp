@@ -1,0 +1,19 @@
+﻿<ContentDialog x:Name="SaveDialog"
+    x:Class="RecipeBrowser.SaveChangesDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title=""
+    x:Uid="DoYouWantToSave"
+    PrimaryButtonText="Yes"
+    SecondaryButtonText="No"
+    PrimaryButtonClick="SaveDialog_PrimaryButtonClick"
+    SecondaryButtonClick="SaveDialog_SecondaryButtonClick">
+
+    <Grid>
+        <TextBlock x:Uid="DoYouWantToSaveQuestion"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center"  Margin="0" />
+    </Grid>
+</ContentDialog>

@@ -1,0 +1,32 @@
+﻿<ContentDialog x:Name="ScanForCaloriesProgressContentDialog"
+    x:Uid="ScanForCaloriesProgressContentDialog"
+    x:Class="RecipeBrowser.ScanForCaloriesProgressDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonClick="ScanForCaloriesProgressContentDialog_PrimaryButtonClick"
+    PrimaryButtonText="Test"
+    IsSecondaryButtonEnabled="False"
+    >
+
+    <RelativePanel>
+        <TextBlock x:Name="ScanningCategory" x:Uid="ScanningCategory" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" Margin="0,10,0,0"/>
+        <TextBlock x:Name="ScannedCategory" Text="{x:Bind CurrentCategory.DisplayName,Mode=OneWay}" RelativePanel.Below="ScanningCategory" RelativePanel.AlignLeftWithPanel="True" Margin="0,10,0,0"/>
+        <ProgressBar x:Name="ProgressIndeterminate"
+                     Foreground="Black"
+                     FlowDirection="RightToLeft"
+                     IsIndeterminate="True"
+                     Width="200"
+                     RelativePanel.Below="ScannedCategory"
+                     RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,10,0,0"/>
+        <ProgressBar x:Name="ProgressDeterminate" 
+                     IsIndeterminate="False" 
+                     Foreground="Black" 
+                     Width="200"
+                     RelativePanel.Below="ScannedCategory"
+                     RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,10,0,0"/>
+    </RelativePanel>
+</ContentDialog>

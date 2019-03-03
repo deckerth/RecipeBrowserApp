@@ -1,0 +1,787 @@
+﻿<Page x:Name="page"
+    x:Class="RecipeBrowser.RecipesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:converters="using:RecipeBrowser.ValueConverters"
+    xmlns:controls="using:RecipeBrowser.Controls"
+    xmlns:viewmodels="using:RecipeBrowser.ViewModels"
+    xmlns:selectors="using:RecipeBrowser.TemplateSelectors"
+    xmlns:fa="using:FontAwesome.UWP"      
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" FontFamily="Segoe MDL2 Assets">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:PositiveIntToVisibilityConverter x:Key="positiveIntToVisConverter"/>
+            <converters:IntegerToCaloriesStringConverter x:Key="intToCaloriesConverter"/>
+            <converters:ColorToBrushConverter x:Key="colorToBrushConverter"/>
+            <CollectionViewSource x:Name="GroupedRecipesCVS"  IsSourceGrouped="True" />
+
+            <DataTemplate x:Key="RecipeItemListTemplate" x:DataType="local:Recipe">
+                <Grid Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock  FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="34" 
+                                    Text="&#xE8B7;  " 
+                                    Visibility="{x:Bind FolderIconVisibility}"/>
+
+                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" />
+                                <Button x:Name="SubCategoryMenu" ToolTipService.ToolTip="" VerticalAlignment="Center" 
+                                              Foreground="Black"
+                                              FontFamily="Segoe MDL2 Assets" 
+                                              FontSize="14" 
+                                              Content="&#xE712;" 
+                                              HorizontalAlignment="Center" Visibility="{x:Bind FolderIconVisibility}" Margin="20,0,0,0" Style="{StaticResource TextBlockButtonStyle}">
+                                    <Button.Flyout>
+                                        <MenuFlyout x:Name="SubCategoryOpsFlyout">
+                                            <MenuFlyoutItem x:Uid="RenameSubCategory" 
+                                                            CommandParameter="{x:Bind Path, Mode=OneWay}"
+                                                            Text="" x:Name="RenameSubCategory" Click="RenameSubCategory_Click"/>
+                                            <MenuFlyoutItem x:Uid="DeleteSubCategory" Text="" 
+                                                            CommandParameter="{x:Bind Path, Mode=OneWay}"
+                                                            x:Name="DeleteSubCategory" Click="DeleteSubCategory_ClickAsync" FontFamily="Segoe MDL2 Assets"/>
+                                        </MenuFlyout>
+                                    </Button.Flyout>
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="{x:Bind SubTitle, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                            <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="FavoritesItemListTemplate" x:DataType="local:Recipe">
+                <Grid Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" />
+                        <TextBlock Text="{x:Bind FavoritesSubTitle, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="HistoryItemListTemplate" x:DataType="local:Recipe" >
+                <StackPanel>
+                    <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
+                        <Grid Height="Auto" Width="500" Visibility="{x:Bind RecipeContentVisibility}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="460" >
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" 
+                                       Padding="0,10,0,5"/>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind DisplayCategory}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                        <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" Margin="10,0,0,0" />
+                                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                        <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Light" HorizontalAlignment="Right" />
+                                </Grid>
+                                <TextBlock Text="{x:Bind ExternalSource}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal"
+                                       Visibility="{x:Bind ExternalSourceVisible}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Grid Visibility="{x:Bind HeaderContentVisibility}">
+                        <TextBlock Text="{x:Bind Name}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="Medium" 
+                                       Padding="0,10,0,5"/>
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="NarrowHistoryItemListTemplate" x:DataType="local:Recipe" >
+                <StackPanel>
+                    <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
+                        <Grid Height="Auto" Width="260" Visibility="{x:Bind RecipeContentVisibility}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="260" >
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" 
+                                       Padding="0,10,0,5"/>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind Category}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                        <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" Margin="10,0,0,0" />
+                                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                        <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                           FontFamily="Segoe UI Semilight"
+                                           FontSize="14"
+                                           FontWeight="Normal" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Light" HorizontalAlignment="Right" />
+                                </Grid>
+                                <TextBlock Text="{x:Bind ExternalSource}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal"
+                                       Visibility="{x:Bind ExternalSourceVisible}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Grid Visibility="{x:Bind HeaderContentVisibility}">
+                        <TextBlock Text="{x:Bind Name}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="Medium" 
+                                       Padding="0,10,0,5"/>
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="DetailContentTemplate">
+                <ScrollViewer
+        		x:Name="itemDetail"
+        		AutomationProperties.AutomationId="ItemDetailScrollViewer"
+        		Padding="60,0,66,0"
+        		DataContext="{Binding SelectedItem, ElementName=itemListView}"
+        		HorizontalScrollBarVisibility="Visible"
+        		ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Enabled"
+        		ScrollViewer.ZoomMode="Enabled"  Grid.Row="1" Grid.RowSpan="2">
+                    <Image x:Name="RecipeViewer"
+                       ScrollViewer.HorizontalScrollBarVisibility="Visible" />
+                </ScrollViewer>
+            </DataTemplate>
+
+            <DataTemplate x:Key="FolderSelectionTemplate" x:DataType="local:FolderDescriptor">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="3" Height="18" Fill="{x:Bind IndicatorColor,Mode=OneWay}"/>
+                    <TextBlock Text="{x:Bind CategoryWithIndent,Mode=OneWay}" Style="{StaticResource BaseTextBlockStyle}" Foreground="{x:Bind FontColor,Mode=OneWay}" Margin="5,0,0,0" />
+                </StackPanel>
+            </DataTemplate>
+
+            <Style x:Key="TimerPanelStyle" TargetType="ListView">
+                <Setter Property="Transitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <PaneThemeTransition/>
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <MenuFlyout x:Key="AddRecipeMenuFlyoutDef" x:Name="AddRecipeMenuFlyout">
+                <MenuFlyoutItem x:Uid="AddExistingPdf" Text="" x:Name="AddExistingPdf" />
+                <MenuFlyoutItem x:Uid="EnterNewRecipe" Text="" x:Name="EnterNewRecipe" />
+                <MenuFlyoutItem x:Uid="NewSubCategory" Text="" x:Name="NewSubCategory" />
+            </MenuFlyout>
+
+            <MenuFlyout x:Key="ExportImportFlyoutDef" x:Name="ExportImportFlyout" >
+                <MenuFlyoutItem x:Name="ExportHistoryMenuItem" x:Uid="ExportHistory" Text="" Click="ExportHistory_Click" />
+                <MenuFlyoutItem x:Name="ImportHistoryMenuItem" x:Uid="ImportHistory" Text="" Click="ImportHistory_Click"/>
+            </MenuFlyout>
+
+            <Flyout x:Key="NoteEditorFlyout" Closed="NoteEditorFlyoutClosed" >
+                <StackPanel Orientation="Vertical">
+                    <RichEditBox x:Uid="NoteEditor" x:Name="noteEditor" Height="450" Width="400" />
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="335"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="InternetLinkTextBox" x:Uid="InternetLinkTextBox" PlaceholderText="http://..." Width="335"/>
+                        <AppBarButton x:Name="OpenInternetLink" Grid.Column="1" Icon="Globe" />
+                    </Grid>
+                </StackPanel>
+            </Flyout>
+
+            <DataTemplate x:Key="WrappedItemDataTemplate" x:DataType="viewmodels:RecipeTagViewModel">
+                <Border Margin="0,0" BorderThickness="1,1,1,1" CornerRadius="15,15,15,15" BorderBrush="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                        Background="{x:Bind Background,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}">
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" 
+                               Style="{StaticResource WrappedItemTextStyle}"
+                               Foreground="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"
+                               Text="{x:Bind Tag}" />
+                        <Button Background="Transparent" Command="{x:Bind AddDeleteCommand}">
+                            <Button.Content>
+                                <Border BorderBrush="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}" BorderThickness="2" CornerRadius="45,45,45,45">
+                                    <FontIcon Glyph="&#xE711;" Foreground="{x:Bind Foreground,Mode=OneWay,Converter={StaticResource colorToBrushConverter}}"/>
+                                </Border>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="WrappedPlusDataTemplate" x:DataType="viewmodels:RecipeTagViewModel">
+                <Button Background="Transparent" Command="{x:Bind AddDeleteCommand}">
+                    <Button.Content>
+                        <Border BorderBrush="DarkGray" BorderThickness="2" CornerRadius="45,45,45,45">
+                            <FontIcon Glyph="&#xE710;" Margin="4,4"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </DataTemplate>
+
+            <selectors:TagDataTemplateSelector x:Key="tagTemplateSelector"
+                                    DefaultDataDemplate="{StaticResource WrappedItemDataTemplate}"
+                                    PlusDataTemplate="{StaticResource WrappedPlusDataTemplate}"/>
+
+            <Style x:Key="WrappedItemsControlStyle" TargetType="ListView">
+                <Setter Property="ItemsPanel" Value="{StaticResource HorizontalItemsPanel}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="BorderBrush" Value="DarkGray" />
+                <Setter Property="Margin" Value="6" />
+            </Style>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <SplitView x:Name="RootSplitView"
+          IsPaneOpen="False"
+           OpenPaneLength="350" 
+           CompactPaneLength="70" 
+           DisplayMode="CompactOverlay" PaneBackground="{StaticResource MenuBarBackgroundBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
+                <VisualState x:Name="DefaultState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1024" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="MasterColumn.Width" Value="*" />
+                        <Setter Target="DetailColumn.Width" Value="0" />
+                        <Setter Target="MasterListView.SelectionMode" Value="None" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PhoneState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="RecipeSearchBox.(FrameworkElement.Width)" Value="220"/>-->
+                        <Setter Target="RecipeAutoSuggestBox.(FrameworkElement.Width)" Value="220"/>
+                        <Setter Target="MasterColumn.Width" Value="*" />
+                        <Setter Target="DetailColumn.Width" Value="0" />
+                        <Setter Target="MasterListView.SelectionMode" Value="None" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <SplitView.Pane>
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <Button x:Name="BackButton" Style="{StaticResource NavigationBackButtonNormalStyle}" Foreground="{StaticResource MenuBarForegroundBrush}" Margin="10,0,0,0"
+                        Visibility="{x:Bind BackButtonVisibility,Mode=OneWay}"/>
+                    <AppBarButton x:Name="ToggleSplitView"
+                                    VerticalAlignment="Top" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center"
+                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="20" 
+                                    Content="&#xE700;"
+                                    Foreground="{StaticResource MenuBarForegroundBrush}"/>
+
+                    <StackPanel x:Name="AddExternalRecipeButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <AppBarButton x:Name="AddExternalRecipe"
+                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="20" 
+                                    Content="&#xE710;"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center"  
+                                  Foreground="{StaticResource MenuBarForegroundBrush}">
+                        </AppBarButton>
+                        <TextBlock x:Uid="AddRecipe"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}" Tapped="AddExternalRecipe_Tapped"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="AddRecipeButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <AppBarButton x:Name="AddRecipe"
+                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="20" 
+                                    Content="&#xE710;"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center"  
+                                  Foreground="{StaticResource MenuBarForegroundBrush}"
+                                  Flyout="{StaticResource AddRecipeMenuFlyoutDef}">
+                        </AppBarButton>
+                        <TextBlock x:Name="AddRecipeTextblock" x:Uid="AddRecipe"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <AppBarButton x:Name="Home"
+                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="20" 
+                                    Content="&#xE80F;"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center"  
+                                  Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                        <TextBlock x:Uid="Home" x:Name="HomeTextblock"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ShowFavoritesButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ShowFavorites"
+                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="20" 
+                                    Content="&#xE734;"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" />
+                        <TextBlock x:Uid="FavoriteRecipesText" x:Name="FavoriteRecipesTextblock"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ShowHistoryButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ShowHistory"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="&#xE787;"/>
+                        <TextBlock x:Uid="ShowHistoryText" x:Name="ShowHistoryText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ShowTimers"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="&#xE916;">
+                        </AppBarButton>
+                        <TextBlock x:Uid="ShowTimersText" x:Name="ShowTimersText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="FolderSelection"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="&#xE8B7;" >
+                        </AppBarButton>
+                        <TextBlock x:Uid="FolderSelectionText" x:Name="FolderSelectionText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="CriteriaSelectionPane"
+                    Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <AppBarButton x:Name="CriteriaSelection"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{ThemeResource MenuBarForegroundBrush}"
+                                  Click="CriteriaSelection_Click">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Tags" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <TextBlock x:Uid="CriteriaSelectionText" x:Name="CriteriaSelectionText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{ThemeResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="refreshRecipes"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="&#xE72C;" >
+                        </AppBarButton>
+                        <TextBlock x:Uid="RefreshRecipes" x:Name="RefreshRecipesText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="ExportImportButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ExportImport"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="&#xE8EB;" 
+                                  Flyout="{StaticResource ExportImportFlyoutDef}">
+                        </AppBarButton>
+                        <TextBlock x:Uid="ImportExportHistory" x:Name="ImportExportHistoryText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="AppHelp"
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" Icon="Help"/>
+                        <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </SplitView.Pane>
+
+        <SplitView x:Name="FolderSelectionSplitView"
+           IsPaneOpen="False"
+           OpenPaneLength="296" 
+           DisplayMode="Overlay" PaneBackground="{StaticResource MenuBarBackgroundBrush}">
+            <SplitView.Pane>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="CategoryChooserTitle" Grid.Row="0" Visibility="Visible" Style="{StaticResource FlyoutPickerTitleTextBlockStyle}"  Padding="0,10,0,0"/>
+                    <ListView x:Name="FolderSelectionList" Grid.Row="1" Width="300" ItemTemplate="{StaticResource FolderSelectionTemplate}" Background="{StaticResource MenuBarBackgroundBrush}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="Category_Chosen" Foreground="{StaticResource MenuBarForegroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                </Grid>
+            </SplitView.Pane>
+
+            <Grid x:Name="LayoutRoot" Loaded="LayoutRoot_Loaded" Background="{StaticResource RecipesItemsBackgroundBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="MasterColumn" Width="500" />
+                    <ColumnDefinition x:Name="DetailColumn" Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <CommandBar Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource MenuBarBackgroundBrush}" Foreground="{StaticResource MenuBarForegroundBrush}">
+                    <CommandBar.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Grid.Row="0" Grid.Column="0" x:Name="pageTitle"
+                                       Style="{ThemeResource TitleTextBlockStyle}" Foreground="{StaticResource PageTitleForegroundBrush}" />
+                            <ProgressRing x:Name="actionProgress" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40" Margin="0,0,0,15" Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                        </StackPanel>
+                    </CommandBar.Content>
+                    <AppBarButton x:Name="logAsCooked" x:Uid="LogAsCooked" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" 
+                                  Icon="Like"
+                                  Foreground="{StaticResource MenuBarForegroundBrush}">
+                        <AppBarButton.Flyout>
+                            <DatePickerFlyout x:Name="CookedOn" Placement="Bottom">
+
+                            </DatePickerFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="EditNote" x:Name="editNote" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" 
+                                  Icon="Comment" Foreground="{StaticResource MenuBarForegroundBrush}"
+                                  Flyout="{StaticResource NoteEditorFlyout}"/>
+                    <AppBarButton x:Uid="EditFile" ToolTipService.ToolTip="" x:Name="EditFileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Edit" Visibility="Collapsed" Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    <AppBarButton x:Uid="EditTags" ToolTipService.ToolTip="" x:Name="EditTags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Tag" Foreground="{StaticResource MenuBarForegroundBrush}" />
+                    <AppBarButton x:Uid="ImageGalery" ToolTipService.ToolTip="" x:Name="ShowImageGalery" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Pictures" Foreground="{StaticResource MenuBarForegroundBrush}" />
+                    <AppBarButton x:Uid="FullscreenView" ToolTipService.ToolTip="" x:Name="FullscreenView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="FullScreen" Foreground="{StaticResource MenuBarForegroundBrush}" />
+                    <AppBarButton x:Uid="AddToFavorites" ToolTipService.ToolTip="" x:Name="AddToFavorites" Label="" Icon="Pin" Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    <AppBarButton x:Uid="RemoveRecipe" ToolTipService.ToolTip="" x:Name="RemoveFromFavorites" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" Visibility="Collapsed" Icon="UnPin" Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton x:Uid="OpenRecipeCommand" x:Name="OpenFile" Icon="OpenFile"/>
+                        <AppBarButton x:Uid="ShareCommand" x:Name="Share" Icon="Share"/>
+                        <AppBarButton x:Uid="ChangeCategoryCommand" x:Name="ChangeCategory" />
+                        <AppBarButton x:Uid="RenameRecipeCommand" x:Name="RenameRecipe" Icon="Rename"/>
+                        <AppBarButton x:Uid="DeleteRecipeCommand" x:Name="deleteRecipe" Icon="Delete" />
+                        <AppBarButton x:Uid="ChangeCaloriesCommand" x:Name="ChangeCalories" />
+                        <AppBarSeparator/>
+                        <AppBarButton x:Uid="ScanForCaloriesCommand"  x:Name="ScanForCalories" />
+                        <AppBarButton x:Uid="ExportDatabaseCommand" x:Name="ExportCaloricInfos" />
+                        <AppBarButton x:Uid="ImportDatabaseCommand" x:Name="ImportCaloricInfos" />
+                    </CommandBar.SecondaryCommands>
+                </CommandBar>
+                <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" x:Name="RecipeList">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel x:Name="searchFieldPanel" 
+                                    Grid.Row="0" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top" 
+                                    Orientation="Horizontal">
+                        <AppBarButton x:Name="changeSortOrder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Sort">
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Uid="NameAscending" Text="" Click="SortNameAscending_Click"/>
+                                    <MenuFlyoutItem x:Uid="DateDescending" Text="" Click="SortDateDecending_Click"/>
+                                    <MenuFlyoutItem x:Uid="LastCookedDescending" Text="" Click="SortLastCookedDescending_Click"/>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                        <AppBarButton x:Name="setFilter" x:Uid="setFilter" Icon="Filter" Visibility="Collapsed"/>
+                        <AppBarButton x:Name="deleteFilter" x:Uid="deleteFilter" Icon="Undo" Visibility="Collapsed"/>
+                        <TextBlock x:Name="SearchBoxSpaceHolder" Height="50"/>
+                        <SearchBox x:Name="RecipeSearchBox" Background="{StaticResource RecipesItemsBackgroundBrush}" Width="374" Height="34" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed"/>
+                        <AutoSuggestBox x:Name="RecipeAutoSuggestBox"
+                                        Background="{StaticResource RecipesItemsBackgroundBrush}"
+                                        Width="374" Height="34" 
+                                        Visibility="Collapsed"  
+                                        VerticalAlignment="Center"
+                                        QueryIcon="Find"/>
+                    </StackPanel>
+
+                    <ProgressBar x:Name="LoadProgress"
+                                     Grid.Row="1" 
+                                     HorizontalAlignment="Center" 
+                                     Height="10" 
+                                     VerticalAlignment="Center" 
+                                     Width="300" 
+                                     IsIndeterminate="True" 
+                                     FlowDirection="RightToLeft"
+                                     Visibility="Collapsed"
+                                     Foreground="{StaticResource ProgressBarForegroundThemeBrush}"/>
+                    <ProgressBar x:Name="LoadProgressDeterminate"
+                                     Grid.Row="1" 
+                                     HorizontalAlignment="Center" 
+                                     Height="10" 
+                                     VerticalAlignment="Center" 
+                                     Width="300" 
+                                     Visibility="Collapsed"
+                                     IsIndeterminate="False"
+                                     Minimum="0"
+                                     Value="0"
+                                     Maximum="{x:Bind CurrentRecipeFolder.LoadProgressTotal,Mode=OneWay}"
+                                     Foreground="{StaticResource ProgressBarForegroundThemeBrush}"/>
+
+                    <ListView x:Name="MasterListView"
+                            Grid.Row="2"
+                            ItemContainerTransitions="{x:Null}"
+                            IsItemClickEnabled="True"
+                            ItemClick="ItemListView_SelectionChanged"
+                            ItemTemplate="{StaticResource RecipeItemListTemplate}">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate x:DataType="local:RecipesGroup">
+                                        <Grid Height="Auto" Width="470">
+                                            <Border Background="{StaticResource HistorySeparatorBackgroundBrush}"  >
+                                                <TextBlock Text="{x:Bind Key}" 
+                                                FontFamily="Segoe UI Semilight"
+                                                FontSize="16"
+                                                FontWeight="Normal" HorizontalAlignment="Center" 
+                                                Foreground="Black"
+                                                />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                </Grid>
+
+                <!--<Border Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <ProgressRing x:Name="actionProgress" HorizontalAlignment="Center" VerticalAlignment="Center" Width="40" Height="40" Margin="0,0,0,15"/>
+                        <AppBarButton x:Name="logAsCooked" x:Uid="LogAsCooked" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" Icon="Like">
+                            <AppBarButton.Flyout>
+                                <DatePickerFlyout x:Name="CookedOn" Placement="Bottom">
+
+                                </DatePickerFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <AppBarButton x:Name="editNote" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" Icon="Comment"
+                                      Flyout="{StaticResource NoteEditorFlyout}"/>
+                        <AppBarButton x:Uid="EditFile" ToolTipService.ToolTip="" x:Name="EditFileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Edit" Visibility="Collapsed" />
+                        <AppBarButton x:Uid="ImageGalery" ToolTipService.ToolTip="" x:Name="ShowImageGalery" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Pictures" />
+                        <AppBarButton x:Uid="FullscreenView" ToolTipService.ToolTip="" x:Name="FullscreenView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="FullScreen" />
+                        <AppBarButton x:Uid="AddToFavorites" ToolTipService.ToolTip="" x:Name="AddToFavorites" Label="" Icon="Pin"/>
+                        <AppBarButton x:Uid="RemoveRecipe" ToolTipService.ToolTip="" x:Name="RemoveFromFavorites" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" Visibility="Collapsed" Icon="UnPin"/>
+                        <AppBarButton x:Name="Menu" ToolTipService.ToolTip="" Icon="More" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                            <Button.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Uid="OpenRecipe" Text="" x:Name="OpenFile" />
+                                    <MenuFlyoutItem x:Uid="Share" Text="" x:Name="Share" />
+                                    <MenuFlyoutItem x:Uid="ChangeCategoryText" Text="" x:Name="ChangeCategory" />
+                                    <MenuFlyoutItem x:Uid="RenameRecipe" Text="" x:Name="RenameRecipe" />
+                                    <MenuFlyoutItem x:Uid="DeleteRecipe" Text="" x:Name="deleteRecipe" />
+                                    <MenuFlyoutSeparator/>
+                                    <MenuFlyoutItem x:Uid="ScanForCalories"  x:Name="ScanForCalories" />
+                                    <MenuFlyoutItem x:Uid="ExportCaloricInfos"  x:Name="ExportCaloricInfos" />
+                                    <MenuFlyoutItem x:Uid="ImportCaloricInfos"  x:Name="ImportCaloricInfos" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </AppBarButton>
+                    </StackPanel>
+                </Border>-->
+
+                <ListView Name="TagsList" Grid.Row="1" Grid.Column="1"
+                          Style="{StaticResource WrappedItemsControlStyle}" 
+                          ItemTemplateSelector="{StaticResource tagTemplateSelector}"/>
+
+                <ContentPresenter Grid.Row="2" Grid.Column="1"
+                        x:Name="DetailContentPresenter"
+                        VerticalAlignment="Top"
+                        BorderThickness="1,0,0,0"
+                        Padding="24,0"
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="80"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer
+                                Grid.RowSpan="2"
+        		                x:Name="itemDetail"
+        		                AutomationProperties.AutomationId="ItemDetailScrollViewer"
+                                VerticalAlignment="Top"
+        		                DataContext="{Binding SelectedItem, ElementName=itemListView}"
+        		                HorizontalScrollBarVisibility="Visible"
+        		                ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Enabled"
+        		                ScrollViewer.ZoomMode="Enabled"  >
+                            <StackPanel Orientation="Vertical">
+                                <Image x:Name="RecipeViewer"
+                                       ScrollViewer.HorizontalScrollBarVisibility="Visible" />
+                                <RichEditBox x:Name="RecipeSourceViewer"
+                                     Visibility="Collapsed" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Style="{StaticResource RTFViewerStyle}" />
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!--<ScrollViewer>
+                            <RichEditBox Grid.RowSpan="2" x:Name="RecipeSourceViewer"
+                                     ScrollViewer.HorizontalScrollMode="Auto" 
+                                     ScrollViewer.VerticalScrollMode="Auto" 
+                                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                     Visibility="Collapsed" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Style="{StaticResource RTFViewerStyle}" />
+                        </ScrollViewer>-->
+
+                        <StackPanel x:Name="pageControl"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Background="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" Opacity="0.5" Visibility="Collapsed">
+                            <AppBarButton x:Name="prevPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Icon="Back" Margin="0,10,0,0"/>
+                            <TextBox x:Name="pageNumber" TextWrapping="Wrap" Text="1/2" IsReadOnly="True" PlaceholderText="2/2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <AppBarButton x:Name="nextPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Icon="Forward" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                    <ContentPresenter.ContentTransitions>
+                        <!-- Empty by default. See MasterListView_ItemClick -->
+                        <TransitionCollection />
+                    </ContentPresenter.ContentTransitions>
+                </ContentPresenter>
+            </Grid>
+        </SplitView>
+    </SplitView>
+</Page>

@@ -1,0 +1,23 @@
+The Recipe Browser provides you with a convenient way to explore your recipe collection.
+
+You start by defining the categories that you want to use to organize your collection. Then you either add existing recipes (PDF or RTF), or you enter new recipes with the integrated recipe editor.
+
+The search function helps you finding recipes, across categories or inside a single category. In case you plan to cook a recipe on the next weekend, just pin it to the favorite list.
+
+Finally, start cooking - the integrated timers will assist you. Afterwards, press the "Prepared!" button. The app keeps track of your dishes. The history function shows the recipes that you prepared during the last weeks. It is always interesting to see what you prepared a year ago.
+
+Features
+- Define labels, and organize the recipes by certain criteria (new)
+- Integrated recipe editor
+- Supported formats: PDF and RTF
+- Recipe gallery: Add your own pictures of your dishes
+- History function
+- Favorites list
+- Timer
+- Recipe templates
+- Add notes to the recipes
+- Light and dark color scheme (new)
+- Help function
+
+Hints:
+-	The resolution of the category images should not be too large in order to make the browser start quickly. A width of 200 pixels suffices.
