@@ -5,6 +5,7 @@ Imports Windows.ApplicationModel.DataTransfer
 Imports Windows.Foundation.Metadata
 Imports Windows.Globalization.DateTimeFormatting
 Imports Windows.Storage
+Imports Windows.Storage.Streams
 Imports Windows.UI.Core
 Imports Windows.UI.Popups
 Imports Windows.UI.Xaml.Media.Animation
@@ -1316,10 +1317,11 @@ Public NotInheritable Class RecipesPage
         Dim title = newRecipeDialog.GetRecipeTitle()
 
         Try
-            If template Is Nothing Then
-                Await CurrentRecipeFolder.Folder.CreateFileAsync(title + ".rtf")
-            Else
-                Await template.RecipeSource.CopyAsync(CurrentRecipeFolder.Folder, title + ".rtf", NameCollisionOption.FailIfExists)
+            Dim newFile As StorageFile = Await CurrentRecipeFolder.Folder.CreateFileAsync(title + ".rtf")
+            If template IsNot Nothing Then
+                ' Copy the content rather than the template file itself so that the creation date is not taken from the template
+                Dim inBuffer As IBuffer = Await FileIO.ReadBufferAsync(template.RecipeSource)
+                Await FileIO.WriteBufferAsync(newFile, inBuffer)
             End If
         Catch ex As Exception
             App.Logger.Write("Could not create new recipe file: " + ex.ToString())
