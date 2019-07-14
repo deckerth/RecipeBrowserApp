@@ -670,7 +670,7 @@
   <data name="ScanForCalories.Text" xml:space="preserve">
     <value>Scan recipes for caloric information</value>
   </data>
-  <data name="ScanThisFolders" xml:space="preserve">
+  <data name="ScanThisFolder" xml:space="preserve">
     <value>This category</value>
   </data>
   <data name="ScanForCaloriesProgressContentDialog.PrimaryButtonText" xml:space="preserve">
