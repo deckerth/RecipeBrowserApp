@@ -399,6 +399,8 @@ Public NotInheritable Class RecipePage
         recipeWithNote = Nothing
         DisableControls(False) ' no progress display
         recipeWithNote = _lastSelectedItem
+        noteEditor.Document.SetText(Windows.UI.Text.TextSetOptions.None, "")
+        InternetLinkTextBox.Text = ""
 
         If recipeWithNote.Notes IsNot Nothing Then
             Try

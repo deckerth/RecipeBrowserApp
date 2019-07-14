@@ -52,7 +52,7 @@
 
         Dim errorFlag As Boolean
 
-        If recipe.CookedNoOfTimes = 0 Then
+        If recipe.CookedNoOfTimes = 0 AndAlso recipe.InternetLink Is Nothing Then
             Return
         End If
 
@@ -62,8 +62,10 @@
             Dim xmlDocument As New Windows.Data.Xml.Dom.XmlDocument
 
             Dim element = xmlDocument.CreateElement(LastTimeCookedNode)
-            element.SetAttribute(LastCookedDate, recipe.LastCooked)
-            element.SetAttribute(CookedNoOfTimes, recipe.CookedNoOfTimes)
+            If recipe.LastCooked IsNot Nothing Then
+                element.SetAttribute(LastCookedDate, recipe.LastCooked)
+                element.SetAttribute(CookedNoOfTimes, recipe.CookedNoOfTimes)
+            End If
             If recipe.InternetLink IsNot Nothing Then
                 element.SetAttribute(InternetLink, recipe.InternetLink)
             End If
