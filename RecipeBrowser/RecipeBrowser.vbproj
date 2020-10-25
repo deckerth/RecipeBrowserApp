@@ -10,21 +10,25 @@
     <AssemblyName>RecipeBrowser</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <PackageCertificateKeyFile>RecipeBrowser_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>5182D5249405F8119E3831B913920326CA448320</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>
+    </PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxPackageDir>T:\Apps\RecipeBrowser\</AppxPackageDir>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -90,6 +94,7 @@
     <Prefer32Bit>true</Prefer32Bit>
     <DocumentationFile>RecipeBrowser.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
@@ -120,6 +125,7 @@
     <Content Include="Assets\HelpDE-4 Vorgemerkte Rezepte.pdf" />
     <Content Include="Assets\HelpDE-2 Rezeptliste.pdf" />
     <Content Include="Assets\HelpEN-2 Recipe List.pdf" />
+    <Content Include="Assets\Fonts\recipe_browser_font.ttf" />
     <None Include="Package.xml" />
     <None Include="Assets\InfoKreis.png" />
     <Content Include="Assets\Rezeptvorlage Klassisch  2.rtf" />
@@ -190,6 +196,9 @@
     <Compile Include="Common\RelayCommand.vb" />
     <Compile Include="Common\SuspensionManager.vb" />
     <Compile Include="Controls\ColorUtilities.vb" />
+    <Compile Include="Controls\HoverButton.xaml.vb">
+      <DependentUpon>HoverButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WrapPanel.vb" />
     <Compile Include="DateConverter.vb" />
     <Compile Include="DefineCategoryDialog.xaml.vb">
@@ -267,6 +276,9 @@
     <Compile Include="StartPage.xaml.vb">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Styles\AppBarButtonStyle.xaml.vb">
+      <DependentUpon>AppBarButtonStyle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TemplateSelectors\TagDataTemplateSelector.vb" />
     <Compile Include="TemplateSelectors\TileTemplateSelector.vb" />
     <Compile Include="Timer\Controller.vb" />
@@ -275,6 +287,8 @@
       <DependentUpon>Templates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Timer\Timer.vb" />
+    <Compile Include="ValueConverters\BooleanOperator.vb" />
+    <Compile Include="ValueConverters\BooleanToSwipeItemsConverter.vb" />
     <Compile Include="ValueConverters\ColorToBrushConverter.vb" />
     <Compile Include="ValueConverters\IntegerToCaloriesStringConverter.vb" />
     <Compile Include="ValueConverters\PositiveIntToVisibilityConverter.vb" />
@@ -323,6 +337,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChooseTagsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HoverButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -384,6 +402,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\AppBarButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Timer\Templates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -431,21 +453,20 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.9</Version>
+      <Version>6.2.10</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.5.231</Version>
+      <Version>1.7.335</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
-      <Version>1.23.0</Version>
+      <Version>1.25.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.17134.0">
+    <SDKReference Include="WindowsMobile, Version=10.0.17763.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

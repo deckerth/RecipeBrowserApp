@@ -202,7 +202,7 @@
     <value>Vorgemerkte Rezepte</value>
   </data>
   <data name="FavoritesFolder" xml:space="preserve">
-    <value>Favoriten</value>
+    <value>Vorgemerkte Rezepte</value>
   </data>
   <data name="FolderSelectionText.Text" xml:space="preserve">
     <value>Kategorie wechseln</value>
@@ -822,5 +822,11 @@
   </data>
   <data name="CreateNewTag.Content" xml:space="preserve">
     <value>Neues Kriterium</value>
+  </data>
+  <data name="Pin.Text" xml:space="preserve">
+    <value>Vormerken</value>
+  </data>
+  <data name="Unpin.Text" xml:space="preserve">
+    <value>Vormerken rückgängig</value>
   </data>
 </root>

@@ -4,6 +4,7 @@ Imports Windows.Globalization.DateTimeFormatting
 Imports System.Text
 Imports Windows.Storage.Streams
 Imports RecipeBrowser.ViewModels
+Imports RecipeBrowser.Common
 
 Public Class Recipe
     Implements INotifyPropertyChanged
@@ -17,6 +18,9 @@ Public Class Recipe
         ' this class and override this behavior:
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
     End Sub
+
+    Public Property RemoveFromFavoritesCommand As RelayCommand
+    Public Property AddToFavoritesCommand As RelayCommand
 
     Private _DisplayCategory As String
     Public ReadOnly Property DisplayCategory As String ' Category without leading path
@@ -113,6 +117,32 @@ Public Class Recipe
         End Set
     End Property
 
+
+    Private _isFavorite As Boolean = False
+    Public Property IsFavorite As Boolean
+        Get
+            Return _isFavorite
+        End Get
+        Set(value As Boolean)
+            If (value <> _isFavorite) Then
+                _isFavorite = value
+                OnPropertyChanged("IsFavorite")
+            End If
+        End Set
+    End Property
+
+    Private _pointerEntered As Boolean = False
+    Public Property PointerEntered As Boolean
+        Get
+            Return _pointerEntered
+        End Get
+        Set(value As Boolean)
+            If value <> _pointerEntered Then
+                _pointerEntered = value
+                OnPropertyChanged("PointerEntered")
+            End If
+        End Set
+    End Property
     Public Property Tags As New ObservableCollection(Of RecipeTagViewModel)
 
     Public Property CreationDateTime As DateTime = DateTime.MinValue
@@ -161,6 +191,11 @@ Public Class Recipe
         Return Name + " (" + Category + ")"
     End Function
 #End Region
+
+    Public Sub New()
+        RemoveFromFavoritesCommand = New RelayCommand(AddressOf OnRemoveFromFavoritesCommand)
+        AddToFavoritesCommand = New RelayCommand(AddressOf OnAddToFavoritesCommand)
+    End Sub
 
 #Region "Page Rendering"
     Private _RenderedPage As BitmapImage
@@ -500,6 +535,17 @@ Public Class Recipe
     End Function
 
 
+#End Region
+
+#Region "Favorites"
+
+    Private Async Sub OnRemoveFromFavoritesCommand()
+        Await RecipesPage.Current.RemoveRecipeFromFavorites(Me)
+    End Sub
+
+    Private Async Sub OnAddToFavoritesCommand()
+        Await RecipesPage.Current.AddRecipeToFavorites(Me)
+    End Sub
 #End Region
 
 #Region "Load Recipe"

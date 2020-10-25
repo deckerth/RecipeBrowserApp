@@ -9,6 +9,10 @@
     
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/AppBarButtonStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
             <local:RecipeFolders x:Key="recipeFolders"/>
             <local:DateConverter x:Key="DateToString"/>
 
@@ -133,6 +137,8 @@
                     <SolidColorBrush x:Key="ProgressBarForegroundThemeBrush" Color="#FF5F3D02" />
                     <SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="#FF5F3D02" />
                     <SolidColorBrush x:Key="TimeOverForegroundBrush" Color="Red"/>
+                    <SolidColorBrush x:Key="UnPinBrush" Color="#FFE32A34"/>
+                    <SolidColorBrush x:Key="PinBrush" Color="YellowGreen"/>
                     <SolidColorBrush x:Key="TimeNotOverForegroundBrush" Color="#FFF4ECD0"/>
                     <SolidColorBrush x:Key="TimeOverBackgroundBrush" Color="White"/>
                     <SolidColorBrush x:Key="TimeNotOverBackgroundBrush" Color="#FF5F3D02"/>
@@ -232,6 +238,8 @@
                     <SolidColorBrush x:Key="GridViewItemSelectedPointerOverBorderThemeBrush" Color="Black" />
                     <SolidColorBrush x:Key="ProgressBarForegroundThemeBrush" Color="Black" />
                     <SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush" Color="Black" />
+                    <SolidColorBrush x:Key="UnPinBrush" Color="#FFE32A34"/>
+                    <SolidColorBrush x:Key="PinBrush" Color="YellowGreen"/>
                     <SolidColorBrush x:Key="TimeOverForegroundBrush" Color="Red"/>
                     <SolidColorBrush x:Key="TimeNotOverForegroundBrush" Color="White"/>
                     <SolidColorBrush x:Key="TimeOverBackgroundBrush" Color="White"/>

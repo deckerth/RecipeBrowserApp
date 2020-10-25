@@ -74,6 +74,7 @@ Public Class Favorites
             Await LoadAsync()
         End If
         If GetRecipe(newRecipe.Category, newRecipe.Name) Is Nothing Then
+            newRecipe.IsFavorite = True
             newRecipe.AddedToFavoritesDateTime = DateTime.Now
             newRecipe.RenderSubTitle()
             _RecipeList.Add(newRecipe)
@@ -87,10 +88,13 @@ Public Class Favorites
             recipeComposite("IsExternal") = (newRecipe.ItemType = Recipe.ItemTypes.ExternalRecipe)
             recipeComposite("AddedToFavorites") = newRecipe.AddedToFavoritesDateTime.ToString
             recipeList.Values(Guid.NewGuid().ToString()) = recipeComposite
+            RecipeFolders.Current.SetIsFavorite(newRecipe)
         End If
     End Function
 
     Public Overrides Function DeleteRecipe(ByRef recipeToDelete As Recipe) As Boolean
+
+        recipeToDelete.IsFavorite = False
 
         If Not MyBase.DeleteRecipe(recipeToDelete) Then
             Return False
@@ -110,6 +114,8 @@ Public Class Favorites
         If index IsNot Nothing Then
             recipeList.Values.Remove(index)
         End If
+
+        RecipeFolders.Current.SetIsFavorite(recipeToDelete)
 
         Return True
     End Function

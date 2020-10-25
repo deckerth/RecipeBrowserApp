@@ -20,47 +20,126 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <SymbolIconSource x:Key="PinIcon2" Symbol="Pin"/>
+            <SymbolIconSource x:Key="UnPinIcon" Symbol="UnPin"/>
+            <FontIconSource x:Key="PinIcon" FontFamily="Segoe UI Symbol" 
+                                    FontSize="34" 
+                                    Glyph="&#xE141;" />
+
+            <SwipeItems x:Key="PinOptions" Mode="Execute">
+                <SwipeItem x:Uid="Pin" IconSource="{StaticResource PinIcon}"
+                           Invoked="RecipePin_Execute"
+                           Background="DarkGreen" />
+            </SwipeItems>
+
+            <SwipeItems x:Key="UnPinOptions" Mode="Execute">
+                <SwipeItem x:Uid="Unpin" IconSource="{StaticResource UnPinIcon}" 
+                           Invoked="RecipeUnpin_Execute"                           
+                           Background="DarkRed"
+                           />
+            </SwipeItems>
+
             <converters:PositiveIntToVisibilityConverter x:Key="positiveIntToVisConverter"/>
             <converters:IntegerToCaloriesStringConverter x:Key="intToCaloriesConverter"/>
             <converters:ColorToBrushConverter x:Key="colorToBrushConverter"/>
+            <converters:BooleanToSwipeItemsConverter x:Key="unPipOptionsToSwipeItemsConverter" Items="{StaticResource UnPinOptions}"/>
+            <converters:BooleanToSwipeItemsConverter x:Key="pinOptionsToSwipeItemsConverter" Items="{StaticResource PinOptions}"/>
+            <local:BooleanToVisibilityConverter x:Key="boolToVisConverter"/>
+
             <CollectionViewSource x:Name="GroupedRecipesCVS"  IsSourceGrouped="True" />
 
             <DataTemplate x:Key="RecipeItemListTemplate" x:DataType="local:Recipe">
-                <Grid Margin="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock  FontFamily="Segoe MDL2 Assets" 
+                <UserControl PointerEntered="RecipeItemListSwipeControl_PointerEntered" PointerExited="RecipeItemListSwipeControl_PointerExited">
+                    <SwipeControl x:Name="RecipeItemListSwipeControl"
+                              RightItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource unPipOptionsToSwipeItemsConverter}}" 
+                              LeftItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource pinOptionsToSwipeItemsConverter}, ConverterParameter=true}"
+                              >
+                        <Grid Margin="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock  FontFamily="Segoe MDL2 Assets" 
                                     FontSize="34" 
                                     Text="&#xE8B7;  " 
                                     Visibility="{x:Bind FolderIconVisibility}"/>
 
-                        <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="18"
                                        FontWeight="SemiLight" />
-                                <Button x:Name="SubCategoryMenu" ToolTipService.ToolTip="" VerticalAlignment="Center" 
+                                        <Button x:Name="SubCategoryMenu" ToolTipService.ToolTip="" VerticalAlignment="Center" 
                                               Foreground="Black"
                                               FontFamily="Segoe MDL2 Assets" 
                                               FontSize="14" 
                                               Content="&#xE712;" 
                                               HorizontalAlignment="Center" Visibility="{x:Bind FolderIconVisibility}" Margin="20,0,0,0" Style="{StaticResource TextBlockButtonStyle}">
-                                    <Button.Flyout>
-                                        <MenuFlyout x:Name="SubCategoryOpsFlyout">
-                                            <MenuFlyoutItem x:Uid="RenameSubCategory" 
+                                            <Button.Flyout>
+                                                <MenuFlyout x:Name="SubCategoryOpsFlyout">
+                                                    <MenuFlyoutItem x:Uid="RenameSubCategory" 
                                                             CommandParameter="{x:Bind Path, Mode=OneWay}"
                                                             Text="" x:Name="RenameSubCategory" Click="RenameSubCategory_Click"/>
-                                            <MenuFlyoutItem x:Uid="DeleteSubCategory" Text="" 
+                                                    <MenuFlyoutItem x:Uid="DeleteSubCategory" Text="" 
                                                             CommandParameter="{x:Bind Path, Mode=OneWay}"
                                                             x:Name="DeleteSubCategory" Click="DeleteSubCategory_ClickAsync" FontFamily="Segoe MDL2 Assets"/>
-                                        </MenuFlyout>
-                                    </Button.Flyout>
-                                </Button>
+                                                </MenuFlyout>
+                                            </Button.Flyout>
+                                        </Button>
+                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind SubTitle, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                                    <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                                </StackPanel>
                             </StackPanel>
-                            <TextBlock Text="{x:Bind SubTitle, Mode=OneWay}" 
+                            <local:HoverButton x:Name="PinItemButton" 
+                                               Grid.Column="1" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="24" 
+                                               Glyph="&#xE718;"
+                                               SelectedForeground="{StaticResource PinBrush}" 
+                                               PressedForeground="{StaticResource PinBrush}"
+                                               HorizontalAlignment="Right" 
+                                               Visibility="{x:Bind converters:BooleanOperator.VisAndNot(PointerEntered,IsFavorite), Mode=OneWay}" 
+                                               Command="{x:Bind AddToFavoritesCommand}"/>
+                            <local:HoverButton x:Name="UnPinItemButton" 
+                                               Grid.Column="1" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="24" 
+                                               Glyph="&#xE77A;"
+                                               SelectedForeground="{StaticResource UnPinBrush}" 
+                                               PressedForeground="{StaticResource UnPinBrush}"
+                                               HorizontalAlignment="Right" 
+                                               Visibility="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" 
+                                               Command="{x:Bind RemoveFromFavoritesCommand}"/>
+
+                        </Grid>
+                    </SwipeControl>
+                </UserControl>
+            </DataTemplate>
+
+            <DataTemplate x:Key="FavoritesItemListTemplate" x:DataType="local:Recipe">
+                <SwipeControl x:Name="FavoritesItemListSwipeControl"
+                              RightItems="{StaticResource UnPinOptions}" 
+                              >
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" />
+                            <TextBlock Text="{x:Bind FavoritesSubTitle, Mode=OneWay}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="14"
                                        FontWeight="Normal" />
@@ -69,148 +148,169 @@
                                        FontSize="14"
                                        FontWeight="Normal" />
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </DataTemplate>
+                        <local:HoverButton x:Name="UnPinItemButton" 
+                                               Grid.Column="1" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="24" 
+                                               Glyph="&#xE77A;"
+                                               SelectedForeground="{StaticResource UnPinBrush}" 
+                                               PressedForeground="{StaticResource UnPinBrush}"
+                                               HorizontalAlignment="Right" 
+                                               Command="{x:Bind RemoveFromFavoritesCommand}"/>
+                    </Grid>
 
-            <DataTemplate x:Key="FavoritesItemListTemplate" x:DataType="local:Recipe">
-                <Grid Margin="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
-                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
-                                       FontFamily="Segoe UI Semilight"
-                                       FontSize="18"
-                                       FontWeight="SemiLight" />
-                        <TextBlock Text="{x:Bind FavoritesSubTitle, Mode=OneWay}" 
-                                       FontFamily="Segoe UI Semilight"
-                                       FontSize="14"
-                                       FontWeight="Normal" />
-                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
-                                       FontFamily="Segoe UI Semilight"
-                                       FontSize="14"
-                                       FontWeight="Normal" />
-                    </StackPanel>
-                </Grid>
+                </SwipeControl>
             </DataTemplate>
 
             <DataTemplate x:Key="HistoryItemListTemplate" x:DataType="local:Recipe" >
-                <StackPanel>
-                    <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
-                        <Grid Height="Auto" Width="500" Visibility="{x:Bind RecipeContentVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="460" >
-                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
-                                       FontFamily="Segoe UI Semilight"
-                                       FontSize="18"
-                                       FontWeight="SemiLight" 
-                                       Padding="0,10,0,5"/>
-                                <Grid >
+                <UserControl PointerEntered="RecipeItemListSwipeControl_PointerEntered" PointerExited="RecipeItemListSwipeControl_PointerExited">
+                    <SwipeControl x:Name="HistoryItemListSwipeControl"
+                              RightItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource unPipOptionsToSwipeItemsConverter}}" 
+                              LeftItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource pinOptionsToSwipeItemsConverter}, ConverterParameter=true}"
+                              >
+
+                        <StackPanel>
+                            <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
+                                <Grid Height="Auto" Width="500" Visibility="{x:Bind RecipeContentVisibility}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="80"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind DisplayCategory}" 
+                                    <StackPanel HorizontalAlignment="Left" Height="Auto" 
+                                                VerticalAlignment="Top" Width="460" >
+                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" 
+                                       Padding="0,10,0,5"/>
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="120"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{x:Bind DisplayCategory}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                        <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                                <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" Margin="10,0,0,0" />
-                                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                                <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                        <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                                <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                    </StackPanel>
-                                    <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="14"
-                                       FontWeight="Light" HorizontalAlignment="Right" />
-                                </Grid>
-                                <TextBlock Text="{x:Bind ExternalSource}" 
+                                       FontWeight="Light" HorizontalAlignment="Right" Margin="0,0,40,0"/>
+                                        </Grid>
+                                        <TextBlock Text="{x:Bind ExternalSource}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="14"
                                        FontWeight="Normal"
                                        Visibility="{x:Bind ExternalSourceVisible}"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <Grid Visibility="{x:Bind HeaderContentVisibility}">
-                        <TextBlock Text="{x:Bind Name}" 
+                                    </StackPanel>
+                                    <local:HoverButton x:Name="PinItemButton" 
+                                               Grid.Column="1" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="24" 
+                                               Glyph="&#xE718;"
+                                               SelectedForeground="{StaticResource PinBrush}" 
+                                               PressedForeground="{StaticResource PinBrush}"
+                                               Visibility="{x:Bind converters:BooleanOperator.VisAndNot(PointerEntered,IsFavorite), Mode=OneWay}" 
+                                               Command="{x:Bind AddToFavoritesCommand}"/>
+                                    <local:HoverButton x:Name="UnPinItemButton" 
+                                               Grid.Column="1" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="24" 
+                                               Glyph="&#xE77A;"
+                                               SelectedForeground="{StaticResource UnPinBrush}" 
+                                               PressedForeground="{StaticResource UnPinBrush}"
+                                               Visibility="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" 
+                                               Command="{x:Bind RemoveFromFavoritesCommand}"/>
+                                </Grid>
+                            </Border>
+                            <Grid Visibility="{x:Bind HeaderContentVisibility}">
+                                <TextBlock Text="{x:Bind Name}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="18"
                                        FontWeight="Medium" 
                                        Padding="0,10,0,5"/>
-                    </Grid>
-                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </SwipeControl>
+                </UserControl>
             </DataTemplate>
 
             <DataTemplate x:Key="NarrowHistoryItemListTemplate" x:DataType="local:Recipe" >
-                <StackPanel>
-                    <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
-                        <Grid Height="Auto" Width="260" Visibility="{x:Bind RecipeContentVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="260" >
-                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                <SwipeControl x:Name="NarrowHistoryItemListSwipeControl"
+                              RightItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource unPipOptionsToSwipeItemsConverter}}" 
+                              LeftItems="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource pinOptionsToSwipeItemsConverter}, ConverterParameter=true}"
+                              >
+                    <StackPanel>
+                        <Border  BorderThickness="0,0,0,1" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" Visibility="{x:Bind RecipeContentVisibility}">
+                            <Grid Height="Auto" Width="260" Visibility="{x:Bind RecipeContentVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="260" >
+                                    <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="18"
                                        FontWeight="SemiLight" 
                                        Padding="0,10,0,5"/>
-                                <Grid >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="80"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind Category}" 
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{x:Bind Category}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                        <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                            <TextBlock Text="(" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" Margin="10,0,0,0" />
-                                        <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                            <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                        <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                            <TextBlock Text=")" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
                                            FontFamily="Segoe UI Semilight"
                                            FontSize="14"
                                            FontWeight="Normal" />
-                                    </StackPanel>
-                                    <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="{x:Bind LastCooked}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="14"
                                        FontWeight="Light" HorizontalAlignment="Right" />
-                                </Grid>
-                                <TextBlock Text="{x:Bind ExternalSource}" 
+                                    </Grid>
+                                    <TextBlock Text="{x:Bind ExternalSource}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="14"
                                        FontWeight="Normal"
                                        Visibility="{x:Bind ExternalSourceVisible}"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <Grid Visibility="{x:Bind HeaderContentVisibility}">
-                        <TextBlock Text="{x:Bind Name}" 
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Grid Visibility="{x:Bind HeaderContentVisibility}">
+                            <TextBlock Text="{x:Bind Name}" 
                                        FontFamily="Segoe UI Semilight"
                                        FontSize="18"
                                        FontWeight="Medium" 
                                        Padding="0,10,0,5"/>
-                    </Grid>
-                </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </SwipeControl>
             </DataTemplate>
 
             <DataTemplate x:Key="DetailContentTemplate">
@@ -385,7 +485,7 @@
                         <AppBarButton x:Name="AddRecipe"
                                     FontFamily="Segoe MDL2 Assets" 
                                     FontSize="20" 
-                                    Content="&#xE710;"
+                                    Content="&#xE710;"                                     
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center"  
                                   Foreground="{StaticResource MenuBarForegroundBrush}"
@@ -415,9 +515,9 @@
 
                     <StackPanel x:Name="ShowFavoritesButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowFavorites"
-                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontFamily="Segoe UI Symbol" 
                                     FontSize="20" 
-                                    Content="&#xE734;"
+                                    Content="&#xE141;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center" 
                                   Foreground="{StaticResource MenuBarForegroundBrush}" />

@@ -512,7 +512,7 @@
                 <StackPanel HorizontalAlignment="Left"  VerticalAlignment="Top" Orientation="Horizontal" >
                     <Border BorderThickness="0,0,1,0" BorderBrush="Black">
                         <StackPanel Orientation="Horizontal">
-                            <AppBarToggleButton x:Uid="Bold" x:Name="Bold" HorizontalAlignment="Left" Icon="Bold" Width="40" Click="Bold_Click"/>
+                            <AppBarToggleButton x:Uid="Bold"  x:Name="Bold" HorizontalAlignment="Left" Icon="Bold" Width="40" Click="Bold_Click"/>
                             <AppBarToggleButton x:Uid="Italics" x:Name="Italics" HorizontalAlignment="Left" Icon="Italic" Width="40" Click="Italics_Click"/>
                             <AppBarToggleButton x:Uid="Underline" x:Name="Underline" HorizontalAlignment="Left" Icon="Underline" Width="40" Click="Underline_Click" />
                             <AppBarButton x:Uid="FontFormatting" x:Name="FontFormatting" Width="40"
@@ -533,7 +533,7 @@
                     <Border BorderThickness="0,0,1,0" BorderBrush="Black">
                         <StackPanel Orientation="Horizontal">
                             <AppBarToggleButton x:Uid="Itemize" x:Name="Itemize" HorizontalAlignment="Left" 
-                                                Label="Auflistung" Width="40" Click="Itemize_Click">
+                                                Width="40" Click="Itemize_Click">
                                 <AppBarToggleButton.Icon>
                                     <fa:FontAwesome Icon="ListUl" FontWeight="ExtraLight"/>
                                 </AppBarToggleButton.Icon>
@@ -541,7 +541,6 @@
 
                             <AppBarButton x:Uid="EnumerateButton" x:Name="Enumerate" 
                                           HorizontalAlignment="Left" 
-                                          Label="Nummerierung" 
                                           Width="40"
                                           Flyout="{StaticResource EnumTypeFlyout}">
                                 <AppBarButton.Icon>

@@ -208,9 +208,9 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowFavorites"
                                   x:Uid="FavoriteRecipes"
-                                    FontFamily="Segoe MDL2 Assets" 
+                                    FontFamily="Segoe UI Symbol" 
                                     FontSize="20" 
-                                    Content="&#xE734;"
+                                    Content="&#xE141;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center" 
                                   Click="ShowFavorites_Click" Foreground="{ThemeResource MenuBarForegroundBrush}" />

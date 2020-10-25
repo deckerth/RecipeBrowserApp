@@ -906,4 +906,15 @@ Public Class RecipeFolders
 
 #End Region
 
+#Region "Favorites"
+    Public Sub SetIsFavorite(recipe As Recipe)
+        Dim folder = GetFolder(recipe.Category)
+
+        folder.SetIsFavorite(recipe)
+
+        SearchResultsFolder.SetIsFavorite(recipe)
+        FavoriteFolder.SetIsFavorite(recipe)
+        HistoryFolder.SetIsFavorite(recipe)
+    End Sub
+#End Region
 End Class

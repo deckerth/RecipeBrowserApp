@@ -196,13 +196,13 @@
     <value>Edit Category</value>
   </data>
   <data name="FavoriteRecipes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Favorites</value>
+    <value>Pinned recipes</value>
   </data>
   <data name="FavoriteRecipesText.Text" xml:space="preserve">
-    <value>Favorites</value>
+    <value>Pinned recipes</value>
   </data>
   <data name="FavoritesFolder" xml:space="preserve">
-    <value>Favorites</value>
+    <value>Pinned recipes</value>
   </data>
   <data name="FolderSelectionText.Text" xml:space="preserve">
     <value>Other Category</value>
@@ -445,7 +445,7 @@
     <value>Enter a new recipe</value>
   </data>
   <data name="FirstRow.Text" xml:space="preserve">
-    <value>Erste Zeile</value>
+    <value>First row</value>
   </data>
   <data name="FontColor.Text" xml:space="preserve">
     <value>Schriftfarbe</value>
@@ -819,5 +819,11 @@
   </data>
   <data name="CreateNewTag.Content" xml:space="preserve">
     <value>New label</value>
+  </data>
+  <data name="Pin.Text" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="Unpin.Text" xml:space="preserve">
+    <value>Unpin</value>
   </data>
 </root>

@@ -826,35 +826,73 @@ Public NotInheritable Class RecipesPage
     Private Async Sub AddToFavorites_Click(sender As Object, e As RoutedEventArgs) Handles AddToFavorites.Click
 
         If _lastSelectedItem IsNot Nothing Then
-            DisableControls()
-
-            Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
-            Await categories.FavoriteFolder.AddRecipeAsync(_lastSelectedItem)
-            EnableControls()
+            Await AddRecipeToFavorites(_lastSelectedItem)
         End If
 
     End Sub
 
+    Public Async Function AddRecipeToFavorites(toAdd As Recipe) As Task
+        DisableControls()
+
+        Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
+        Await categories.FavoriteFolder.AddRecipeAsync(toAdd)
+        EnableControls()
+    End Function
+
     Private Async Sub RemoveFromFavorites_Click(sender As Object, e As RoutedEventArgs) Handles RemoveFromFavorites.Click
 
-        If _lastSelectedItem Is Nothing Then
-            Return
+        If _lastSelectedItem IsNot Nothing Then
+            Await RemoveRecipeFromFavorites(_lastSelectedItem)
         End If
 
+    End Sub
+
+    Public Async Function RemoveRecipeFromFavorites(toRemove As Recipe) As Task
         Dim categories As RecipeFolders = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
         If Not categories.FavoriteFolder.ContentLoaded Then
             DisableControls(True)
             Await categories.FavoriteFolder.LoadAsync()
         End If
-        categories.FavoriteFolder.DeleteRecipe(_lastSelectedItem)
-        If CurrentRecipeFolder.Name = Favorites.FolderName Then
+        categories.FavoriteFolder.DeleteRecipe(toRemove)
+        If CurrentRecipeFolder.Name = Favorites.FolderName AndAlso _lastSelectedItem IsNot Nothing AndAlso _lastSelectedItem.Equals(toRemove) Then
             RecipeViewer.Source = Nothing
             TagsList.ItemsSource = Nothing
             _lastSelectedItem = Nothing
         End If
         EnableControls()
+    End Function
+
+    Private Async Sub RecipePin_Execute(sender As SwipeItem, args As SwipeItemInvokedEventArgs)
+        Try
+            Await AddRecipeToFavorites(args.SwipeControl.DataContext)
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
+
+    Private Async Sub RecipeUnpin_Execute(sender As SwipeItem, args As SwipeItemInvokedEventArgs)
+        Try
+            Await RemoveRecipeFromFavorites(args.SwipeControl.DataContext)
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub RecipeItemListSwipeControl_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+        If e.Pointer.PointerDeviceType = Windows.Devices.Input.PointerDeviceType.Mouse OrElse e.Pointer.PointerDeviceType = Windows.Devices.Input.PointerDeviceType.Pen Then
+            Dim control = DirectCast(sender, Control)
+            DirectCast(control.DataContext, Recipe).PointerEntered = True
+        End If
+    End Sub
+
+    Private Sub RecipeItemListSwipeControl_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+        Dim control = DirectCast(sender, Control)
+        DirectCast(control.DataContext, Recipe).PointerEntered = False
+    End Sub
+
 #End Region
 
 #Region "Navigation"

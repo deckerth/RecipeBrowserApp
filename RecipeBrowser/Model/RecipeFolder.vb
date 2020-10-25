@@ -493,6 +493,8 @@ Public Class RecipeFolder
         _recipe.CreationDateTime = properties.ItemDate.DateTime
         _recipe.File = file
 
+        _recipe.IsFavorite = RecipeFolders.Current.FavoriteFolder.IsFavorite(_recipe)
+
         If metaDataFile IsNot Nothing Then
             Await RecipeMetadata.Instance.ReadMetadataAsync(_recipe, metaDataFile)
         End If
@@ -847,6 +849,21 @@ Public Class RecipeFolder
         Catch ex As Exception
         End Try
     End Function
+#End Region
+
+#Region "Favorite"
+    Public Sub SetIsFavorite(changedRecipe As Recipe)
+        If Not ContentLoaded() Then
+            Return
+        End If
+
+        Dim recipe = GetRecipe(changedRecipe.Category, changedRecipe.Name)
+
+        If recipe IsNot Nothing Then
+            recipe.IsFavorite = changedRecipe.IsFavorite
+        End If
+
+    End Sub
 #End Region
 
 #Region "LastCooked"
