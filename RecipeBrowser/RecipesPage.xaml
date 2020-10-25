@@ -125,6 +125,55 @@
                 </UserControl>
             </DataTemplate>
 
+            <DataTemplate x:Key="HelpItemListTemplate" x:DataType="local:Recipe">
+                        <Grid Margin="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock  FontFamily="Segoe MDL2 Assets" 
+                                    FontSize="34" 
+                                    Text="&#xE8B7;  " 
+                                    Visibility="{x:Bind FolderIconVisibility}"/>
+
+                                <StackPanel Orientation="Vertical"  HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="18"
+                                       FontWeight="SemiLight" />
+                                        <Button x:Name="SubCategoryMenu" ToolTipService.ToolTip="" VerticalAlignment="Center" 
+                                              Foreground="Black"
+                                              FontFamily="Segoe MDL2 Assets" 
+                                              FontSize="14" 
+                                              Content="&#xE712;" 
+                                              HorizontalAlignment="Center" Visibility="{x:Bind FolderIconVisibility}" Margin="20,0,0,0" Style="{StaticResource TextBlockButtonStyle}">
+                                            <Button.Flyout>
+                                                <MenuFlyout x:Name="SubCategoryOpsFlyout">
+                                                    <MenuFlyoutItem x:Uid="RenameSubCategory" 
+                                                            CommandParameter="{x:Bind Path, Mode=OneWay}"
+                                                            Text="" x:Name="RenameSubCategory" Click="RenameSubCategory_Click"/>
+                                                    <MenuFlyoutItem x:Uid="DeleteSubCategory" Text="" 
+                                                            CommandParameter="{x:Bind Path, Mode=OneWay}"
+                                                            x:Name="DeleteSubCategory" Click="DeleteSubCategory_ClickAsync" FontFamily="Segoe MDL2 Assets"/>
+                                                </MenuFlyout>
+                                            </Button.Flyout>
+                                        </Button>
+                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind SubTitle, Mode=OneWay}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                                    <TextBlock Text="{x:Bind Calories, Mode=OneWay, Converter={StaticResource intToCaloriesConverter}}" Visibility="{x:Bind Calories,Mode=OneWay,Converter={StaticResource positiveIntToVisConverter}}" 
+                                       FontFamily="Segoe UI Semilight"
+                                       FontSize="14"
+                                       FontWeight="Normal" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+            </DataTemplate>
+
             <DataTemplate x:Key="FavoritesItemListTemplate" x:DataType="local:Recipe">
                 <SwipeControl x:Name="FavoritesItemListSwipeControl"
                               RightItems="{StaticResource UnPinOptions}" 

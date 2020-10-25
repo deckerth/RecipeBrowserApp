@@ -132,7 +132,7 @@ Public NotInheritable Class RecipesPage
                     MasterListView.ItemTemplate = DirectCast(Resources("HistoryItemListTemplate"), DataTemplate)
                 End If
             ElseIf category = HelpDocuments.FolderName Then
-                MasterListView.ItemTemplate = DirectCast(Resources("RecipeItemListTemplate"), DataTemplate)
+                MasterListView.ItemTemplate = DirectCast(Resources("HelpItemListTemplate"), DataTemplate)
             Else
                 MasterListView.ItemTemplate = DirectCast(Resources("RecipeItemListTemplate"), DataTemplate)
             End If
@@ -550,6 +550,7 @@ Public NotInheritable Class RecipesPage
         EditTags.IsEnabled = True
         RecipeAutoSuggestBox.IsEnabled = CurrentRecipeFolder.RecipeSearchBoxEnabled
         ExportHistoryMenuItem.IsEnabled = History.Current.IsInitialized
+
         RenderPageControl(_lastSelectedItem) ' currentRecipe may be nothing
 
         ' Functions for the current recipe
