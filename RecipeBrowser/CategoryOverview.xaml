@@ -209,7 +209,7 @@
                         <AppBarButton x:Name="ShowFavorites"
                                   x:Uid="FavoriteRecipes"
                                     FontFamily="Segoe UI Symbol" 
-                                    FontSize="20" 
+                                    FontSize="18" 
                                     Content="&#xE141;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center" 

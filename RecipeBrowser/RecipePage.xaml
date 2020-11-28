@@ -166,7 +166,7 @@
                     <StackPanel x:Name="ShowFavoritesButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowFavorites"
                                   FontFamily="Segoe UI Symbol" 
-                                  FontSize="20" 
+                                  FontSize="18" 
                                   Content="&#xE141;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center" 
