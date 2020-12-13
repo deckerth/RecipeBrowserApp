@@ -329,6 +329,13 @@ Public Class RecipeFolder
             Return _searchBoxSpaceHolderWidth
         End Get
     End Property
+
+    Protected _lastAddedSearchVisibility As Visibility = Visibility.Visible
+    Public ReadOnly Property LastAddedSearchVisibility As Visibility
+        Get
+            Return _lastAddedSearchVisibility
+        End Get
+    End Property
 #End Region
 
 #Region "Sorting"
@@ -452,7 +459,7 @@ Public Class RecipeFolder
 
         _recipe.Name = file.Name.Remove(file.Name.Length - 4)  ' delete suffix .pdf
 
-        If Name = SearchResults.FolderName Then
+        If Name = SearchResults.FolderName OrElse Name = LastAddedFolder.FolderName Then
             _recipe.Category = GetCategory(file)
 
             If _recipe.Category Is Nothing Then
@@ -522,7 +529,7 @@ Public Class RecipeFolder
 
         _recipe.Name = rtfFile.Name.Remove(rtfFile.Name.Length - 4)  ' delete suffix .rtf
 
-        If Name = SearchResults.FolderName Then
+        If Name = SearchResults.FolderName Or Name = LastAddedFolder.FolderName Then
             _recipe.Category = GetCategory(rtfFile)
 
             If _recipe.Category Is Nothing Then
@@ -575,7 +582,7 @@ Public Class RecipeFolder
 #End Region
 
 #Region "Load folder content"
-    Protected Async Function SetUpFolderFromFileListAsync(fileList As IReadOnlyList(Of Windows.Storage.StorageFile), Optional skipResultsInHelp As Boolean = False, Optional tagFilter As String = "") As Task
+    Protected Async Function SetUpFolderFromFileListAsync(fileList As IReadOnlyList(Of Windows.Storage.StorageFile), Optional skipResultsInHelp As Boolean = False, Optional tagFilter As String = "", Optional addedDateFilter As DateTime = #0001-1-1#) As Task
 
         ' This method is used by the original folders and the search folder.
         _Recipes.Clear()
@@ -597,6 +604,7 @@ Public Class RecipeFolder
             Dim rtfFiles As New List(Of Windows.Storage.StorageFile)
             Dim xmlFiles As New List(Of Windows.Storage.StorageFile)
 
+            Dim searchFolder As Boolean = (Name = SearchResults.FolderName OrElse Name = LastAddedFolder.FolderName)
             For Each aFile In fileList
                 LoadProgressValue = _loadProgressValue + 1
                 If RecipesPage.Current IsNot Nothing AndAlso
@@ -610,7 +618,7 @@ Public Class RecipeFolder
                 End If
                 If aFile.Name.ToUpper.EndsWith(".PDF") Then
                     Try
-                        Dim _recipe = Await LoadRecipeAsync(aFile, loadMetadata:=Name = SearchResults.FolderName, checkForNotes:=Name = SearchResults.FolderName, metaDataList:=recipeMetadataList)
+                        Dim _recipe = Await LoadRecipeAsync(aFile, loadMetadata:=searchFolder, checkForNotes:=searchFolder, metaDataList:=recipeMetadataList)
                         If tagFilter.Length > 0 Then
                             _recipe.LoadTags()
                             If Not _recipe.HasTag(tagFilter) Then
@@ -624,7 +632,7 @@ Public Class RecipeFolder
                 ElseIf aFile.Name.ToUpper.EndsWith(".RTF") Then
                     rtfFiles.Add(aFile) ' Search folder: Add the recipe to the search result; Normal folder: Log the file in the recipe data
                 ElseIf aFile.Name.ToUpper.EndsWith(".XML") Then
-                    If Name <> SearchResults.FolderName Then
+                    If searchFolder Then
                         xmlFiles.Add(aFile) ' use the file instance later in order to load the metadata
                     End If
                 Else
@@ -635,12 +643,12 @@ Public Class RecipeFolder
             ' If the search expression has been found in a note file, try to add the corresponding recipe to the search result list
             For Each aFile In rtfFiles
                 Dim recipeName = aFile.Name.Remove(aFile.Name.Length - 4)  ' delete suffix e.g. ".rtf"
-                If Name = SearchResults.FolderName Then
+                If Name = SearchResults.FolderName Or Name = LastAddedFolder.FolderName Then
                     Dim category = GetCategory(aFile)
                     If GetRecipe(category, recipeName) Is Nothing Then
                         Try ' Add the recipe to the search result
                             Dim parent = RecipeFolders.GetInstance().GetFolder(category).Folder
-                            Dim recipeFile As StorageFile
+                            Dim recipeFile As StorageFile = Nothing
                             Try
                                 recipeFile = Await parent.GetFileAsync(recipeName + ".pdf")
                             Catch ex As Exception
@@ -658,6 +666,11 @@ Public Class RecipeFolder
                                     Continue For
                                 End If
                             End If
+                            If addedDateFilter <> SearchResults.UndefinedDate Then
+                                If _recipe.CreationDateTime.CompareTo(addedDateFilter) < 0 Then
+                                    Continue For
+                                End If
+                            End If
                             _RecipeList.Add(_recipe)
                         Catch ex As Exception
                             App.Logger.Write("Unable to add recipe to search result: " + recipeName + ": " + ex.ToString)
@@ -671,6 +684,11 @@ Public Class RecipeFolder
                         If tagFilter.Length > 0 Then
                             _recipe.LoadTags()
                             If Not _recipe.HasTag(tagFilter) Then
+                                Continue For
+                            End If
+                        End If
+                        If addedDateFilter <> SearchResults.UndefinedDate Then
+                            If _recipe.CreationDateTime.CompareTo(addedDateFilter) < 0 Then
                                 Continue For
                             End If
                         End If

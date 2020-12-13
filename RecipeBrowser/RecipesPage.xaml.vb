@@ -76,6 +76,13 @@ Public NotInheritable Class RecipesPage
             LoadProgressDeterminate.Visibility = Visibility.Visible
             LoadProgressDeterminate.Value = 0
             CurrentRecipeFolder = categories.GetFolder(category)
+            If e.PageState IsNot Nothing Then
+                If CurrentRecipeFolder.Name = History.FolderName AndAlso e.PageState.ContainsKey("HistoryStartDate") Then
+                    History.Current.SelectionEndDate = DirectCast(e.PageState("HistoryStartDate"), Date)
+                ElseIf CurrentRecipeFolder.Name = LastAddedFolder.FolderName Then
+                    LastAddedFolder.Current.SetSearchParameter(DirectCast(e.PageState("LastAddedDate"), DateTime))
+                End If
+            End If
             If Not CurrentRecipeFolder.ContentLoaded Then
                 Await CurrentRecipeFolder.LoadAsync()
             End If
@@ -121,6 +128,7 @@ Public NotInheritable Class RecipesPage
             ExportCaloricInfos.Visibility = CurrentRecipeFolder.ExportCaloricInfosVisibility
             ImportCaloricInfos.Visibility = CurrentRecipeFolder.ExportCaloricInfosVisibility
             AppHelpButton.Visibility = CurrentRecipeFolder.HelpVisibility
+            LastAddedSearchButton.Visibility = CurrentRecipeFolder.LastAddedSearchVisibility
 
             ' Set ItemTemplate
             If category = Favorites.FolderName Then
@@ -172,9 +180,6 @@ Public NotInheritable Class RecipesPage
                         MasterListView.ScrollIntoView(selectedItem, ScrollIntoViewAlignment.Leading)
                     End If
                 End If
-                If CurrentRecipeFolder.Name = History.FolderName AndAlso e.PageState.ContainsKey("HistoryStartDate") Then
-                    History.Current.SelectionEndDate = DirectCast(e.PageState("HistoryStartDate"), Date)
-                End If
             End If
 
             'Await Timers.Factory.Current.WakeUp()
@@ -207,6 +212,10 @@ Public NotInheritable Class RecipesPage
 
         If CurrentRecipeFolder.Name = History.FolderName Then
             e.PageState("HistoryStartDate") = History.Current.SelectionEndDate
+        End If
+
+        If CurrentRecipeFolder.Name = LastAddedFolder.FolderName Then
+            e.PageState("LastAddedDate") = LastAddedFolder.Current.LastAddedSince
         End If
 
     End Sub
@@ -505,6 +514,7 @@ Public NotInheritable Class RecipesPage
         ShowTimers.IsEnabled = False
         ScanForCalories.IsEnabled = False
         EditTags.IsEnabled = False
+        ShowLastAdded.IsEnabled = False
         If visualizeProgress Then
             actionProgress.IsActive = True
         End If
@@ -541,6 +551,7 @@ Public NotInheritable Class RecipesPage
         actionProgress.IsActive = False
         refreshRecipes.IsEnabled = True
         ShowHistory.IsEnabled = True
+        ShowLastAdded.IsEnabled = True
         FolderSelection.IsEnabled = True
         CriteriaSelection.IsEnabled = True
         ShowTimers.IsEnabled = True
@@ -652,7 +663,9 @@ Public NotInheritable Class RecipesPage
         Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
 
         If TypeOf CurrentRecipeFolder Is TagFolder Then
-            categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, DirectCast(CurrentRecipeFolder, TagFolder).Tag.Tag)
+            categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, SearchTag:=DirectCast(CurrentRecipeFolder, TagFolder).Tag.Tag)
+        ElseIf TypeOf CurrentRecipeFolder Is LastAddedFolder Then
+            categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, SearchAddedDate:=LastAddedFolder.Current.CurrentAddedSince)
         Else
             categories.SearchResultsFolder.SetSearchParameter(CurrentRecipeFolder.Name, args.QueryText)
         End If
@@ -666,7 +679,9 @@ Public NotInheritable Class RecipesPage
 
         If args.ChosenSuggestion Is Nothing Then
             If TypeOf CurrentRecipeFolder Is TagFolder Then
-                categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, DirectCast(CurrentRecipeFolder, TagFolder).Tag.Tag)
+                categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, SearchTag:=DirectCast(CurrentRecipeFolder, TagFolder).Tag.Tag)
+            ElseIf TypeOf CurrentRecipeFolder Is LastAddedFolder Then
+                categories.SearchResultsFolder.SetSearchParameter("", args.QueryText, SearchAddedDate:=LastAddedFolder.Current.CurrentAddedSince)
             Else
                 categories.SearchResultsFolder.SetSearchParameter(CurrentRecipeFolder.Name, args.QueryText)
             End If
@@ -688,6 +703,36 @@ Public NotInheritable Class RecipesPage
             Dim matchincRecipes = CurrentRecipeFolder.GetMatchingRecipes(sender.Text)
             sender.ItemsSource = matchincRecipes.ToList()
         End If
+    End Sub
+
+#End Region
+
+#Region "LastAdded"
+    Private flyout As DatePickerFlyout
+
+    Private Sub ShowAddedSince(aDate As DateTime)
+        Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
+        categories.LastAddedFolder.SetSearchParameter(aDate)
+        RootSplitView.IsPaneOpen = False
+        Me.Frame.Navigate(GetType(RecipesPage), LastAddedFolder.FolderName)
+    End Sub
+
+    Private Sub AddedSinceLastMonth_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-1))
+    End Sub
+
+    Private Sub AddedSinceLast3Month_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-3))
+    End Sub
+
+    Private Sub AddedSinceDate_Click(sender As Object, e As RoutedEventArgs)
+        flyout = New DatePickerFlyout()
+        AddHandler flyout.DatePicked, AddressOf AddedSinceDate_Picked
+        flyout.ShowAt(ShowLastAdded)
+    End Sub
+
+    Private Sub AddedSinceDate_Picked(sender As DatePickerFlyout, args As DatePickedEventArgs)
+        ShowAddedSince(flyout.Date.DateTime)
     End Sub
 
 #End Region

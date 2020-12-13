@@ -826,4 +826,19 @@
   <data name="Unpin.Text" xml:space="preserve">
     <value>Unpin</value>
   </data>
+  <data name="AddedSince" xml:space="preserve">
+    <value>Added since: </value>
+  </data>
+  <data name="ShowLastAdded.Text" xml:space="preserve">
+    <value>Recently added</value>
+  </data>
+  <data name="AddedSinceDate.Text" xml:space="preserve">
+    <value>Added since....</value>
+  </data>
+  <data name="AddedSinceLast3Month.Text" xml:space="preserve">
+    <value>Added since three months</value>
+  </data>
+  <data name="AddedSinceLastMonth.Text" xml:space="preserve">
+    <value>Added since one month</value>
+  </data>
 </root>

@@ -522,6 +522,9 @@
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center"  
                                   Foreground="{StaticResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Plus" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="AddRecipe"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -539,6 +542,9 @@
                                   HorizontalAlignment="Center"  
                                   Foreground="{StaticResource MenuBarForegroundBrush}"
                                   Flyout="{StaticResource AddRecipeMenuFlyoutDef}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Plus" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Name="AddRecipeTextblock" x:Uid="AddRecipe"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -554,7 +560,11 @@
                                     Content="&#xE80F;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center"  
-                                  Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Home" FontWeight="Medium"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="Home" x:Name="HomeTextblock"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -577,6 +587,29 @@
                             Foreground="{StaticResource MenuBarForegroundBrush}"/>
                     </StackPanel>
 
+                    <StackPanel x:Name="LastAddedSearchButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ShowLastAdded"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{ThemeResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="History" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Name="AddedSinceLastMonth" x:Uid="AddedSinceLastMonth" Click="AddedSinceLastMonth_Click"/>
+                                    <MenuFlyoutItem x:Name="AddedSinceLast3Month" x:Uid="AddedSinceLast3Month" Click="AddedSinceLast3Month_Click"/>
+                                    <MenuFlyoutItem x:Name="AddedSinceDate" x:Uid="AddedSinceDate" Click="AddedSinceDate_Click"/>
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <TextBlock x:Uid="ShowLastAdded" x:Name="ShowLastAddedText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{ThemeResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
                     <StackPanel x:Name="ShowHistoryButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowHistory"
                                   VerticalAlignment="Center" 
@@ -584,7 +617,11 @@
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
-                                  Content="&#xE787;"/>
+                                  Content="&#xE787;">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="CalendarCheckOutline" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="ShowHistoryText" x:Name="ShowHistoryText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -600,6 +637,9 @@
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
                                   Content="&#xE916;">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="HourglassHalf" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="ShowTimersText" x:Name="ShowTimersText"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -616,6 +656,9 @@
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
                                   Content="&#xE8B7;" >
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="FolderOutline" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="FolderSelectionText" x:Name="FolderSelectionText"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -650,6 +693,9 @@
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
                                   Content="&#xE72C;" >
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Refresh" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="RefreshRecipes" x:Name="RefreshRecipesText"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -665,8 +711,11 @@
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
-                                  Content="&#xE8EB;" 
+                                  Content="A" 
                                   Flyout="{StaticResource ExportImportFlyoutDef}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Download" FontWeight="Black"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="ImportExportHistory" x:Name="ImportExportHistoryText"
                     		FontSize="18" FontFamily="Segoe UI"
@@ -677,7 +726,11 @@
 
                     <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp"
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" Icon="Help"/>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" >
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="30"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -724,21 +777,43 @@
                         </StackPanel>
                     </CommandBar.Content>
                     <AppBarButton x:Name="logAsCooked" x:Uid="LogAsCooked" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" 
-                                  Icon="Like"
                                   Foreground="{StaticResource MenuBarForegroundBrush}">
                         <AppBarButton.Flyout>
                             <DatePickerFlyout x:Name="CookedOn" Placement="Bottom">
 
                             </DatePickerFlyout>
                         </AppBarButton.Flyout>
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="ThumbsOutlineUp" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
                     </AppBarButton>
                     <AppBarButton x:Uid="EditNote" x:Name="editNote" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" 
-                                  Icon="Comment" Foreground="{StaticResource MenuBarForegroundBrush}"
-                                  Flyout="{StaticResource NoteEditorFlyout}"/>
-                    <AppBarButton x:Uid="EditFile" ToolTipService.ToolTip="" x:Name="EditFileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Edit" Visibility="Collapsed" Foreground="{StaticResource MenuBarForegroundBrush}"/>
-                    <AppBarButton x:Uid="EditTags" ToolTipService.ToolTip="" x:Name="EditTags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Tag" Foreground="{StaticResource MenuBarForegroundBrush}" />
-                    <AppBarButton x:Uid="ImageGalery" ToolTipService.ToolTip="" x:Name="ShowImageGalery" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Pictures" Foreground="{StaticResource MenuBarForegroundBrush}" />
-                    <AppBarButton x:Uid="FullscreenView" ToolTipService.ToolTip="" x:Name="FullscreenView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="FullScreen" Foreground="{StaticResource MenuBarForegroundBrush}" />
+                                  Foreground="{StaticResource MenuBarForegroundBrush}"
+                                  Flyout="{StaticResource NoteEditorFlyout}">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Comment" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="EditFile" ToolTipService.ToolTip="" x:Name="EditFileButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" Foreground="{StaticResource MenuBarForegroundBrush}">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Edit" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="EditTags" ToolTipService.ToolTip="" x:Name="EditTags" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{StaticResource MenuBarForegroundBrush}">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Tag" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="ImageGalery" ToolTipService.ToolTip="" x:Name="ShowImageGalery" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{StaticResource MenuBarForegroundBrush}" >
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Image" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="FullscreenView" ToolTipService.ToolTip="" x:Name="FullscreenView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{StaticResource MenuBarForegroundBrush}" >
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Expand" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                     <AppBarButton x:Uid="AddToFavorites" ToolTipService.ToolTip="" x:Name="AddToFavorites" Label="" Icon="Pin" Foreground="{StaticResource MenuBarForegroundBrush}"/>
                     <AppBarButton x:Uid="RemoveRecipe" ToolTipService.ToolTip="" x:Name="RemoveFromFavorites" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" Visibility="Collapsed" Icon="UnPin" Foreground="{StaticResource MenuBarForegroundBrush}"/>
                     <CommandBar.SecondaryCommands>

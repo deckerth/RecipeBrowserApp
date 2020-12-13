@@ -88,6 +88,7 @@ Public NotInheritable Class RecipePage
         RenameRecipe.Visibility = CurrentRecipeFolder.DeleteRecipeVisibility
         ChangeCalories.Visibility = CurrentRecipeFolder.ChangeCaloriesVisibility
         AppHelpButton.Visibility = CurrentRecipeFolder.HelpVisibility
+        LastAddedSearchButton.Visibility = CurrentRecipeFolder.LastAddedSearchVisibility
 
         If ApiInformation.IsPropertyPresent("Windows.UI.Xaml.FrameworkElement", "AllowFocusOnInteraction") Then
             editNote.AllowFocusOnInteraction = True ' Otherwise the note editor does not accept input
@@ -274,6 +275,7 @@ Public NotInheritable Class RecipePage
         Home.IsEnabled = False
         ShowHistory.IsEnabled = False
         FolderSelection.IsEnabled = False
+        ShowLastAdded.IsEnabled = False
         If visualizeProgress Then
             actionProgress.IsActive = True
         End If
@@ -302,6 +304,7 @@ Public NotInheritable Class RecipePage
         ShowHistory.IsEnabled = True
         FolderSelection.IsEnabled = True
         EditTags.IsEnabled = True
+        ShowLastAdded.IsEnabled = True
 
         RenderPageControl(_lastSelectedItem) ' currentRecipe may be nothing
 
@@ -542,6 +545,36 @@ Public NotInheritable Class RecipePage
         EnableControls()
 
     End Sub
+#End Region
+
+#Region "LastAdded"
+    Private flyout As DatePickerFlyout
+
+    Private Sub ShowAddedSince(aDate As DateTime)
+        Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
+        categories.LastAddedFolder.SetSearchParameter(aDate)
+        RootSplitView.IsPaneOpen = False
+        Me.Frame.Navigate(GetType(RecipesPage), LastAddedFolder.FolderName)
+    End Sub
+
+    Private Sub AddedSinceLastMonth_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-1))
+    End Sub
+
+    Private Sub AddedSinceLast3Month_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-3))
+    End Sub
+
+    Private Sub AddedSinceDate_Click(sender As Object, e As RoutedEventArgs)
+        flyout = New DatePickerFlyout()
+        AddHandler flyout.DatePicked, AddressOf AddedSinceDate_Picked
+        flyout.ShowAt(ShowLastAdded)
+    End Sub
+
+    Private Sub AddedSinceDate_Picked(sender As DatePickerFlyout, args As DatePickedEventArgs)
+        ShowAddedSince(flyout.Date.DateTime)
+    End Sub
+
 #End Region
 
 #Region "Navigation"

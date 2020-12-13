@@ -829,4 +829,19 @@
   <data name="Unpin.Text" xml:space="preserve">
     <value>Vormerken rückgängig</value>
   </data>
+  <data name="AddedSince" xml:space="preserve">
+    <value>Hinzugefügt seit: </value>
+  </data>
+  <data name="ShowLastAdded.Text" xml:space="preserve">
+    <value>Zuletzt hinzugefügt</value>
+  </data>
+  <data name="AddedSinceDate.Text" xml:space="preserve">
+    <value>Hinzugefügt seit...</value>
+  </data>
+  <data name="AddedSinceLast3Month.Text" xml:space="preserve">
+    <value>Hinzugefügt seit drei Monaten</value>
+  </data>
+  <data name="AddedSinceLastMonth.Text" xml:space="preserve">
+    <value>Hinzugefügt seit einem Monat</value>
+  </data>
 </root>

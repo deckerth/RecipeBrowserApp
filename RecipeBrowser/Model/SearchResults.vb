@@ -5,6 +5,7 @@ Public Class SearchResults
 
     Public Shared FolderName As String = App.Texts.GetString("SearchResultFolder")
     Public Property LastSearchString As String
+    Public Shared UndefinedDate As DateTime = #0001-1-1#
 
     Public Sub New()
         MyBase.New(FolderName)
@@ -19,12 +20,13 @@ Public Class SearchResults
         Return True
     End Function
 
-    Public Sub SetSearchParameter(SearchFolder As String, ByVal SearchString As String, Optional SearchTag As String = "")
+    Public Sub SetSearchParameter(SearchFolder As String, ByVal SearchString As String, Optional SearchTag As String = "", Optional SearchAddedDate As DateTime = #0001-1-1#)
 
         Dim roamingSettings = Windows.Storage.ApplicationData.Current.RoamingSettings
         roamingSettings.Values("SearchString") = New String(SearchString)
         roamingSettings.Values("SearchFolder") = New String(SearchFolder)
         roamingSettings.Values("SearchTag") = New String(SearchTag)
+        roamingSettings.Values("SearchAddedDate") = SearchAddedDate.ToString
         _ContentLoaded = False
         LastSearchString = SearchString
 
@@ -45,13 +47,20 @@ Public Class SearchResults
         Dim searchString = roamingSettings.Values("SearchString")
         Dim searchFolder = roamingSettings.Values("SearchFolder")
         Dim searchTag = roamingSettings.Values("SearchTag")
-
+        Dim searchAddedDate As DateTime = UndefinedDate
+        Dim searchAddedDateStr As String = roamingSettings.Values("SearchAddedDate")
+        If searchAddedDateStr IsNot Nothing Then
+            DateTime.TryParse(roamingSettings.Values("SearchAddedDate"), searchAddedDate)
+        End If
         If searchFolder Is Nothing Or searchString Is Nothing Then
             Return
         End If
 
         Dim queryOptions = New Windows.Storage.Search.QueryOptions()
         queryOptions.ApplicationSearchFilter = searchString
+        If searchAddedDateStr IsNot Nothing AndAlso searchAddedDateStr.Length > 0 Then
+            queryOptions.ApplicationSearchFilter = queryOptions.ApplicationSearchFilter + " System.DateCreated:>=" + searchAddedDateStr
+        End If
         queryOptions.IndexerOption = Windows.Storage.Search.IndexerOption.UseIndexerWhenAvailable
         queryOptions.FolderDepth = Windows.Storage.Search.FolderDepth.Deep
 
@@ -63,7 +72,7 @@ Public Class SearchResults
         ' If the search is done on root-folder level, results in help are skipped
         Await SetUpFolderFromFileListAsync(result,
                                            skipResultsInHelp:=startFolder.Equals(RecipeFolders.Current.GetRootFolder()),
-                                           tagFilter:=searchTag)
+                                           tagFilter:=searchTag, addedDateFilter:=searchAddedDate)
 
     End Function
 

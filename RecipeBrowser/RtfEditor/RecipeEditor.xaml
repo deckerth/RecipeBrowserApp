@@ -458,8 +458,11 @@
                     <AppBarButton x:Name="SaveRecipe"
                                   x:Uid="SaveRecipe"
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 
-                                  Icon="Save" 
-                                  IsEnabled="{x:Bind RecipeChanged,Mode=OneWay}"/>
+                                  IsEnabled="{x:Bind RecipeChanged,Mode=OneWay}">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Save" FontWeight="ExtraLight"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                     <TextBlock x:Uid="SaveRecipeText" x:Name="SaveRecipeText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -474,7 +477,11 @@
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
-                                  Content="&#xE916;"/>
+                                  Content="&#xE916;">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="HourglassHalf" FontWeight="ExtraLight"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                     <TextBlock x:Uid="ShowTimersText" x:Name="ShowTimersText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -484,7 +491,11 @@
 
                 <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                     <AppBarButton x:Name="AppHelp"
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" Icon="Help"/>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}">
+                        <AppBarButton.Icon>
+                            <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="30"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                     <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"

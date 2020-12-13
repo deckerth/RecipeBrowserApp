@@ -39,6 +39,7 @@ Public Class RecipeFolders
 
     Public Property FavoriteFolder As Favorites
     Public Property SearchResultsFolder As SearchResults
+    Public Property LastAddedFolder As LastAddedFolder
     Public Property HistoryFolder As History
     Public Property HelpFolder As HelpDocuments
 
@@ -82,6 +83,8 @@ Public Class RecipeFolders
             Return HistoryFolder
         ElseIf name = HelpDocuments.FolderName Then
             Return HelpFolder
+        ElseIf name = LastAddedFolder.FolderName Then
+            Return LastAddedFolder
         Else
             Dim matches = _folders.Where(Function(otherFolder) otherFolder.Name.Equals(name))
             If matches.Count() = 1 Then
@@ -376,6 +379,7 @@ Public Class RecipeFolders
             FavoriteFolder = New Favorites
             SearchResultsFolder = New SearchResults
             HistoryFolder = New History
+            LastAddedFolder = New LastAddedFolder
             Await HistoryFolder.InitAsync()
         End If
 
@@ -422,6 +426,7 @@ Public Class RecipeFolders
         folder.UpdateStatistics(changedRecipe)
 
         SearchResultsFolder.UpdateStatistics(changedRecipe)
+        LastAddedFolder.UpdateStatistics(changedRecipe)
         FavoriteFolder.UpdateStatistics(changedRecipe)
 
     End Function
@@ -434,6 +439,7 @@ Public Class RecipeFolders
         folder.UpdateNote(changedRecipe)
 
         SearchResultsFolder.UpdateNote(changedRecipe)
+        LastAddedFolder.UpdateNote(changedRecipe)
         FavoriteFolder.UpdateNote(changedRecipe)
 
     End Sub
@@ -471,6 +477,7 @@ Public Class RecipeFolders
 
         If initialized Then
             SearchResultsFolder.Clear()
+            LastAddedFolder.Clear()
             Await HistoryFolder.TryRestoreBackupAsync()
             Await MetaDataDatabase.Current.TryRestoreBackupAsync()
         End If
@@ -534,6 +541,7 @@ Public Class RecipeFolders
         End If
         FavoriteFolder.DeleteRecipe(recipe)
         SearchResultsFolder.DeleteRecipe(recipe)
+        LastAddedFolder.DeleteRecipe(recipe)
     End Function
 #End Region
 
@@ -626,6 +634,9 @@ Public Class RecipeFolders
 
             'Search results
             SearchResultsFolder.ChangeCategory(recipeToChange, oldCategory, destinationCategory.Name)
+
+            'Last added
+            LastAddedFolder.ChangeCategory(recipeToChange, oldCategory, destinationCategory.Name)
 
             'Tags
             MetaDataDatabase.Current.ChangeCategory(recipeToChange, oldCategory, destinationCategory.Name)
@@ -870,6 +881,7 @@ Public Class RecipeFolders
 
         FavoriteFolder.RenameRecipe(recipeToRename, oldName, newName)
         SearchResultsFolder.RenameRecipe(recipeToRename, oldName, newName)
+        LastAddedFolder.RenameRecipe(recipeToRename, oldName, newName)
         HistoryFolder.RenameRecipe(recipeToRename, oldName, newName)
 
     End Function
@@ -913,6 +925,7 @@ Public Class RecipeFolders
         folder.SetIsFavorite(recipe)
 
         SearchResultsFolder.SetIsFavorite(recipe)
+        LastAddedFolder.SetIsFavorite(recipe)
         FavoriteFolder.SetIsFavorite(recipe)
         HistoryFolder.SetIsFavorite(recipe)
     End Sub

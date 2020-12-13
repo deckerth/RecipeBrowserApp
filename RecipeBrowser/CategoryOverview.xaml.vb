@@ -246,6 +246,36 @@ Public NotInheritable Class CategoryOverview
 
 #End Region
 
+#Region "LastAdded"
+    Private flyout As DatePickerFlyout
+
+    Private Sub ShowAddedSince(aDate As DateTime)
+        Dim categories = DirectCast(App.Current.Resources("recipeFolders"), RecipeFolders)
+        categories.LastAddedFolder.SetSearchParameter(aDate)
+        RootSplitView.IsPaneOpen = False
+        Me.Frame.Navigate(GetType(RecipesPage), LastAddedFolder.FolderName)
+    End Sub
+
+    Private Sub AddedSinceLastMonth_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-1))
+    End Sub
+
+    Private Sub AddedSinceLast3Month_Click(sender As Object, e As RoutedEventArgs)
+        ShowAddedSince(DateTime.Now.AddMonths(-3))
+    End Sub
+
+    Private Sub AddedSinceDate_Click(sender As Object, e As RoutedEventArgs)
+        flyout = New DatePickerFlyout()
+        AddHandler flyout.DatePicked, AddressOf AddedSinceDate_Picked
+        flyout.ShowAt(ShowLastAdded)
+    End Sub
+
+    Private Sub AddedSinceDate_Picked(sender As DatePickerFlyout, args As DatePickedEventArgs)
+        ShowAddedSince(flyout.Date.DateTime)
+    End Sub
+
+#End Region
+
 #Region "ChangeRootFolder"
 
     Private Async Function ChangeRootFolder() As Task

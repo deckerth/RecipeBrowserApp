@@ -199,6 +199,9 @@
     <Compile Include="Controls\HoverButton.xaml.vb">
       <DependentUpon>HoverButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HoverFontAwesomeAppBarButton.xaml.vb">
+      <DependentUpon>HoverFontAwesomeAppBarButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WrapPanel.vb" />
     <Compile Include="DateConverter.vb" />
     <Compile Include="DefineCategoryDialog.xaml.vb">
@@ -217,6 +220,7 @@
     <Compile Include="Model\ExternalRecipe.vb" />
     <Compile Include="Model\Favorites.vb" />
     <Compile Include="Model\HelpDocuments.vb" />
+    <Compile Include="Model\LastAddedFolder.vb" />
     <Compile Include="Model\PlusFolder.vb" />
     <Compile Include="Model\TagFolder.vb" />
     <Compile Include="Model\Recipe.vb" />
@@ -341,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\HoverButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HoverFontAwesomeAppBarButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

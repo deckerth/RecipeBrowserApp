@@ -221,6 +221,29 @@
                             Foreground="{ThemeResource MenuBarForegroundBrush}"/>
                     </StackPanel>
 
+                    <StackPanel x:Name="LastAddedSearchButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ShowLastAdded"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{ThemeResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="History" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Name="AddedSinceLastMonth" x:Uid="AddedSinceLastMonth" Click="AddedSinceLastMonth_Click"/>
+                                    <MenuFlyoutItem x:Name="AddedSinceLast3Month" x:Uid="AddedSinceLast3Month" Click="AddedSinceLast3Month_Click"/>
+                                    <MenuFlyoutItem x:Name="AddedSinceDate" x:Uid="AddedSinceDate" Click="AddedSinceDate_Click"/>
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <TextBlock x:Uid="ShowLastAdded" x:Name="ShowLastAddedText"
+                    		FontSize="18"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{ThemeResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowHistory"
                                   VerticalAlignment="Center" 
