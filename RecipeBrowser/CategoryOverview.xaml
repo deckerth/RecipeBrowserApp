@@ -251,7 +251,11 @@
                                   Foreground="{ThemeResource MenuBarForegroundBrush}" 
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
-                                  Content="&#xE787;"/>
+                                  Content="&#xE787;">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="CalendarCheckOutline" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="ShowHistoryText" x:Name="ShowHistoryText"
                     		FontSize="18"
                     		VerticalAlignment="Center"
@@ -266,7 +270,11 @@
                                   Foreground="{ThemeResource MenuBarForegroundBrush}" 
                                   FontFamily="Segoe MDL2 Assets" 
                                   FontSize="20" 
-                                  Content="&#xE916;"/>
+                                  Content="&#xE916;">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="HourglassHalf" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="ShowTimersText" x:Name="ShowTimersText"
                     		FontSize="18"
                     		VerticalAlignment="Center"
@@ -284,6 +292,9 @@
                                   FontSize="20" 
                                   Content="&#xE713;"
                                   Foreground="{ThemeResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Cog" FontWeight="ExtraLight"/>
+                            </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="Settings" x:Name="SettingsText"
                     		FontSize="18"
@@ -294,7 +305,11 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp"
-                                  Foreground="{ThemeResource MenuBarForegroundBrush}" Icon="Help"/>
+                                  Foreground="{ThemeResource MenuBarForegroundBrush}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18"
                     		VerticalAlignment="Center"

@@ -728,7 +728,7 @@
                         <AppBarButton x:Name="AppHelp"
                                   Foreground="{StaticResource MenuBarForegroundBrush}" >
                             <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="30"/>
+                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
                             </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"

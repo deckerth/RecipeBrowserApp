@@ -9,7 +9,7 @@ NotInheritable Class App
 
     Public Shared Texts As ResourceLoader = New Windows.ApplicationModel.Resources.ResourceLoader()
     Public Shared Logger As Logging = New Logging()
-    Public Shared AppVersion As String = "190106"
+    Public Shared AppVersion As String = "201214"
     Public Shared SearchBoxIsSupported As Boolean
     Public Shared SearchBoxVisibility As Visibility = Visibility.Collapsed
     Public Shared AutoSuggestBoxVisibility As Visibility = Visibility.Collapsed

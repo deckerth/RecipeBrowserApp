@@ -285,7 +285,7 @@
                         <AppBarButton x:Name="AppHelp"
                                   Foreground="{StaticResource MenuBarForegroundBrush}">
                             <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="30"/>
+                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
                             </AppBarButton.Icon>
                         </AppBarButton>
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
@@ -329,7 +329,8 @@
                         </StackPanel>
                     </CommandBar.Content>
                     <AppBarButton x:Name="logAsCooked" x:Uid="LogAsCooked" HorizontalAlignment="Stretch" Label="" VerticalAlignment="Stretch" 
-                                  Foreground="{StaticResource MenuBarForegroundBrush}">
+                                  Foreground="{StaticResource MenuBarForegroundBrush}"
+                                  >
                         <AppBarButton.Flyout>
                             <DatePickerFlyout x:Name="CookedOn" Placement="Bottom">
 

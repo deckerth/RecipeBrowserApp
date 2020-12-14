@@ -918,6 +918,7 @@ Public NotInheritable Class RecipePage
     Private Async Sub EditTags_Clicked(sender As Object, e As RoutedEventArgs) Handles EditTags.Click
         Await _lastSelectedItem.AddTag()
     End Sub
+
 #End Region
 
 End Class
