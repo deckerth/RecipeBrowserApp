@@ -141,37 +141,47 @@ Public Class History
 
     Public Async Function ExportHistoryAsync() As Task
 
-        If HistoryDB Is Nothing Then
-            Return
+        Dim dialog As MessageDialog
+        If HistoryDB IsNot Nothing Then
+
+            Dim picker = New FileSavePicker
+            Dim historyFile As StorageFile
+            Dim extensions As New List(Of String)
+            Dim fileName As String
+
+            extensions.Add(".db")
+            fileName = "History_" + Date.Today.Date.ToString.Substring(0, 10) + ".db"
+
+            picker.DefaultFileExtension = ".db"
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
+            picker.FileTypeChoices.Clear()
+            picker.FileTypeChoices.Add("History", extensions)
+            picker.SuggestedFileName = fileName
+
+            Try
+                historyFile = Await picker.PickSaveFileAsync()
+            Catch ex As Exception
+                Return
+            End Try
+
+            If historyFile Is Nothing Then
+                Return
+            End If
+
+            If Await HistoryDB.ExportHistory(historyFile) Then
+                dialog = New MessageDialog(App.Texts.GetString("ExportSuccess"))
+                Await dialog.ShowAsync()
+                Return
+            End If
+
+            dialog = New MessageDialog(App.Texts.GetString("ExportFailed"))
+            Await dialog.ShowAsync()
         End If
-
-        Dim picker = New FileSavePicker
-        Dim historyFile As StorageFile
-        Dim extensions As New List(Of String)
-        Dim fileName As String
-
-        extensions.Add(".db")
-        fileName = "History_" + Date.Today.Date.ToString.Substring(0, 10) + ".db"
-
-        picker.DefaultFileExtension = ".db"
-        picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
-        picker.FileTypeChoices.Clear()
-        picker.FileTypeChoices.Add("History", extensions)
-        picker.SuggestedFileName = fileName
-
-        Try
-            historyFile = Await picker.PickSaveFileAsync()
-        Catch ex As Exception
-            Return
-        End Try
-
-        If historyFile Is Nothing Then
-            Return
-        End If
-
-        Await HistoryDB.ExportHistory(historyFile)
 
     End Function
+
+    Private Cancelled As Boolean
+    Private ImportMode As DataImportDialogContent.ImportMode
 
     Public Async Function ImportHistoryAsync() As Task
 
@@ -191,10 +201,76 @@ Public Class History
         Dim historyFile As StorageFile = Await openPicker.PickSingleFileAsync()
 
         ' file is null if user cancels the file picker.
+        Dim displayFailureMessage As Boolean = False
         If historyFile IsNot Nothing Then
-            Await HistoryDB.ImportHistory(historyFile)
+            Try
+                Dim temp As StorageFile
+
+                temp = Await ApplicationData.Current.LocalFolder.CreateFileAsync("history_to_import.db", CreationCollisionOption.ReplaceExisting)
+                Await historyFile.CopyAndReplaceAsync(temp)
+                Dim path As String = ApplicationData.Current.LocalFolder.Path + "\history_to_import.db"
+                Await AskForImportMode(temp)
+                If Not Cancelled Then
+                    If ImportMode = DataImportDialogContent.ImportMode.Add Then
+                        Dim added As Integer
+                        Dim message As String
+                        HistoryDB.MergeHistory(temp, added)
+                        Select Case added
+                            Case 0
+                                message = App.Texts.GetString("NoRecipesAdded")
+                            Case 1
+                                message = App.Texts.GetString("OneRecipesAdded")
+                            Case Else
+                                message = App.Texts.GetString("RecipesAdded").Replace("&", added.ToString)
+                        End Select
+                        Dim dialog = New MessageDialog(message)
+                        Await dialog.ShowAsync()
+                    Else
+                        If Await HistoryDB.ImportHistory(historyFile) Then
+                            Dim dialog = New MessageDialog(App.Texts.GetString("ImportSuccess"))
+                            Await dialog.ShowAsync()
+                        Else
+                            displayFailureMessage = True
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                displayFailureMessage = True
+            End Try
         End If
 
+        If displayFailureMessage Then
+            Dim dialog = New MessageDialog(App.Texts.GetString("ImportFailed"))
+            Await dialog.ShowAsync()
+        End If
+
+    End Function
+
+    Private Async Function AskForImportMode(metadataFile As StorageFile) As Task
+        Dim content = New DataImportDialogContent() With {.DialogMode = DataImportDialogContent.ContentMode.History}
+        If Not HistoryDB.GetStatistics(content.CurrentDbHistoryEntries) Then
+            Return
+        End If
+
+        If Not HistoryDB.GetStatistics(metadataFile, content.ImportDbHistoryEntries) Then
+            Return
+        End If
+
+        Dim dialog = New ContentDialog With {
+            .Title = App.Texts.GetString("ImportDatabaseTitle"),
+            .PrimaryButtonText = App.Texts.GetString("AddEntries"),
+            .SecondaryButtonText = App.Texts.GetString("ReplaceEntries"),
+            .CloseButtonText = App.Texts.GetString("Cancel"),
+            .DefaultButton = ContentDialogButton.Primary,
+            .Content = content,
+            .CloseButtonCommand = content.CloseButtonCommand,
+            .PrimaryButtonCommand = content.PrimaryButtonCommand,
+            .SecondaryButtonCommand = content.SecondaryButtonCommand
+        }
+        Await dialog.ShowAsync()
+        ImportMode = content.SelectedMode
+        Cancelled = content.Cancelled
+        Return
     End Function
 
 

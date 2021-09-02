@@ -66,13 +66,21 @@
             <selectors:TileTemplateSelector x:Key="tileTemplateSelector"
                                     DefaultDataDemplate="{StaticResource TileDataTemplate}"
                                     PlusDataTemplate="{StaticResource PlusDataTemplate}"/>
+
+            <MenuFlyout x:Key="ExportImportFlyoutDef" x:Name="ExportImportFlyout" >
+                <MenuFlyoutItem x:Name="ExportDatabaseMenuItem" x:Uid="ExportDatabase" Text="" Click="ExportDatabase_Click" />
+                <MenuFlyoutItem x:Name="ImportDatabaseMenuItem" x:Uid="ImportDatabase" Text="" Click="ImportDatabase_Click"/>
+                <MenuFlyoutItem x:Name="ExportHistoryMenuItem" x:Uid="ExportHistory" Text="" Click="ExportHistory_Click" />
+                <MenuFlyoutItem x:Name="ImportHistoryMenuItem" x:Uid="ImportHistory" Text="" Click="ImportHistory_Click"/>
+            </MenuFlyout>
+
         </ResourceDictionary>
 
     </Page.Resources>
     
     <SplitView x:Name="RootSplitView"
           IsPaneOpen="False"
-           OpenPaneLength="296" 
+           OpenPaneLength="350" 
            CompactPaneLength="70" 
            DisplayMode="CompactOverlay" PaneBackground="{ThemeResource MenuBarBackgroundBrush}">
         <VisualStateManager.VisualStateGroups>
@@ -280,6 +288,50 @@
                     		VerticalAlignment="Center"
                     		HorizontalAlignment="Left" Margin="5,-15,0,0"
                             Foreground="{ThemeResource MenuBarForegroundBrush}" FontFamily="Segoe UI"/>
+                    </StackPanel>
+                    
+                    <StackPanel x:Name="ExportImportButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="ExportImport"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="A" 
+                                  Flyout="{StaticResource ExportImportFlyoutDef}">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Download" FontWeight="Black"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <TextBlock x:Uid="ExportImportText" x:Name="ExportImportText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="MoreButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
+                        <AppBarButton x:Name="More"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe MDL2 Assets" 
+                                  FontSize="20" 
+                                  Content="A">
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="EllipsisH" FontWeight="Normal"/>
+                            </AppBarButton.Icon>
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem x:Uid="ScanForCalories" Click="ScanForCalories_Click"/>
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <TextBlock x:Uid="MoreText" x:Name="MoreText"
+                    		FontSize="18" FontFamily="Segoe UI"
+                    		VerticalAlignment="Center"
+                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
+                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
                     </StackPanel>
 
                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"/>

@@ -841,4 +841,82 @@
   <data name="AddedSinceLastMonth.Text" xml:space="preserve">
     <value>Added since one month</value>
   </data>
+  <data name="AddEntries" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddOrReplaceQuestion.Text" xml:space="preserve">
+    <value>Do you want to replace the current database or do you want to add new entries from the selected database?</value>
+  </data>
+  <data name="CaloricInfoCount.Text" xml:space="preserve">
+    <value>Calorie specifications:</value>
+  </data>
+  <data name="CaloricInfoUpdates.Text" xml:space="preserve">
+    <value>Updated calorie specifications:</value>
+  </data>
+  <data name="Criteria.Text" xml:space="preserve">
+    <value>Criteria:</value>
+  </data>
+  <data name="CriteriaAssignments.Text" xml:space="preserve">
+    <value>Criteria assignments:</value>
+  </data>
+  <data name="CurrentDatabase.Text" xml:space="preserve">
+    <value>Current database</value>
+  </data>
+  <data name="DataImportResultDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DataImportResultDialog.Title" xml:space="preserve">
+    <value>Import result</value>
+  </data>
+  <data name="ExportDatabase.Text" xml:space="preserve">
+    <value>Export database</value>
+  </data>
+  <data name="ExportImportText.Text" xml:space="preserve">
+    <value>Export / import data</value>
+  </data>
+  <data name="HistoryEntriesCount.Text" xml:space="preserve">
+    <value>Entries:</value>
+  </data>
+  <data name="ImportDatabaseTitle" xml:space="preserve">
+    <value>Import database</value>
+  </data>
+  <data name="ImportDatabase.Text" xml:space="preserve">
+    <value>Import database</value>
+  </data>
+  <data name="MoreText.Text" xml:space="preserve">
+    <value>More..</value>
+  </data>
+  <data name="NewTagDirectoryEntries.Text" xml:space="preserve">
+    <value>New categories:</value>
+  </data>
+  <data name="RecipeTagsUpdates.Text" xml:space="preserve">
+    <value>Updated tags:</value>
+  </data>
+  <data name="ReplaceEntries" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="SelectedDatabase.Text" xml:space="preserve">
+    <value>Selected database</value>
+  </data>
+  <data name="NoRecipesAdded" xml:space="preserve">
+    <value>No new history entries found, history is unchanged</value>
+  </data>
+  <data name="OneRecipeAdded" xml:space="preserve">
+    <value>One entry was added to the history</value>
+  </data>
+  <data name="RecipesAdded" xml:space="preserve">
+    <value>&amp; entries were added to the history</value>
+  </data>
+  <data name="ExportFailed" xml:space="preserve">
+    <value>The database was not exported</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>The database has been successfully exported</value>
+  </data>
+  <data name="ImportFailure" xml:space="preserve">
+    <value>The database was not imported</value>
+  </data>
+  <data name="ImportSuccess" xml:space="preserve">
+    <value>The database has been successfully imported</value>
+  </data>
 </root>

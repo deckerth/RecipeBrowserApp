@@ -7,7 +7,7 @@ Namespace Global.RecipeBrowser.Persistency
 
         Public Shared Current As MetaDataAccess
 
-        Private Database As SQLite.SQLiteConnection
+        Private Database As SQLiteConnection
         Private RecipeMetadataTable As TableMapping
         Private TagDirectoryTable As TableMapping
         Private RecipeTagTable As TableMapping
@@ -23,6 +23,21 @@ Namespace Global.RecipeBrowser.Persistency
             End Try
         End Function
 
+        Private Function OpenADatabase(path As String, ByRef recipeMetadata As TableMapping, ByRef tagDirectories As TableMapping, ByRef recipeTags As TableMapping) As SQLiteConnection
+            Dim db As New SQLite.SQLiteConnection(path)
+            Try
+                db.CreateTable(GetType(RecipeMetaData))
+                db.CreateTable(GetType(TagDirectory))
+                db.CreateTable(GetType(RecipeTag))
+                recipeMetadata = db.GetMapping(GetType(RecipeMetaData))
+                tagDirectories = db.GetMapping(GetType(TagDirectory))
+                recipeTags = db.GetMapping(GetType(RecipeTag))
+            Catch ex As Exception
+                db = Nothing
+            End Try
+            Return db
+        End Function
+
         Public Sub OpenDatabase()
             Dim Path As String = Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\metadata.db"
 
@@ -36,14 +51,10 @@ Namespace Global.RecipeBrowser.Persistency
                     End If
                 End If
 
-                Database = New SQLite.SQLiteConnection(Path)
-                Database.CreateTable(GetType(RecipeMetaData))
-                Database.CreateTable(GetType(TagDirectory))
-                Database.CreateTable(GetType(RecipeTag))
-                RecipeMetadataTable = Database.GetMapping(GetType(RecipeMetaData))
-                TagDirectoryTable = Database.GetMapping(GetType(TagDirectory))
-                RecipeTagTable = Database.GetMapping(GetType(RecipeTag))
-                Current = Me
+                Database = OpenADatabase(Path, RecipeMetadataTable, TagDirectoryTable, RecipeTagTable)
+                If Database IsNot Nothing Then
+                    Current = Me
+                End If
                 App.Logger.Write("MetadataAccess.OpenDatabase: Database is bound = " + (Database IsNot Nothing).ToString)
             Catch ex As Exception
                 Database = Nothing
@@ -248,13 +259,13 @@ Namespace Global.RecipeBrowser.Persistency
 
 #Region "Read Access"
 
-        Public Function GetMetadata(Category As String, Title As String) As RecipeMetadata
+        Public Function GetMetadata(Category As String, Title As String, Optional allowNullValue As Boolean = False) As RecipeMetaData
             Dim queryStr As String
             queryStr = "SELECT * FROM RecipeMetadata WHERE Category = '" + EscapeSpecialCharacters(Category) +
                        "' AND Title = '" + EscapeSpecialCharacters(Title) + "'"
-            Dim query As RecipeMetadata = Database.Query(RecipeMetadataTable, queryStr).FirstOrDefault()
+            Dim query As RecipeMetaData = Database.Query(RecipeMetadataTable, queryStr).FirstOrDefault()
             If query Is Nothing Then
-                Return New RecipeMetadata(Category, Title, RecipeBrowser.Recipe.CaloriesNotScanned)
+                Return If(allowNullValue, Nothing, New RecipeMetaData(Category, Title, RecipeBrowser.Recipe.CaloriesNotScanned))
             Else
                 Return query
             End If
@@ -314,12 +325,38 @@ Namespace Global.RecipeBrowser.Persistency
         End Function
 
         Public Function GetTagDirectory() As List(Of TagDirectory)
+            Return GetTagDirectory(Database, TagDirectoryTable)
+        End Function
+
+        Public Function GetTagDirectory(db As SQLite.SQLiteConnection, tagDirectories As TableMapping) As List(Of TagDirectory)
             Dim result = New List(Of TagDirectory)
             Dim queryStr As String
             queryStr = "SELECT * FROM TagDirectory ORDER BY Tag"
-            Dim query = Database.Query(TagDirectoryTable, queryStr)
+            Dim query = db.Query(tagDirectories, queryStr)
             For Each e In query
                 result.Add(DirectCast(e, TagDirectory))
+            Next
+            Return result
+        End Function
+
+        Public Function GetRecipeMetadata(db As SQLite.SQLiteConnection, recipeMetadata As TableMapping) As List(Of RecipeMetaData)
+            Dim result = New List(Of RecipeMetaData)
+            Dim queryStr As String
+            queryStr = "SELECT * FROM RecipeMetadata ORDER BY Category,Title"
+            Dim query = db.Query(recipeMetadata, queryStr)
+            For Each e In query
+                result.Add(DirectCast(e, RecipeMetaData))
+            Next
+            Return result
+        End Function
+
+        Public Function GetRecipeTags(db As SQLite.SQLiteConnection, recipeTags As TableMapping) As List(Of RecipeTag)
+            Dim result = New List(Of RecipeTag)
+            Dim queryStr As String
+            queryStr = "SELECT * FROM RecipeTag ORDER BY Category,Title"
+            Dim query = db.Query(recipeTags, queryStr)
+            For Each e In query
+                result.Add(DirectCast(e, RecipeTag))
             Next
             Return result
         End Function
@@ -328,48 +365,189 @@ Namespace Global.RecipeBrowser.Persistency
 
 #Region "ExportImport"
 
-        Public Async Function ExportMetadata(exportFile As StorageFile) As Task
+        Public Async Function ExportMetadata(exportFile As StorageFile) As Task(Of Boolean)
 
             If exportFile Is Nothing Or Database Is Nothing Then
-                Return
+                Return False
             End If
 
             CloseDatabase()
 
+            Dim result As Boolean = True
             Try
                 Dim metadata As StorageFile
 
                 metadata = Await ApplicationData.Current.LocalFolder.GetFileAsync("metadata.db")
                 Await metadata.CopyAndReplaceAsync(exportFile)
             Catch ex As Exception
+                result = False
             End Try
 
             OpenDatabase()
 
+            Return result
         End Function
 
-        Public Async Function ImportMetadata(importFile As StorageFile) As Task
+        Public Async Function ImportMetadata(importFile As StorageFile) As Task(Of Boolean)
 
             If importFile Is Nothing Then
-                Return
+                Return False
             End If
 
             If Database IsNot Nothing Then
                 CloseDatabase()
             End If
 
+            Dim result As Boolean = True
             Try
                 Dim metadata As StorageFile
 
                 metadata = Await ApplicationData.Current.LocalFolder.CreateFileAsync("metadata.db", CreationCollisionOption.ReplaceExisting)
                 Await importFile.CopyAndReplaceAsync(metadata)
             Catch ex As Exception
+                result = False
             End Try
 
             OpenDatabase()
 
+            Return result
         End Function
 
+        Public Sub MergeMetadata(importFile As StorageFile, ByRef caloricInfoUpdates As Integer, ByRef recipeTagsUpdates As Integer, ByRef newTagDirectoryEntries As Integer)
+
+            caloricInfoUpdates = 0
+            recipeTagsUpdates = 0
+            newTagDirectoryEntries = 0
+
+            If importFile Is Nothing Then
+                Return
+            End If
+
+            If Database Is Nothing Then
+                Return
+            End If
+
+            Dim recipeMetadata As TableMapping
+            Dim tagDirectory As TableMapping
+            Dim recipeTags As TableMapping
+
+            Dim toImport = OpenADatabase(importFile.Path, recipeMetadata, tagDirectory, recipeTags)
+
+            If toImport Is Nothing OrElse recipeMetadata Is Nothing OrElse tagDirectory Is Nothing OrElse recipeTags Is Nothing Then
+                Return
+            End If
+
+            Dim metadata = GetRecipeMetadata(toImport, recipeMetadata)
+            Dim tags = GetRecipeTags(toImport, recipeTags)
+            Dim directory = GetTagDirectory(toImport, tagDirectory)
+
+            'Merge caloric infos
+            For Each m In metadata
+                Dim current = GetMetadata(m.Category, m.Title, allowNullValue:=True)
+                If current IsNot Nothing Then
+                    If m.Calories > 0 AndAlso m.Calories <> current.Calories Then
+                        StoreCalories(m.Category, m.Title, m.Calories)
+                        caloricInfoUpdates += 1
+                    End If
+                End If
+            Next
+
+            'Merge recipe tags
+            Dim last As New RecipeTag
+            Dim lastTags As New List(Of RecipeTag)
+            For Each t In tags
+                If t.Category.Equals(last.Category) AndAlso t.Title.Equals(last.Title) Then
+                    lastTags.Add(t)
+                Else
+                    If MergeTags(last, lastTags) Then
+                        recipeTagsUpdates += 1
+                    End If
+                    last = t
+                    lastTags.Clear()
+                    lastTags.Add(t)
+                End If
+            Next
+            ' last item
+            If MergeTags(last, lastTags) Then
+                recipeTagsUpdates += 1
+            End If
+
+            'Merge tag directory
+            Dim currentDir = GetTagDirectory()
+            For Each t In directory
+                'Dim dummy = currentDir.Find(Function(other) other.Tag.Equals(t.Tag))
+                'dummy = currentDir.Find(Function(other) other.Tag.Equals("BBQ"))
+                If currentDir.Find(Function(other) other.Tag.Equals(t.Tag)) Is Nothing Then
+                    AddTag(t)
+                    newTagDirectoryEntries += 1
+                End If
+            Next
+
+            toImport.Close()
+        End Sub
+
+        Private Function MergeTags(last As RecipeTag, lastTags As List(Of RecipeTag)) As Boolean
+            Dim update As Boolean = False
+            If lastTags.Count > 0 Then
+                Dim currentTags = GetTags(last.Category, last.Title)
+                Dim updatedTags As New List(Of String)
+                For Each l In lastTags
+                    If currentTags.Find(Function(other) other.Tag.Equals(l.Tag)) Is Nothing Then
+                        update = True
+                    End If
+                    updatedTags.Add(l.Tag)
+                Next
+                If update Then
+                    StoreTags(last.Category, last.Title, updatedTags)
+                End If
+            End If
+            Return update
+        End Function
+
+        Public Function GetStatistics(ByRef caloricInfos As Integer, ByRef recipeTags As Integer, ByRef tagDirectoryEntries As Integer) As Boolean
+
+            caloricInfos = 0
+            recipeTags = 0
+            tagDirectoryEntries = 0
+
+            If Database Is Nothing Then
+                Return False
+            End If
+
+            caloricInfos = GetRecipeMetadata(Database, RecipeMetadataTable).Count
+            recipeTags = GetRecipeTags(Database, RecipeTagTable).Count
+            tagDirectoryEntries = GetTagDirectory().Count
+
+            Return True
+        End Function
+
+        Public Function GetStatistics(importFile As StorageFile, ByRef caloricInfos As Integer, ByRef recipeTags As Integer, ByRef tagDirectoryEntries As Integer) As Boolean
+
+            caloricInfos = 0
+            recipeTags = 0
+            tagDirectoryEntries = 0
+
+            If Database Is Nothing Then
+                Return False
+            End If
+
+            Dim recipeMetadata As TableMapping
+            Dim tagDirectory As TableMapping
+            Dim recipeTagsMapping As TableMapping
+
+            Dim toImport = OpenADatabase(importFile.Path, recipeMetadata, tagDirectory, recipeTagsMapping)
+
+            If toImport Is Nothing OrElse recipeMetadata Is Nothing OrElse tagDirectory Is Nothing OrElse recipeTagsMapping Is Nothing Then
+                Return false
+            End If
+
+
+            caloricInfos = GetRecipeMetadata(toImport, recipeMetadata).Count
+            recipeTags = GetRecipeTags(toImport, recipeTagsMapping).Count
+            tagDirectoryEntries = GetTagDirectory(toImport, tagDirectory).Count
+
+            Return True
+        End Function
 
 #End Region
 

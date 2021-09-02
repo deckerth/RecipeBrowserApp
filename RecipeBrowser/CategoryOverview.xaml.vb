@@ -553,7 +553,29 @@ Public NotInheritable Class CategoryOverview
     Private Sub CriteriaModeText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles CriteriaModeText.Tapped
         CriteriaMode_Click(sender, Nothing)
     End Sub
+#End Region
 
+#Region "ExportImport"
+    Private Async Sub ExportHistory_Click(sender As Object, e As RoutedEventArgs)
+        Await History.Current.ExportHistoryAsync()
+    End Sub
+
+    Private Async Sub ImportHistory_Click(sender As Object, e As RoutedEventArgs)
+        Await History.Current.ImportHistoryAsync()
+    End Sub
+
+    Private Async Sub ExportDatabase_Click(sender As Object, e As RoutedEventArgs)
+        Await MetaDataDatabase.Current.ExportMetadataAsync()
+    End Sub
+
+    Private Async Sub ImportDatabase_Click(sender As Object, e As RoutedEventArgs)
+        Await MetaDataDatabase.Current.ImportMetadataAsync()
+    End Sub
+
+    Private Async Sub ScanForCalories_Click(sender As Object, e As RoutedEventArgs)
+        Dim scanProgress = New ScanForCaloriesProgressDialog
+        Await scanProgress.ShowAsync()
+    End Sub
 #End Region
 End Class
 

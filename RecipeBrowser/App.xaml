@@ -6,7 +6,7 @@
     xmlns:controls="using:RecipeBrowser.Controls"
     >
     <!-- RequestedTheme="Light" -->
-    
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -121,7 +121,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
+
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="BlueTextBackgroundBrush" Color="#FF2F5496"/>

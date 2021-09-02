@@ -1,6 +1,7 @@
 ﻿Imports Windows.Storage
 Imports Windows.Storage.Pickers
 Imports RecipeBrowser.Persistency
+Imports Windows.UI.Popups
 
 Public Class MetaDataDatabase
 
@@ -217,47 +218,57 @@ Public Class MetaDataDatabase
 
     Public Async Function ExportMetadataAsync() As Task
 
-        If MetadataDB Is Nothing Then
-            Return
+        Dim dialog As MessageDialog
+        If MetadataDB IsNot Nothing Then
+
+            Dim picker = New FileSavePicker
+            Dim metadataFile As StorageFile
+            Dim extensions As New List(Of String)
+            Dim fileName As String
+
+            extensions.Add(".db")
+            fileName = "Metadata_" + Date.Today.Date.ToString.Substring(0, 10) + ".db"
+
+            picker.DefaultFileExtension = ".db"
+            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            picker.FileTypeChoices.Clear()
+            picker.FileTypeChoices.Add("Metadata", extensions)
+            picker.SuggestedFileName = fileName
+
+            Try
+                metadataFile = Await picker.PickSaveFileAsync()
+            Catch ex As Exception
+                Return
+            End Try
+
+            If metadataFile Is Nothing Then
+                Return
+            End If
+
+            If Await MetadataDB.ExportMetadata(metadataFile) Then
+                dialog = New MessageDialog(App.Texts.GetString("ExportSuccess"))
+                Await dialog.ShowAsync()
+                Return
+            End If
         End If
 
-        Dim picker = New FileSavePicker
-        Dim metadataFile As StorageFile
-        Dim extensions As New List(Of String)
-        Dim fileName As String
-
-        extensions.Add(".db")
-        fileName = "Metadata_" + Date.Today.Date.ToString.Substring(0, 10) + ".db"
-
-        picker.DefaultFileExtension = ".db"
-        picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
-        picker.FileTypeChoices.Clear()
-        picker.FileTypeChoices.Add("Metadata", extensions)
-        picker.SuggestedFileName = fileName
-
-        Try
-            metadataFile = Await picker.PickSaveFileAsync()
-        Catch ex As Exception
-            Return
-        End Try
-
-        If metadataFile Is Nothing Then
-            Return
-        End If
-
-        Await MetadataDB.ExportMetadata(metadataFile)
-
+        dialog = New MessageDialog(App.Texts.GetString("ExportFailed"))
+        Await dialog.ShowAsync()
     End Function
+
+    Private Cancelled As Boolean
+    Private ImportMode As DataImportDialogContent.ImportMode
 
     Public Async Function ImportMetadataAsync() As Task
 
         If MetadataDB Is Nothing Then
-            MetadataDB = New Persistency.MetaDataAccess
+            MetadataDB = New MetaDataAccess
         End If
 
-        Dim openPicker = New Windows.Storage.Pickers.FileOpenPicker()
-        openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary
-        openPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail
+        Dim openPicker = New FileOpenPicker With {
+            .SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            .ViewMode = PickerViewMode.Thumbnail
+        }
 
         ' Filter to include a sample subset of file types.
         openPicker.FileTypeFilter.Clear()
@@ -267,10 +278,68 @@ Public Class MetaDataDatabase
         Dim metadataFile As StorageFile = Await openPicker.PickSingleFileAsync()
 
         ' file is null if user cancels the file picker.
+        Dim displayFailureMessage As Boolean = False
         If metadataFile IsNot Nothing Then
-            Await MetadataDB.ImportMetadata(metadataFile)
+            Try
+                Dim temp As StorageFile
+
+                temp = Await ApplicationData.Current.LocalFolder.CreateFileAsync("metadata_to_import.db", CreationCollisionOption.ReplaceExisting)
+                Await metadataFile.CopyAndReplaceAsync(temp)
+                Await AskForImportMode(temp)
+                If Not Cancelled Then
+                    If ImportMode = DataImportDialogContent.ImportMode.Add Then
+                        Dim caloricInfoUpdates As Integer
+                        Dim recipeTagsUpdates As Integer
+                        Dim newTagDirectoryEntries As Integer
+                        MetadataDB.MergeMetadata(temp, caloricInfoUpdates, recipeTagsUpdates, newTagDirectoryEntries)
+                        Dim resultDialog = New DataImportResultDialog With {.CaloricInfoUpdates = caloricInfoUpdates, .RecipeTagsUpdates = recipeTagsUpdates, .NewTagDirectoryEntries = newTagDirectoryEntries}
+                        Await resultDialog.ShowAsync()
+                    Else
+                        If Await MetadataDB.ImportMetadata(metadataFile) Then
+                            Dim dialog = New MessageDialog(App.Texts.GetString("ImportSuccess"))
+                            Await dialog.ShowAsync()
+                        Else
+                            displayFailureMessage = True
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                displayFailureMessage = True
+            End Try
+
+            If displayFailureMessage Then
+                Dim dialog = New MessageDialog(App.Texts.GetString("ImportFailed"))
+                Await dialog.ShowAsync()
+            End If
         End If
 
+    End Function
+
+    Private Async Function AskForImportMode(metadataFile As StorageFile) As Task
+        Dim content = New DataImportDialogContent With {.DialogMode = DataImportDialogContent.ContentMode.Metadata}
+        If Not MetadataDB.GetStatistics(content.CurrentDbCaloricInfos, content.CurrentDbRecipeTags, content.CurrentDbTagDirectoryEntries) Then
+            Return
+        End If
+
+        If Not MetadataDB.GetStatistics(metadataFile, content.ImportDbCaloricInfos, content.ImportDbRecipeTags, content.ImportDbTagDirectoryEntries) Then
+            Return
+        End If
+
+        Dim dialog = New ContentDialog With {
+            .Title = App.Texts.GetString("ImportDatabaseTitle"),
+            .PrimaryButtonText = App.Texts.GetString("AddEntries"),
+            .SecondaryButtonText = App.Texts.GetString("ReplaceEntries"),
+            .CloseButtonText = App.Texts.GetString("Cancel"),
+            .DefaultButton = ContentDialogButton.Primary,
+            .Content = content,
+            .CloseButtonCommand = content.CloseButtonCommand,
+            .PrimaryButtonCommand = content.PrimaryButtonCommand,
+            .SecondaryButtonCommand = content.SecondaryButtonCommand
+        }
+        Await dialog.ShowAsync()
+        ImportMode = content.SelectedMode
+        Cancelled = content.Cancelled
+        Return
     End Function
 
 

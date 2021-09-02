@@ -125,8 +125,6 @@ Public NotInheritable Class RecipesPage
             deleteRecipe.Visibility = CurrentRecipeFolder.DeleteRecipeVisibility
             RenameRecipe.Visibility = CurrentRecipeFolder.DeleteRecipeVisibility
             ChangeCalories.Visibility = CurrentRecipeFolder.ChangeCaloriesVisibility
-            ExportCaloricInfos.Visibility = CurrentRecipeFolder.ExportCaloricInfosVisibility
-            ImportCaloricInfos.Visibility = CurrentRecipeFolder.ExportCaloricInfosVisibility
             AppHelpButton.Visibility = CurrentRecipeFolder.HelpVisibility
             LastAddedSearchButton.Visibility = CurrentRecipeFolder.LastAddedSearchVisibility
 
@@ -555,6 +553,7 @@ Public NotInheritable Class RecipesPage
         FolderSelection.IsEnabled = True
         CriteriaSelection.IsEnabled = True
         ShowTimers.IsEnabled = True
+        ScanForCalories.IsEnabled = True
         AddRecipe.IsEnabled = True
         AddExternalRecipe.IsEnabled = True
         ExportImport.IsEnabled = True
@@ -1662,19 +1661,6 @@ Public NotInheritable Class RecipesPage
 
         Await scanProgress.ShowAsync()
     End Sub
-
-    Private Async Sub ExportCaloricInfos_Click(sender As Object, e As RoutedEventArgs) Handles ExportCaloricInfos.Click
-        DisableControls(False)
-        Await MetaDataDatabase.Current.ExportMetadataAsync()
-        EnableControls()
-    End Sub
-
-    Private Async Sub ImportCaloricInfos_Click(sender As Object, e As RoutedEventArgs) Handles ImportCaloricInfos.Click
-        DisableControls(False)
-        Await MetaDataDatabase.Current.ImportMetadataAsync()
-        EnableControls()
-    End Sub
-
 
     Private Async Sub ChangeCalories_Click(sender As Object, e As RoutedEventArgs) Handles ChangeCalories.Click
         If _lastSelectedItem IsNot Nothing Then

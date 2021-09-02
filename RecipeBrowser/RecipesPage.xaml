@@ -825,8 +825,6 @@
                         <AppBarButton x:Uid="ChangeCaloriesCommand" x:Name="ChangeCalories" />
                         <AppBarSeparator/>
                         <AppBarButton x:Uid="ScanForCaloriesCommand"  x:Name="ScanForCalories" />
-                        <AppBarButton x:Uid="ExportDatabaseCommand" x:Name="ExportCaloricInfos" />
-                        <AppBarButton x:Uid="ImportDatabaseCommand" x:Name="ImportCaloricInfos" />
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
                 <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" x:Name="RecipeList">

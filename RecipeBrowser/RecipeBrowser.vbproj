@@ -10,7 +10,7 @@
     <AssemblyName>RecipeBrowser</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -173,6 +173,7 @@
     <Content Include="Assets\Template Modern 11.rtf" />
     <Content Include="Assets\Template Modern.rtf" />
     <None Include="MyRecipes_StoreKey.pfx" />
+    <None Include="VisualStudioZertifikat.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\de-DE\Resources.resw" />
   </ItemGroup>
@@ -203,6 +204,12 @@
       <DependentUpon>HoverFontAwesomeAppBarButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WrapPanel.vb" />
+    <Compile Include="DataImportDialogContent.xaml.vb">
+      <DependentUpon>DataImportDialogContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataImportResultDialog.xaml.vb">
+      <DependentUpon>DataImportResultDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DateConverter.vb" />
     <Compile Include="DefineCategoryDialog.xaml.vb">
       <DependentUpon>DefineCategoryDialog.xaml</DependentUpon>
@@ -352,6 +359,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DataImportDialogContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataImportResultDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DefineCategoryDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -456,6 +471,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.6.1</Version>
+    </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.7.335</Version>
     </PackageReference>
@@ -464,7 +482,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="WindowsMobile, Version=10.0.17763.0">
+    <SDKReference Include="WindowsMobile, Version=10.0.18362.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
   </ItemGroup>

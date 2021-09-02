@@ -152,46 +152,52 @@ Namespace Global.RecipeBrowser.Persistency
 
 #Region "ExportImport"
 
-        Public Async Function ExportHistory(exportFile As StorageFile) As Task
+        Public Async Function ExportHistory(exportFile As StorageFile) As Task(Of Boolean)
 
             If exportFile Is Nothing Or Database Is Nothing Then
-                Return
+                Return False
             End If
 
             CloseDatabase()
 
+            Dim result As Boolean = True
             Try
                 Dim history As StorageFile
 
                 history = Await ApplicationData.Current.LocalFolder.GetFileAsync("history.db")
                 Await history.CopyAndReplaceAsync(exportFile)
             Catch ex As Exception
+                result = False
             End Try
 
             OpenDatabase()
 
+            Return result
         End Function
 
-        Public Async Function ImportHistory(importFile As StorageFile) As Task
+        Public Async Function ImportHistory(importFile As StorageFile) As Task(Of Boolean)
 
             If importFile Is Nothing Then
-                Return
+                Return False
             End If
 
             If Database IsNot Nothing Then
                 CloseDatabase()
             End If
 
+            Dim result As Boolean = True
             Try
                 Dim history As StorageFile
 
                 history = Await ApplicationData.Current.LocalFolder.CreateFileAsync("history.db", CreationCollisionOption.ReplaceExisting)
                 Await importFile.CopyAndReplaceAsync(history)
             Catch ex As Exception
+                result = False
             End Try
 
             OpenDatabase()
 
+            Return result
         End Function
 
 
@@ -220,6 +226,75 @@ Namespace Global.RecipeBrowser.Persistency
                 _matchingEntriesCounted = False
             End If
         End Sub
+
+        Public Sub MergeHistory(importFile As StorageFile, ByRef addedRecipes As Integer)
+            addedRecipes = 0
+
+            If importFile Is Nothing Then
+                Return
+            End If
+
+            If Database Is Nothing Then
+                Return
+            End If
+
+            Dim history As TableMapping
+
+            Dim toImport = OpenADatabase(importFile.Path, history)
+
+            If toImport Is Nothing OrElse history Is Nothing Then
+                Return
+            End If
+
+            Dim cooked = GetHistory(toImport, history)
+
+            For Each c In cooked
+                If Not RecipeWasCookedOn(c.Category, c.Title, c.LastCooked) Then
+                    LogRecipeCooked(c.Category, c.Title, c.LastCooked)
+                    addedRecipes += 1
+                End If
+            Next
+
+            toImport.Close()
+        End Sub
+
+        Public Function GetStatistics(ByRef currentDbHistoryEntries As Integer) As Boolean
+            currentDbHistoryEntries = 0
+            If Database Is Nothing Then
+                Return False
+            End If
+            currentDbHistoryEntries = GetHistory(Database, Mapping).Count
+            Return True
+        End Function
+
+        Public Function GetStatistics(importFile As StorageFile, ByRef currentDbHistoryEntries As Integer) As Boolean
+            currentDbHistoryEntries = 0
+            If Database Is Nothing Then
+                Return False
+            End If
+
+            Dim history As TableMapping
+
+            Dim toImport = OpenADatabase(importFile.Path, history)
+
+            If toImport Is Nothing OrElse history Is Nothing Then
+                Return False
+            End If
+
+            currentDbHistoryEntries = GetHistory(toImport, history).Count
+            Return True
+        End Function
+
+        Private Function OpenADatabase(path As String, ByRef history As TableMapping) As SQLiteConnection
+            Dim db As New SQLiteConnection(path)
+            Try
+                db.CreateTable(GetType(CookedRecipe))
+                history = db.GetMapping(GetType(CookedRecipe))
+            Catch ex As Exception
+                db = Nothing
+            End Try
+            Return db
+        End Function
 
         Public Sub ChangeCategory(Title As String, OldCategory As String, NewCategory As String)
             Dim queryStr As String
@@ -342,6 +417,17 @@ Namespace Global.RecipeBrowser.Persistency
             Next
 
             Return query.Count
+        End Function
+
+        Public Function GetHistory(db As SQLiteConnection, history As TableMapping) As List(Of CookedRecipe)
+            Dim result = New List(Of CookedRecipe)
+            Dim queryStr As String
+            queryStr = "SELECT * FROM CookedRecipe ORDER BY Category,Title"
+            Dim query = db.Query(history, queryStr)
+            For Each e In query
+                result.Add(DirectCast(e, CookedRecipe))
+            Next
+            Return result
         End Function
 
 #End Region
