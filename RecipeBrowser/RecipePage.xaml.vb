@@ -602,6 +602,13 @@ Public NotInheritable Class RecipePage
         Me.Frame.Navigate(GetType(CategoryOverview))
     End Sub
 
+    Private Sub CommandBar_Opened(sender As Object, e As Object)
+        Dim cb = DirectCast(sender, CommandBar)
+        If cb IsNot Nothing Then
+            cb.Background.Opacity = 1.0
+        End If
+    End Sub
+
 #End Region
 
 #Region "LogAsCooked"
@@ -918,7 +925,6 @@ Public NotInheritable Class RecipePage
     Private Async Sub EditTags_Clicked(sender As Object, e As RoutedEventArgs) Handles EditTags.Click
         Await _lastSelectedItem.AddTag()
     End Sub
-
 #End Region
 
 End Class

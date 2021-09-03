@@ -66,103 +66,15 @@
             <selectors:TileTemplateSelector x:Key="tileTemplateSelector"
                                     DefaultDataDemplate="{StaticResource TileDataTemplate}"
                                     PlusDataTemplate="{StaticResource PlusDataTemplate}"/>
-
-            <MenuFlyout x:Key="ExportImportFlyoutDef" x:Name="ExportImportFlyout" >
-                <MenuFlyoutItem x:Name="ExportDatabaseMenuItem" x:Uid="ExportDatabase" Text="" Click="ExportDatabase_Click" />
-                <MenuFlyoutItem x:Name="ImportDatabaseMenuItem" x:Uid="ImportDatabase" Text="" Click="ImportDatabase_Click"/>
-                <MenuFlyoutItem x:Name="ExportHistoryMenuItem" x:Uid="ExportHistory" Text="" Click="ExportHistory_Click" />
-                <MenuFlyoutItem x:Name="ImportHistoryMenuItem" x:Uid="ImportHistory" Text="" Click="ImportHistory_Click"/>
-            </MenuFlyout>
-
         </ResourceDictionary>
 
     </Page.Resources>
-    
+
     <SplitView x:Name="RootSplitView"
           IsPaneOpen="False"
            OpenPaneLength="350" 
            CompactPaneLength="70" 
            DisplayMode="CompactOverlay" PaneBackground="{ThemeResource MenuBarBackgroundBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="VisualStateGroup">
-                <VisualState x:Name="SmallPhones">
-                    <!--<VisualState.Setters>
-                        <Setter Target="pageTitle.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="RecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="RecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="SearchRequestButton.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(FrameworkElement.Margin)">
-                            <Setter.Value>
-                                <Thickness>0,20,90,0</Thickness>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Target="LeftRecipeSearchBox.(FrameworkElement.Margin)">
-                            <Setter.Value>
-                                <Thickness>0,20,90,20</Thickness>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Target="LeftRecipeSearchBox.(FrameworkElement.Width)" Value="250"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(FrameworkElement.Width)" Value="250"/>
-                    </VisualState.Setters>-->
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-
-                <VisualState x:Name="Phones">
-                    <!--<VisualState.Setters>
-                        <Setter Target="pageTitle.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="RecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="RecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="SearchRequestButton.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(FrameworkElement.Margin)">
-                            <Setter.Value>
-                                <Thickness>0,20,40,10</Thickness>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Target="LeftRecipeSearchBox.(FrameworkElement.Margin)">
-                            <Setter.Value>
-                                <Thickness>0,20,40,10</Thickness>
-                            </Setter.Value>
-                        </Setter>
-                    </VisualState.Setters>-->
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="460"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-
-                <VisualState x:Name="Tablet">
-                    <!--<VisualState.Setters>
-                        <Setter Target="pageTitle.(UIElement.Visibility)" Value="Visible"/>
-                        <Setter Target="RecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="RecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="SearchRequestButton.(UIElement.Visibility)" Value="Visible"/>
-                    </VisualState.Setters>-->
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="721"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-
-                <VisualState x:Name="Desktop">
-                    <!--<VisualState.Setters>
-                        <Setter Target="pageTitle.(UIElement.Visibility)" Value="Visible"/>
-                        <Setter Target="LeftRecipeSearchBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="LeftRecipeAutoSuggestBox.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="SearchRequestButton.(UIElement.Visibility)" Value="Collapsed"/>
-                    </VisualState.Setters>-->
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1024"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
 
         <SplitView.Pane>
             <ScrollViewer>
@@ -289,71 +201,8 @@
                     		HorizontalAlignment="Left" Margin="5,-15,0,0"
                             Foreground="{ThemeResource MenuBarForegroundBrush}" FontFamily="Segoe UI"/>
                     </StackPanel>
-                    
-                    <StackPanel x:Name="ExportImportButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
-                        <AppBarButton x:Name="ExportImport"
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
-                                  FontFamily="Segoe MDL2 Assets" 
-                                  FontSize="20" 
-                                  Content="A" 
-                                  Flyout="{StaticResource ExportImportFlyoutDef}">
-                            <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Download" FontWeight="Black"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                        <TextBlock x:Uid="ExportImportText" x:Name="ExportImportText"
-                    		FontSize="18" FontFamily="Segoe UI"
-                    		VerticalAlignment="Center"
-                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
-                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
-                    </StackPanel>
-
-                    <StackPanel x:Name="MoreButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
-                        <AppBarButton x:Name="More"
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
-                                  FontFamily="Segoe MDL2 Assets" 
-                                  FontSize="20" 
-                                  Content="A">
-                            <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="EllipsisH" FontWeight="Normal"/>
-                            </AppBarButton.Icon>
-                            <AppBarButton.Flyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem x:Uid="ScanForCalories" Click="ScanForCalories_Click"/>
-                                </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
-                        <TextBlock x:Uid="MoreText" x:Name="MoreText"
-                    		FontSize="18" FontFamily="Segoe UI"
-                    		VerticalAlignment="Center"
-                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
-                            Foreground="{StaticResource MenuBarForegroundBrush}"/>
-                    </StackPanel>
 
                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
-                        <AppBarButton x:Name="AppSettings"
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  FontFamily="Segoe MDL2 Assets" 
-                                  FontSize="20" 
-                                  Content="&#xE713;"
-                                  Foreground="{ThemeResource MenuBarForegroundBrush}">
-                            <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Cog" FontWeight="ExtraLight"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                        <TextBlock x:Uid="Settings" x:Name="SettingsText"
-                    		FontSize="18"
-                    		VerticalAlignment="Center"
-                    		HorizontalAlignment="Left" Margin="5,-15,0,0"
-                            Foreground="{ThemeResource MenuBarForegroundBrush}"/>
-                    </StackPanel>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp"
@@ -374,78 +223,62 @@
         </SplitView.Pane>
 
         <Grid Background="{ThemeResource RecipesItemsBackgroundBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid  Grid.Column="1" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="75"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="pageTitle" Style="{ThemeResource HeaderTextBlockStyle}" Foreground="{ThemeResource CategoryOverviewTitleForegroundBrush}"  
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Center" Width="400" Grid.Column="0" HorizontalAlignment="Left" d:LayoutOverrides="Width" Margin="40,0,0,0" Visibility="Collapsed" />
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,40,0" HorizontalAlignment="Right" Grid.Column="1">
-                    <AppBarToggleButton x:Name="EditMode"  
-                                        FontFamily="Segoe MDL2 Assets" 
-                                        FontSize="20" 
-                                        Content="&#xE70F;"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Unchecked="EditMode_Checked"
-                                        Foreground="{ThemeResource AppBarButtonForegroundBrush}"/>
-
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <CommandBar Background="{StaticResource MenuBarBackgroundBrush}" Foreground="{StaticResource MenuBarForegroundBrush}" Opened="CommandBar_Opened">
+                <CommandBar.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="pageTitle" Style="{ThemeResource TitleTextBlockStyle}" Foreground="{StaticResource PageTitleForegroundBrush}" />
                         <SearchBox x:Name="RecipeSearchBox" 
                                     RequestedTheme="Light"
                                     Background="White" 
                                     QuerySubmitted="SearchBox_QuerySubmitted" 
                                     Height="30" 
                                     Width="300"
-                                    Margin="20,-10,0,0"/>
-                        
+                                    Margin="20,0,0,0"/>
+
                         <AutoSuggestBox x:Name="RecipeAutoSuggestBox" 
                                     Background="{ThemeResource RecipesItemsBackgroundBrush}" 
                                     Grid.Column="1"
                                     Height="30" 
                                     Width="300"
-                                    Margin="20,-10,0,0"/>
+                                    Margin="20,0,0,0"/>
                         <AppBarButton x:Name="SearchRequestButton" FontFamily="Webdings" VerticalAlignment="Center" Icon="Find" BorderBrush="{ThemeResource SearchBoxButtonBackgroundThemeBrush}" HorizontalAlignment="Right" Grid.Column="1" Margin="0,3" Visibility="Collapsed"  />
+
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0,40,0" HorizontalAlignment="Left" Grid.Column="0">
-                        <AppBarToggleButton x:Name="LeftEditMode"  
-                                        FontFamily="Segoe MDL2 Assets" 
-                                        FontSize="20" 
-                                        Content="&#xE70F;"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Foreground="{ThemeResource AppBarButtonForegroundBrush}"/>
+                </CommandBar.Content>
+                <CommandBar.PrimaryCommands>
+                    <AppBarToggleButton x:Name="EditMode"  x:Uid="EditMode"
+                                        Unchecked="EditMode_Checked"
+                                        Foreground="{StaticResource MenuBarForegroundBrush}">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE70F;"/>
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
 
-                        <SearchBox x:Name="LeftRecipeSearchBox" 
-                                    RequestedTheme="Light"
-                                    Background="White" 
-                                    QuerySubmitted="SearchBox_QuerySubmitted" 
-                                    Height="30"
-                                    Width="200" 
-                                    Margin="20,-10,0,0"
-                                    Visibility="Collapsed"/>
-
-                        <AutoSuggestBox x:Name="LeftRecipeAutoSuggestBox" 
-                                    Background="{ThemeResource RecipesItemsBackgroundBrush}" 
-                                    QuerySubmitted="RecipeAutoSuggestBox_QuerySubmitted"
-                                    Grid.Column="0" 
-                                    Width="300" 
-                                    Margin="20,-10,0,0"
-                                    Visibility="Collapsed" QueryIcon="Find"/>
-                    </StackPanel>
-
-                </Grid>
-                <GridView
+                </CommandBar.PrimaryCommands>
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton x:Name="ExportImport" x:Uid="ExportImport">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE896;"/>
+                        </AppBarButton.Icon>
+                        <AppBarButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem x:Name="ExportDatabaseMenuItem" x:Uid="ExportDatabase" Text="" Click="ExportDatabase_Click" />
+                                <MenuFlyoutItem x:Name="ImportDatabaseMenuItem" x:Uid="ImportDatabase" Text="" Click="ImportDatabase_Click"/>
+                                <MenuFlyoutItem x:Name="ExportHistoryMenuItem" x:Uid="ExportHistory" Text="" Click="ExportHistory_Click" />
+                                <MenuFlyoutItem x:Name="ImportHistoryMenuItem" x:Uid="ImportHistory" Text="" Click="ImportHistory_Click"/>
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+                    <AppBarButton x:Uid="ScanForCaloriesButton" Click="ScanForCalories_Click"/>
+                    <AppBarSeparator/>
+                    <AppBarButton x:Name="AppSettings" x:Uid="AppSettings" Icon="Setting"/>
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+            <GridView
                     Grid.Row="1"
                     x:Name="itemGridView"
                     AutomationProperties.AutomationId="ItemsGridView"
@@ -456,8 +289,7 @@
                     IsItemClickEnabled="True"
                     Margin="40,20,0,0" 
                     ItemTemplateSelector="{StaticResource tileTemplateSelector}">
-                </GridView>
-            </Grid>
+            </GridView>
         </Grid>
     </SplitView>
 </Page>

@@ -768,7 +768,7 @@
                     <ColumnDefinition x:Name="DetailColumn" Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <CommandBar Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource MenuBarBackgroundBrush}" Foreground="{StaticResource MenuBarForegroundBrush}">
+                <CommandBar Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource MenuBarBackgroundBrush}" Foreground="{StaticResource MenuBarForegroundBrush}" Opened="CommandBar_Opened">
                     <CommandBar.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Grid.Row="0" Grid.Column="0" x:Name="pageTitle"

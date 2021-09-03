@@ -126,7 +126,7 @@
   <data name="AppName.Text" xml:space="preserve">
     <value>Recipe Browser</value>
   </data>
-  <data name="AppSettings.Text" xml:space="preserve">
+  <data name="AppSettings.Label" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -707,7 +707,7 @@
     <value>Labels</value>
   </data>
   <data name="CategoriesPageTitle" xml:space="preserve">
-    <value>Recipe Browser</value>
+    <value>Categories</value>
   </data>
   <data name="CreateTagTitle" xml:space="preserve">
     <value>New label</value>
@@ -871,7 +871,7 @@
   <data name="ExportDatabase.Text" xml:space="preserve">
     <value>Export database</value>
   </data>
-  <data name="ExportImportText.Text" xml:space="preserve">
+  <data name="ExportImport.Label" xml:space="preserve">
     <value>Export / import data</value>
   </data>
   <data name="HistoryEntriesCount.Text" xml:space="preserve">
@@ -918,5 +918,14 @@
   </data>
   <data name="ImportSuccess" xml:space="preserve">
     <value>The database has been successfully imported</value>
+  </data>
+  <data name="ScanForCaloriesButton.Label" xml:space="preserve">
+    <value>Scan recipes for caloric information</value>
+  </data>
+  <data name="EditMode.Label" xml:space="preserve">
+    <value>Edit mode</value>
+  </data>
+  <data name="ScanAllRecipesQuestion" xml:space="preserve">
+    <value>Scanning a large number of recipes may take a while. Do you want to scan all recipes now?</value>
   </data>
 </root>

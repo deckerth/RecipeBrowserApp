@@ -126,7 +126,7 @@
   <data name="AppName.Text" xml:space="preserve">
     <value>Rezepte</value>
   </data>
-  <data name="AppSettings.Text" xml:space="preserve">
+  <data name="AppSettings.Label" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
   <data name="Cancel" xml:space="preserve">
@@ -710,7 +710,7 @@
     <value>Kriterien</value>
   </data>
   <data name="CategoriesPageTitle" xml:space="preserve">
-    <value>Rezepte</value>
+    <value>Kategorien</value>
   </data>
   <data name="CreateTagTitle" xml:space="preserve">
     <value>Neues Kriterium</value>
@@ -874,7 +874,7 @@
   <data name="ExportDatabase.Text" xml:space="preserve">
     <value>Datenbank exportieren</value>
   </data>
-  <data name="ExportImportText.Text" xml:space="preserve">
+  <data name="ExportImport.Label" xml:space="preserve">
     <value>Daten exportieren / importieren</value>
   </data>
   <data name="HistoryEntriesCount.Text" xml:space="preserve">
@@ -921,5 +921,14 @@
   </data>
   <data name="ImportSuccess" xml:space="preserve">
     <value>Die Datenbank wurde erfolgreich importiert</value>
+  </data>
+  <data name="ScanForCaloriesButton.Label" xml:space="preserve">
+    <value>Kalorienangaben ermitteln</value>
+  </data>
+  <data name="EditMode.Label" xml:space="preserve">
+    <value>Änderungs-modus</value>
+  </data>
+  <data name="ScanAllRecipesQuestion" xml:space="preserve">
+    <value>Die Untersuchung sehr vieler Rezepte nach Kalorienangaben kann eine Weile dauern. Sollen nun alle Rezepte durchsucht werden?</value>
   </data>
 </root>

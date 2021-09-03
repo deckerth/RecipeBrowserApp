@@ -350,7 +350,20 @@ Public Class RecipeFolder
             Return matches.First()
         Else
             Dim newGroup As New RecipesGroup() With {.Key = title}
-            GroupedRecipes.Add(newGroup)
+            ' Find insert position example: list = [b, d] :
+            '                                       title = a -> index = 0
+            '                                       title = c -> index = 1
+            '                                       title = e -> index = 2
+
+            Dim index = 0
+            For Each g In GroupedRecipes
+                If g.Key > title Then
+                    Exit For
+                Else
+                    index += 1
+                End If
+            Next
+            GroupedRecipes.Insert(index, newGroup)
             Return newGroup
         End If
         Return Nothing

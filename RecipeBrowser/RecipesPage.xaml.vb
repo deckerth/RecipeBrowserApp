@@ -965,6 +965,12 @@ Public NotInheritable Class RecipesPage
         Me.Frame.Navigate(GetType(CategoryOverview))
     End Sub
 
+    Private Sub CommandBar_Opened(sender As Object, e As Object)
+        Dim cb = DirectCast(sender, CommandBar)
+        If cb IsNot Nothing Then
+            cb.Background.Opacity = 1.0
+        End If
+    End Sub
 #End Region
 
 #Region "LogAsCooked"

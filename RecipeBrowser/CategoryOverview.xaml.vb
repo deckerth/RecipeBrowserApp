@@ -51,7 +51,9 @@ Public NotInheritable Class CategoryOverview
 
     Public Sub New()
         InitializeComponent()
-        RenderSearchElements(VisualStateGroup.CurrentState)
+
+        RecipeAutoSuggestBox.Visibility = App.AutoSuggestBoxVisibility
+        RecipeSearchBox.Visibility = App.SearchBoxVisibility
 
         Me._navigationHelper = New Common.NavigationHelper(Me)
         AddHandler Me._navigationHelper.LoadState, AddressOf NavigationHelper_LoadState
@@ -95,7 +97,6 @@ Public NotInheritable Class CategoryOverview
                 Dim rootFolder = Await categories.GetStorageFolderAsync("")
                 searchSuggestions.Locations.Add(rootFolder)
                 RecipeSearchBox.SetLocalContentSuggestionSettings(searchSuggestions)
-                LeftRecipeSearchBox.SetLocalContentSuggestionSettings(searchSuggestions)
             Catch ex As Exception
             End Try
 
@@ -156,63 +157,6 @@ Public NotInheritable Class CategoryOverview
 
 #End Region
 
-#Region "VisualStates"
-    Private Sub RenderSearchElements(state As VisualState)
-        If state.Equals(SmallPhones) Then
-            LeftRecipeAutoSuggestBox.SetValue(MarginProperty, New Thickness(0, 20, 90, 0))
-            LeftRecipeSearchBox.SetValue(MarginProperty, New Thickness(0, 20, 90, 20))
-            LeftRecipeAutoSuggestBox.Width = 250
-            LeftRecipeSearchBox.Width = 250
-            LeftEditMode.Visibility = Visibility.Visible
-            If LeftEditMode.IsChecked Then
-                LeftRecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-                LeftRecipeSearchBox.Visibility = Visibility.Collapsed
-            Else
-                LeftRecipeAutoSuggestBox.Visibility = App.AutoSuggestBoxVisibility
-                LeftRecipeSearchBox.Visibility = App.SearchBoxVisibility
-            End If
-            EditMode.Visibility = Visibility.Collapsed
-            RecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            RecipeSearchBox.Visibility = Visibility.Collapsed
-            SearchRequestButton.Visibility = Visibility.Collapsed
-            pageTitle.Visibility = Visibility.Collapsed
-        ElseIf state.Equals(Phones) Then
-            LeftRecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            LeftRecipeSearchBox.Visibility = Visibility.Visible
-            LeftEditMode.Visibility = Visibility.Visible
-            LeftRecipeAutoSuggestBox.SetValue(MarginProperty, New Thickness(0, 20, 40, 10))
-            LeftRecipeSearchBox.SetValue(MarginProperty, New Thickness(0, 20, 40, 10))
-            EditMode.Visibility = Visibility.Collapsed
-            RecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            RecipeSearchBox.Visibility = Visibility.Collapsed
-            SearchRequestButton.Visibility = Visibility.Collapsed
-            pageTitle.Visibility = Visibility.Collapsed
-        ElseIf state.Equals(Tablet) Then
-            LeftRecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            LeftEditMode.Visibility = Visibility.Collapsed
-            LeftRecipeSearchBox.Visibility = Visibility.Collapsed
-            RecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            RecipeSearchBox.Visibility = Visibility.Collapsed
-            EditMode.Visibility = Visibility.Visible
-            SearchRequestButton.Visibility = Visibility.Visible
-            pageTitle.Visibility = Visibility.Visible
-        Else
-            LeftRecipeAutoSuggestBox.Visibility = Visibility.Collapsed
-            LeftEditMode.Visibility = Visibility.Collapsed
-            LeftRecipeSearchBox.Visibility = Visibility.Collapsed
-            EditMode.Visibility = Visibility.Visible
-            RecipeAutoSuggestBox.Visibility = App.AutoSuggestBoxVisibility
-            RecipeSearchBox.Visibility = App.SearchBoxVisibility
-            SearchRequestButton.Visibility = Visibility.Collapsed
-            pageTitle.Visibility = Visibility.Visible
-        End If
-    End Sub
-
-    Private Sub VisualStateGroup_CurrentStateChanged(sender As Object, e As VisualStateChangedEventArgs) Handles VisualStateGroup.CurrentStateChanged
-        RenderSearchElements(e.NewState)
-    End Sub
-#End Region
-
 #Region "Search"
     Private Sub SearchBox_QuerySubmitted(sender As SearchBox, args As SearchBoxQuerySubmittedEventArgs)
 
@@ -239,8 +183,6 @@ Public NotInheritable Class CategoryOverview
 
         SearchRequestButton.Visibility = Visibility.Collapsed
         pageTitle.Visibility = Visibility.Collapsed
-        LeftRecipeSearchBox.Visibility = App.SearchBoxVisibility
-        LeftRecipeAutoSuggestBox.Visibility = App.AutoSuggestBoxVisibility
 
     End Sub
 
@@ -305,13 +247,7 @@ Public NotInheritable Class CategoryOverview
     End Sub
 
     Private Sub HandleEditMode()
-        LeftEditMode.IsChecked = EditMode.IsChecked
         SetEditMode(EditMode.IsChecked)
-    End Sub
-
-    Private Sub HandleLeftEditMode()
-        EditMode.IsChecked = LeftEditMode.IsChecked
-        SetEditMode(LeftEditMode.IsChecked)
     End Sub
 
     Private Cancelled As Boolean
@@ -360,12 +296,10 @@ Public NotInheritable Class CategoryOverview
             Await RecipeFolders.Current.DeleteFolder(tile)
             If DisplayModeCategories Then
                 If Categories.Folders.Count <= 2 Then ' Templates and plus
-                    LeftEditMode.IsChecked = False
                     EditMode.IsChecked = False
                 End If
             Else
                 If Categories.TagFolders.Count <= 1 Then ' Plus
-                    LeftEditMode.IsChecked = False
                     EditMode.IsChecked = False
                 End If
             End If
@@ -401,10 +335,6 @@ Public NotInheritable Class CategoryOverview
 
     Private Sub EditMode_Checked(sender As Object, e As RoutedEventArgs) Handles EditMode.Checked
         HandleEditMode()
-    End Sub
-
-    Private Sub LeftEditMode_Checked(sender As Object, e As RoutedEventArgs) Handles LeftEditMode.Checked, LeftEditMode.Unchecked
-        HandleLeftEditMode()
     End Sub
 
     Private Async Function HandleEditCategory() As Task
@@ -509,11 +439,6 @@ Public NotInheritable Class CategoryOverview
     Private Async Sub AppSettings_Click(sender As Object, e As RoutedEventArgs) Handles AppSettings.Click
         Await HandleAppSettings()
     End Sub
-
-    Private Async Sub SettingsText_TappedAsync(sender As Object, e As TappedRoutedEventArgs) Handles SettingsText.Tapped
-        Await HandleAppSettings()
-    End Sub
-
 #End Region
 
 #Region "Help"
@@ -572,7 +497,40 @@ Public NotInheritable Class CategoryOverview
         Await MetaDataDatabase.Current.ImportMetadataAsync()
     End Sub
 
+    Private Sub CommandBar_Opened(sender As Object, e As Object)
+        Dim cb = DirectCast(sender, CommandBar)
+        If cb IsNot Nothing Then
+            cb.Background.Opacity = 1.0
+        End If
+    End Sub
+#End Region
+
+#Region "Calories scan"
     Private Async Sub ScanForCalories_Click(sender As Object, e As RoutedEventArgs)
+        Cancelled = False
+        Dim dialog = New MessageDialog(App.Texts.GetString("ScanAllRecipesQuestion"))
+
+        ' Add buttons and set their callbacks
+        dialog.Commands.Add(New UICommand(App.Texts.GetString("Yes"), Sub(command)
+                                                                          Cancelled = False
+                                                                      End Sub))
+
+        dialog.Commands.Add(New UICommand(App.Texts.GetString("No"), Sub(command)
+                                                                         Cancelled = True
+                                                                     End Sub))
+
+        ' Set the command that will be invoked by default
+        dialog.DefaultCommandIndex = 1
+
+        ' Set the command to be invoked when escape is pressed
+        dialog.CancelCommandIndex = 1
+
+        Await dialog.ShowAsync()
+
+        If Cancelled Then
+            Return
+        End If
+
         Dim scanProgress = New ScanForCaloriesProgressDialog
         Await scanProgress.ShowAsync()
     End Sub
