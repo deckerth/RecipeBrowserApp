@@ -928,4 +928,7 @@
   <data name="ScanAllRecipesQuestion" xml:space="preserve">
     <value>Scanning a large number of recipes may take a while. Do you want to scan all recipes now?</value>
   </data>
+  <data name="ZoomButtonsSwitch.Header" xml:space="preserve">
+    <value>Display buttons for zooming</value>
+  </data>
 </root>

@@ -326,15 +326,14 @@ Public NotInheritable Class RecipesPage
                         itemDetail.Visibility = Visibility.Visible
                         RecipeViewer.Visibility = Visibility.Visible
                         RecipeSourceViewer.Visibility = Visibility.Collapsed
-                        RecipeViewer.Source = selectedItem.RenderedPage
+                        RecipeViewer.Source = selectedItem.RenderedPage.Image
                     ElseIf selectedItem.RecipeSource IsNot Nothing Then
                         ' Display RTF file
                         itemDetail.Visibility = Visibility.Visible
                         RecipeViewer.Visibility = Visibility.Collapsed
                         RecipeSourceViewer.Visibility = Visibility.Visible
                         Try
-                            Dim randAccStream As Windows.Storage.Streams.IRandomAccessStream =
-                              Await selectedItem.RecipeSource.OpenAsync(Windows.Storage.FileAccessMode.Read)
+                            Dim randAccStream As IRandomAccessStream = Await selectedItem.RecipeSource.OpenAsync(FileAccessMode.Read)
                             RecipeSourceViewer.Document.LoadFromStream(Windows.UI.Text.TextSetOptions.FormatRtf, randAccStream)
                         Catch ex As Exception
                         End Try
@@ -450,27 +449,55 @@ Public NotInheritable Class RecipesPage
 
 #Region "PageControl"
     Private Sub RenderPageControl(ByRef CurrentRecipe As Recipe)
-
-        If CurrentRecipe Is Nothing Then
+        'visibility
+        If CurrentRecipe Is Nothing OrElse CurrentRecipe.RenderedPage Is Nothing Then
             pageControl.Visibility = Visibility.Collapsed
+        ElseIf App.ShowZoomButtons Then
+            pageControl.Visibility = If(CurrentRecipe.NoOfPages > 1, Visibility.Visible, If(CurrentRecipe.RenderedPage.RenderingOptions IsNot Nothing, Visibility.Visible, Visibility.Collapsed))
         Else
-            If CurrentRecipe.NoOfPages > 1 Then
-                pageNumber.Text = CurrentRecipe.CurrentPage.ToString + "/" + CurrentRecipe.NoOfPages.ToString
-                pageControl.Visibility = Visibility.Visible
-                If CurrentRecipe.CurrentPage = 1 Then
-                    prevPage.IsEnabled = False
-                Else
-                    prevPage.IsEnabled = True
+            pageControl.Visibility = If(CurrentRecipe.NoOfPages > 1, Visibility.Visible, Visibility.Collapsed)
+        End If
 
-                End If
-                If CurrentRecipe.CurrentPage = CurrentRecipe.NoOfPages Then
-                    nextPage.IsEnabled = False
-                Else
-                    nextPage.IsEnabled = True
-                End If
+        If pageControl.Visibility = Visibility.Collapsed Then
+            Return
+        End If
+
+        ' paging
+        If CurrentRecipe.NoOfPages > 1 Then
+            pageNumber.Text = CurrentRecipe.CurrentPage.ToString + "/" + CurrentRecipe.NoOfPages.ToString
+            If CurrentRecipe.CurrentPage = 1 Then
+                prevPage.IsEnabled = False
             Else
-                pageControl.Visibility = Visibility.Collapsed
+                prevPage.IsEnabled = True
             End If
+            If CurrentRecipe.CurrentPage = CurrentRecipe.NoOfPages Then
+                nextPage.IsEnabled = False
+            Else
+                nextPage.IsEnabled = True
+            End If
+            pageNumber.Visibility = Visibility.Visible
+            prevPage.Visibility = Visibility.Visible
+            nextPage.Visibility = Visibility.Visible
+        Else
+            pageNumber.Visibility = Visibility.Collapsed
+            prevPage.Visibility = Visibility.Collapsed
+            nextPage.Visibility = Visibility.Collapsed
+        End If
+
+        ' separator
+        If CurrentRecipe.NoOfPages > 1 AndAlso App.ShowZoomButtons Then
+            pageControlSeparator.Visibility = Visibility.Visible
+        Else
+            pageControlSeparator.Visibility = Visibility.Collapsed
+        End If
+
+        ' zooming
+        If App.ShowZoomButtons AndAlso CurrentRecipe.RenderedPage.RenderingOptions IsNot Nothing Then
+            enlarge.Visibility = Visibility.Visible
+            shrink.Visibility = Visibility.Visible
+        Else
+            enlarge.Visibility = Visibility.Collapsed
+            shrink.Visibility = Visibility.Collapsed
         End If
 
     End Sub
@@ -482,7 +509,7 @@ Public NotInheritable Class RecipesPage
         End If
         DisableControls()
         Await _lastSelectedItem.PreviousPage()
-        RecipeViewer.Source = _lastSelectedItem.RenderedPage
+        RecipeViewer.Source = _lastSelectedItem.RenderedPage.Image
         EnableControls()
 
     End Sub
@@ -494,8 +521,35 @@ Public NotInheritable Class RecipesPage
         End If
         DisableControls()
         Await _lastSelectedItem.NextPage()
-        RecipeViewer.Source = _lastSelectedItem.RenderedPage
+        RecipeViewer.Source = _lastSelectedItem.RenderedPage.Image
         EnableControls()
+    End Sub
+
+    Private Async Sub ZoomIn(sender As Object, e As RoutedEventArgs) Handles enlarge.Click
+        _lastSelectedItem.RenderingOptions.DestinationHeight *= 1.5
+        _lastSelectedItem.RenderingOptions.DestinationWidth *= 1.5
+        Await _lastSelectedItem.RenderPageAsync()
+        RecipeViewer.Source = _lastSelectedItem.RenderedPage.Image
+    End Sub
+
+    Private Async Sub ZoomOut(sender As Object, e As RoutedEventArgs) Handles shrink.Click
+        _lastSelectedItem.RenderingOptions.DestinationHeight /= 1.5
+        _lastSelectedItem.RenderingOptions.DestinationWidth /= 1.5
+        Await _lastSelectedItem.RenderPageAsync()
+        RecipeViewer.Source = _lastSelectedItem.RenderedPage.Image
+    End Sub
+
+    Private Sub RecipeViewer_ManipulationStarted(sender As Object, e As ManipulationStartedRoutedEventArgs)
+        RecipeViewer.Opacity = 0.4
+    End Sub
+
+    Private Sub RecipeViewer_ManipulationDelta(sender As Object, e As ManipulationDeltaRoutedEventArgs)
+        RecipeViewer_Transform.TranslateX += e.Delta.Translation.X
+        RecipeViewer_Transform.TranslateY += e.Delta.Translation.Y
+    End Sub
+
+    Private Sub RecipeViewer_ManipulationCompleted(sender As Object, e As ManipulationCompletedRoutedEventArgs)
+        RecipeViewer.Opacity = 1
     End Sub
 
 #End Region

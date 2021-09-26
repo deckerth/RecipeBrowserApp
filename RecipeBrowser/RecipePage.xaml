@@ -404,20 +404,49 @@
         		                ScrollViewer.ZoomMode="Enabled"  >
                             <StackPanel Orientation="Vertical">
                                 <Image x:Name="RecipeViewer"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Visible" />
+                                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                       ManipulationMode="TranslateX, TranslateY,System"
+                                       ManipulationStarted="RecipeViewer_ManipulationStarted"
+                                       ManipulationDelta="RecipeViewer_ManipulationDelta"
+                                       ManipulationCompleted="RecipeViewer_ManipulationCompleted">
+                                    <Image.RenderTransform>
+                                        <CompositeTransform x:Name="RecipeViewer_Transform" />
+                                    </Image.RenderTransform>
+                                </Image>
                                 <RichEditBox x:Name="RecipeSourceViewer" Visibility="Collapsed" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top" Background="White" Style="{StaticResource RTFViewerStyle}" />
                             </StackPanel>
                         </ScrollViewer>
 
                         <StackPanel x:Name="pageControl"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Grid.Row="1"
-                                    Orientation="Horizontal"
-                                    Background="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" Opacity="0.5" Visibility="Collapsed">
-                            <AppBarButton x:Name="prevPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Icon="Back" Margin="0,10,0,0"/>
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Background="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" Opacity="0.5" Visibility="Collapsed">
+                            <AppBarButton x:Name="shrink" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Margin="0,10,0,0">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE71F;" Foreground="Black"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton x:Name="enlarge" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Margin="0,10,0,0">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE8A3;" Foreground="Black"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+
+                            <AppBarSeparator x:Name="pageControlSeparator"/>
+
+                            <AppBarButton x:Name="prevPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Margin="0,10,0,0">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE760;" Foreground="Black"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
                             <TextBox x:Name="pageNumber" TextWrapping="Wrap" Text="1/2" IsReadOnly="True" PlaceholderText="2/2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <AppBarButton x:Name="nextPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Icon="Forward" Margin="0,10,0,0"/>
+                            <AppBarButton x:Name="nextPage" HorizontalAlignment="Center" Label="" VerticalAlignment="Center" Margin="0,10,0,0">
+                                <AppBarButton.Icon>
+                                    <FontIcon Glyph="&#xE761;" Foreground="Black"/>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
                         </StackPanel>
                     </Grid>
 

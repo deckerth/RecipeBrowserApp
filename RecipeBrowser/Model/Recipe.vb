@@ -5,6 +5,7 @@ Imports System.Text
 Imports Windows.Storage.Streams
 Imports RecipeBrowser.ViewModels
 Imports RecipeBrowser.Common
+Imports Windows.Data.Pdf
 
 Public Class Recipe
     Implements INotifyPropertyChanged
@@ -175,15 +176,17 @@ Public Class Recipe
     Public Property RecipeContentVisibility As Visibility = Visibility.Visible
     Public Property HeaderContentVisibility As Visibility = Visibility.Collapsed
 
-    Public Property File As Windows.Storage.StorageFile
-    Public ReadOnly Property RenderedPage As BitmapImage
+    Public Property File As StorageFile
+    Public ReadOnly Property RenderedPage As RenderedPdf
         Get
             Return _RenderedPage
         End Get
     End Property
 
-    Public Property Notes As Windows.Storage.StorageFile
-    Public Property RecipeSource As Windows.Storage.StorageFile
+    Public Property RenderingOptions As New PdfPageRenderOptions()
+
+    Public Property Notes As StorageFile
+    Public Property RecipeSource As StorageFile
 
     Public Property Pictures As ObservableCollection(Of RecipeImage)
 
@@ -198,9 +201,14 @@ Public Class Recipe
     End Sub
 
 #Region "Page Rendering"
-    Private _RenderedPage As BitmapImage
-    Private _RenderedPages As New List(Of BitmapImage)
-    Private _Document As Windows.Data.Pdf.PdfDocument
+    Public Class RenderedPdf
+        Public Property Image As BitmapImage
+        Public Property RenderingOptions As New PdfPageRenderOptions()
+    End Class
+
+    Private _RenderedPage As RenderedPdf
+    Private _RenderedPages As New List(Of RenderedPdf)
+    Private _Document As PdfDocument
 
     Private _PageRendererRunning As Boolean
 
@@ -260,119 +268,53 @@ Public Class Recipe
 
     End Sub
 
-    Public Async Function RenderPageAsyncOld2() As Task
+    Public Async Function RenderPageAsync() As Task
 
-        'If App.Logger.IsEnabled() Then
-        '    Return
-        '    'DEBUGCODE
-        'End If
-
-        If _Document Is Nothing Or RenderedPageNumber = CurrentPage - 1 Or _PageRendererRunning Then
+        If _Document Is Nothing OrElse _PageRendererRunning Then
             Return
+        End If
+
+        If RenderedPageNumber = CurrentPage - 1 AndAlso (_RenderedPage.RenderingOptions Is Nothing OrElse _RenderedPage.RenderingOptions.Equals(RenderingOptions)) Then
+            Return  ' nothing to do
         End If
 
         RenderedPageNumber = CurrentPage - 1
 
         If _RenderedPages.Count >= CurrentPage Then
             _RenderedPage = _RenderedPages.Item(RenderedPageNumber)
-            Return
+            If _RenderedPage.RenderingOptions Is Nothing OrElse _RenderedPage.RenderingOptions.Equals(RenderingOptions) Then
+                Return ' nothing to do
+            End If
+        Else
+            _RenderedPage = New RenderedPdf
         End If
 
         _PageRendererRunning = True
 
         Dim errorOccured As Boolean = False
         Dim permissionDenied As Boolean = False
-
         Try
-            Dim filename = Guid.NewGuid().ToString() + ".png"
-
-            Dim page As Windows.Data.Pdf.PdfPage = _Document.GetPage(RenderedPageNumber)
-            Await page.PreparePageAsync()
-            Dim tempFolder = Windows.Storage.ApplicationData.Current.LocalFolder
-            Dim tempFile As Windows.Storage.StorageFile = Await tempFolder.CreateFileAsync(filename, Windows.Storage.CreationCollisionOption.ReplaceExisting)
-            Using tempStream As Streams.IRandomAccessStream = Await tempFile.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)
-                App.Logger.Write("Rendering:" + filename)
+            Using page As PdfPage = _Document.GetPage(RenderedPageNumber)
+                Dim memoryStream = New InMemoryRandomAccessStream()
+                Await page.PreparePageAsync()
+                If RenderingOptions.DestinationHeight = 0 Then
+                    RenderingOptions.DestinationHeight = page.Size.Height
+                    RenderingOptions.DestinationWidth = page.Size.Width
+                End If
+                App.Logger.Write("Rendering:" + Name + " Page " + RenderedPageNumber.ToString)
                 Try
-                    Await page.RenderToStreamAsync(tempStream)
+                    Await page.RenderToStreamAsync(memoryStream, RenderingOptions)
                 Catch ex As Exception
                     App.Logger.WriteException("Render pdf failed", ex)
                 End Try
-                Await tempStream.FlushAsync()
-            End Using
-            page.Dispose()
-
-            Dim renderedPicture = Await Windows.Storage.ApplicationData.Current.LocalFolder.GetFileAsync(filename)
-
-            If renderedPicture IsNot Nothing Then
-
-                ' Open a stream for the selected file.
-                Dim fileStream As Streams.IRandomAccessStream = Await renderedPicture.OpenAsync(Windows.Storage.FileAccessMode.Read)
                 ' Set the image source to the selected bitmap.
-                _RenderedPage = New Windows.UI.Xaml.Media.Imaging.BitmapImage()
-                Await RenderedPage.SetSourceAsync(fileStream)
-                fileStream.Dispose()
-                _RenderedPages.Add(_RenderedPage)
-            End If
-        Catch ex1 As System.UnauthorizedAccessException
-            permissionDenied = True
-            App.Logger.WriteException("Access image failed (not authorized)", ex1)
-            Exit Try
-        Catch ex As Exception
-            App.Logger.WriteException("Access image failed", ex)
-            errorOccured = True
-            Exit Try
-        End Try
-
-        _PageRendererRunning = False
-
-        'If errorOccured Then
-        '    Dim popup = New Windows.UI.Popups.MessageDialog("Das Rezept konnte nicht geladen werden.")
-        '    Await popup.ShowAsync()
-        '    Return Nothing
-        'ElseIf permissionDenied Then
-        '    Dim popup = New Windows.UI.Popups.MessageDialog("Der Zugriff auf das Rezept wurde verweigert.")
-        '    Await popup.ShowAsync()
-        '    Return Nothing
-        'End If
-
-    End Function
-
-    Public Async Function RenderPageAsync() As Task
-
-        If _Document Is Nothing Or RenderedPageNumber = CurrentPage - 1 Or _PageRendererRunning Then
-            Return
-        End If
-
-        RenderedPageNumber = CurrentPage - 1
-
-        If _RenderedPages.Count >= CurrentPage Then
-            _RenderedPage = _RenderedPages.Item(RenderedPageNumber)
-            Return
-        End If
-
-        _PageRendererRunning = True
-
-        Dim errorOccured As Boolean = False
-        Dim permissionDenied As Boolean = False
-
-        Try
-            Dim page As Windows.Data.Pdf.PdfPage = _Document.GetPage(RenderedPageNumber)
-            Dim memoryStream = New InMemoryRandomAccessStream()
-            Await page.PreparePageAsync()
-            App.Logger.Write("Rendering:" + Name + " Page " + RenderedPageNumber.ToString)
-            Try
-                Await page.RenderToStreamAsync(memoryStream)
-            Catch ex As Exception
-                App.Logger.WriteException("Render pdf failed", ex)
-            End Try
-            page.Dispose()
-
-            ' Set the image source to the selected bitmap.
-            _RenderedPage = New Windows.UI.Xaml.Media.Imaging.BitmapImage()
-            Await RenderedPage.SetSourceAsync(memoryStream)
-            'memoryStream.Dispose()
+                _RenderedPage.Image = New BitmapImage()
+                _RenderedPage.RenderingOptions.DestinationHeight = RenderingOptions.DestinationHeight  ' do not copy the reference!
+                _RenderedPage.RenderingOptions.DestinationWidth = RenderingOptions.DestinationWidth
+                Await _RenderedPage.Image.SetSourceAsync(memoryStream)
+            End Using
             _RenderedPages.Add(_RenderedPage)
-        Catch ex1 As System.UnauthorizedAccessException
+        Catch ex1 As UnauthorizedAccessException
             permissionDenied = True
             App.Logger.WriteException("Access image failed (not authorized)", ex1)
             Exit Try

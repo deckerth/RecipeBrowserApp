@@ -107,9 +107,9 @@ Public Class RecipeFolders
 
     End Function
 
-    Public Async Function GetRootFolderAsync() As Task(Of Windows.Storage.StorageFolder)
+    Public Async Function GetRootFolderAsync() As Task(Of StorageFolder)
 
-        Dim localSettings = Windows.Storage.ApplicationData.Current.LocalSettings
+        Dim localSettings = ApplicationData.Current.LocalSettings
 
         Dim mruToken = localSettings.Values("RootFolder")
 
@@ -117,7 +117,7 @@ Public Class RecipeFolders
             Return Nothing
         Else
             Try
-                Return Await Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(mruToken)
+                Return Await AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.GetFolderAsync(mruToken)
             Catch ex As Exception
                 Return Nothing
             End Try

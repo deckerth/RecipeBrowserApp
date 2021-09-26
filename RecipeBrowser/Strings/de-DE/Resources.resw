@@ -931,4 +931,7 @@
   <data name="ScanAllRecipesQuestion" xml:space="preserve">
     <value>Die Untersuchung sehr vieler Rezepte nach Kalorienangaben kann eine Weile dauern. Sollen nun alle Rezepte durchsucht werden?</value>
   </data>
+  <data name="ZoomButtonsSwitch.Header" xml:space="preserve">
+    <value>Zoom-Schaltflächen anzeigen</value>
+  </data>
 </root>

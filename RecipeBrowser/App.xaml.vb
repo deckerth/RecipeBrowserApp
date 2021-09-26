@@ -1,5 +1,6 @@
 ﻿Imports Windows.ApplicationModel.Background
 Imports Windows.ApplicationModel.Resources
+Imports Windows.Storage
 Imports Windows.UI.Core
 ''' <summary>
 ''' Stellt das anwendungsspezifische Verhalten bereit, um die Standardanwendungsklasse zu ergänzen.
@@ -7,19 +8,20 @@ Imports Windows.UI.Core
 NotInheritable Class App
     Inherits Application
 
-    Public Shared Texts As ResourceLoader = New Windows.ApplicationModel.Resources.ResourceLoader()
+    Public Shared Texts As ResourceLoader = New ResourceLoader()
     Public Shared Logger As Logging = New Logging()
-    Public Shared AppVersion As String = "202109"
+    Public Shared AppVersion As String = "20210926"
     Public Shared SearchBoxIsSupported As Boolean
     Public Shared SearchBoxVisibility As Visibility = Visibility.Collapsed
     Public Shared AutoSuggestBoxVisibility As Visibility = Visibility.Collapsed
     Public Const ApplicationThemeLight As Integer = 0
     Public Const ApplicationThemeDark As Integer = 1
     Public Shared SelectedApplicationTheme As Integer = 0
+    Public Shared ShowZoomButtons As Boolean = True
 
     Public Sub New()
 
-        Dim settings = Windows.Storage.ApplicationData.Current.LocalSettings
+        Dim settings = ApplicationData.Current.LocalSettings
 
         SelectedApplicationTheme = settings.Values("ApplicationTheme")
 
@@ -66,7 +68,7 @@ NotInheritable Class App
             ' Frame erstellen, der als Navigationskontext fungiert und zum Parameter der ersten Seite navigieren
             rootFrame = New Frame()
 
-            RecipeBrowser.Common.SuspensionManager.RegisterFrame(rootFrame, "appFrame")
+            Common.SuspensionManager.RegisterFrame(rootFrame, "appFrame")
 
             ' Standardsprache festlegen
             rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages(0)
@@ -79,7 +81,7 @@ NotInheritable Class App
                 If rootFrame.Content Is Nothing Then
                     Logger.Write("rootFrame.Content Is Nothing")
                 End If
-                Await RecipeBrowser.Common.SuspensionManager.RestoreAsync()
+                Await Common.SuspensionManager.RestoreAsync()
                 If rootFrame.Content Is Nothing Then
                     Logger.Write("rootFrame.Content Is still Nothing")
                 End If
@@ -88,6 +90,7 @@ NotInheritable Class App
             Window.Current.Content = rootFrame
         End If
 
+        ' Search box
         Try
             Dim searchSuggestions = New Windows.ApplicationModel.Search.LocalContentSuggestionSettings()
             SearchBoxIsSupported = True
@@ -96,10 +99,22 @@ NotInheritable Class App
             AutoSuggestBoxVisibility = Visibility.Visible
         End Try
 
+        ' Visibility of zoom buttons
+        Dim localSettings = ApplicationData.Current.LocalSettings
+        Dim zoomButtonsSetting As String = localSettings.Values("ZoomButtons")
+        If zoomButtonsSetting Is Nothing Then
+            Dim touchCapabilities As New Windows.Devices.Input.TouchCapabilities()
+            ShowZoomButtons = Not touchCapabilities.TouchPresent
+        Else
+            ShowZoomButtons = zoomButtonsSetting.Equals(True.ToString)
+        End If
+
+        ' Load categories
         If categories IsNot Nothing AndAlso Not categories.ContentLoaded Then
             Await categories.LoadAsync()
         End If
 
+        ' Timers
         If Timers.Factory.Current Is Nothing Then
             Logger.Write("Creating timers..")
 

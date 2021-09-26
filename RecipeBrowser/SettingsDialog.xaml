@@ -18,6 +18,7 @@
                 <ComboBoxItem x:Name="ThemeLight" x:Uid="ThemeLight"/>
                 <ComboBoxItem x:Name="ThemeDark" x:Uid="ThemeDark"/>
             </ComboBox>
+            <ToggleSwitch x:Uid="ZoomButtonsSwitch" x:Name="ZoomButtonsSwitch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,20,0,0"/>
             <Button x:Name="ChangeRootFolder" x:Uid="ChangeRootFolder" Content="Startordner ändern" Margin="0,20,0,0"/>
             <ToggleSwitch x:Uid="LoggingSwitch" x:Name="LoggingEnabledSwitch" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,20,0,0"/>
         </StackPanel>

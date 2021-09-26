@@ -1,5 +1,7 @@
 ﻿' Die Elementvorlage "Inhaltsdialog" ist unter http://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
+Imports Windows.Storage
+
 Public NotInheritable Class SettingsDialog
     Inherits ContentDialog
 
@@ -10,6 +12,7 @@ Public NotInheritable Class SettingsDialog
 
         ' Fügen Sie Initialisierungen nach dem InitializeComponent()-Aufruf hinzu.
         LoggingEnabledSwitch.IsOn = App.Logger.IsEnabled
+        ZoomButtonsSwitch.IsOn = App.ShowZoomButtons
 
         Select Case App.SelectedApplicationTheme
             Case App.ApplicationThemeDark
@@ -52,5 +55,11 @@ Public NotInheritable Class SettingsDialog
 
     Private Sub LoggingEnabledSwitch_Toggled(sender As Object, e As RoutedEventArgs) Handles LoggingEnabledSwitch.Toggled
         App.Logger.SetActive(LoggingEnabledSwitch.IsOn)
+    End Sub
+
+    Private Sub ZoomButtonsSwitch_Toggled(sender As Object, e As RoutedEventArgs) Handles ZoomButtonsSwitch.Toggled
+        Dim localSettings = ApplicationData.Current.LocalSettings
+        localSettings.Values("ZoomButtons") = ZoomButtonsSwitch.IsOn.ToString
+        App.ShowZoomButtons = ZoomButtonsSwitch.IsOn
     End Sub
 End Class
