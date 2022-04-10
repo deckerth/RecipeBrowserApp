@@ -491,11 +491,12 @@
 
                 <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                     <AppBarButton x:Name="AppHelp"
-                                  Foreground="{StaticResource MenuBarForegroundBrush}">
-                        <AppBarButton.Icon>
-                            <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
-                        </AppBarButton.Icon>
-                    </AppBarButton>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe UI Symbol" 
+                                  FontSize="20" 
+                                  FontWeight="SemiBold"
+                                  Content="&#xE11B;" 
+                            />
                     <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -529,10 +530,6 @@
                             <AppBarButton x:Uid="FontFormatting" x:Name="FontFormatting" Width="40"
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    FontSize="10" 
-                                    FontWeight="ExtraBold"
-                                    Content="     &#xE96E;"
                                     Flyout="{StaticResource FontFormattingFlyoutDef}"/>
                             <AppBarButton x:Uid="FontFormatting" x:Name="CompleteFontFormatting" Width="40"
                                     VerticalContentAlignment="Center"
@@ -562,10 +559,6 @@
                             <AppBarButton x:Uid="ParagraphFormatting" x:Name="ParagraphFormatting" Width="40"
                                     VerticalContentAlignment="Center"
                                     HorizontalContentAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    FontSize="10" 
-                                    FontWeight="ExtraBold"
-                                    Content="     &#xE96E;"
                                     Flyout="{StaticResource ParagraphFormattingFlyoutDef}"/>
 
                             <AppBarButton x:Uid="ParagraphFormatting" x:Name="ParagraphFormattingComplete" Width="40"
@@ -591,11 +584,7 @@
                             <AppBarSeparator/>
                             <AppBarButton x:Uid="ParagraphTemplatesButton" x:Name="ParagraphTemplates" Width="40"
                                     VerticalContentAlignment="Center"
-                                    HorizontalContentAlignment="Center"
-                                    FontFamily="Segoe MDL2 Assets" 
-                                    FontSize="10" 
-                                    FontWeight="ExtraBold"
-                                    Content="     &#xE96E;">
+                                    HorizontalContentAlignment="Center">
                                 <AppBarButton.Flyout>
                                     <Flyout x:Name="ParagraphTemplatesFlyout" >
                                         <Grid Margin="0" Padding="0">

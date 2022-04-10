@@ -206,11 +206,12 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp"
-                                  Foreground="{ThemeResource MenuBarForegroundBrush}">
-                            <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe UI Symbol" 
+                                  FontSize="20" 
+                                  FontWeight="SemiBold"
+                                  Content="&#xE11B;" 
+                            />
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18"
                     		VerticalAlignment="Center"

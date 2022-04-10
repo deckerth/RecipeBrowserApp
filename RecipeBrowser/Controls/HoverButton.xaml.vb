@@ -29,6 +29,18 @@ Public NotInheritable Class HoverButton
         End Set
     End Property
 
+    Public Shared ReadOnly ForegroundBrushProperty As DependencyProperty = DependencyProperty.Register("ForegroundBrush",
+                           GetType(Brush), GetType(HoverButton), New PropertyMetadata(New SolidColorBrush()))
+
+    Public Property ForegroundBrush As Brush
+        Get
+            Return DirectCast(GetValue(ForegroundBrushProperty), Brush)
+        End Get
+        Set(value As Brush)
+            SetValue(ForegroundBrushProperty, value)
+        End Set
+    End Property
+
     Public Shared ReadOnly PressedForegroundProperty As DependencyProperty = DependencyProperty.Register("SelectedForeground",
                            GetType(Brush), GetType(HoverButton), New PropertyMetadata(New SolidColorBrush()))
 
@@ -66,10 +78,8 @@ Public NotInheritable Class HoverButton
         End Set
     End Property
 
-    Private ForegroundBrush As Brush
     Private Entered As Boolean
     Private Sub FontIcon_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
-        ForegroundBrush = Foreground
         Foreground = SelectedForeground
         Entered = True
     End Sub
@@ -88,11 +98,6 @@ Public NotInheritable Class HoverButton
     End Sub
 
     Private Sub FontIcon_PointerReleased(sender As Object, e As PointerRoutedEventArgs)
-        If Entered Then
-            Foreground = SelectedForeground
-        Else
-            Foreground = ForegroundBrush
-        End If
+        Foreground = If(Entered, SelectedForeground, ForegroundBrush)
     End Sub
-
 End Class

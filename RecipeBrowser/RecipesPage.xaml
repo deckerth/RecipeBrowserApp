@@ -108,7 +108,7 @@
                                                PressedForeground="{StaticResource PinBrush}"
                                                HorizontalAlignment="Right" 
                                                Visibility="{x:Bind converters:BooleanOperator.VisAndNot(PointerEntered,IsFavorite), Mode=OneWay}" 
-                                               Command="{x:Bind AddToFavoritesCommand}"/>
+                                               Command="{x:Bind AddToFavoritesCommand}" ForegroundBrush="{StaticResource MenuBarForegroundBrush}"/>
                             <local:HoverButton x:Name="UnPinItemButton" 
                                                Grid.Column="1" 
                                                FontFamily="Segoe MDL2 Assets" 
@@ -116,6 +116,7 @@
                                                Glyph="&#xE77A;"
                                                SelectedForeground="{StaticResource UnPinBrush}" 
                                                PressedForeground="{StaticResource UnPinBrush}"
+                                               ForegroundBrush="{StaticResource MenuBarForegroundBrush}"
                                                HorizontalAlignment="Right" 
                                                Visibility="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" 
                                                Command="{x:Bind RemoveFromFavoritesCommand}"/>
@@ -204,6 +205,7 @@
                                                Glyph="&#xE77A;"
                                                SelectedForeground="{StaticResource UnPinBrush}" 
                                                PressedForeground="{StaticResource UnPinBrush}"
+                                               ForegroundBrush="{StaticResource MenuBarForegroundBrush}"
                                                HorizontalAlignment="Right" 
                                                Command="{x:Bind RemoveFromFavoritesCommand}"/>
                     </Grid>
@@ -273,6 +275,7 @@
                                                Glyph="&#xE718;"
                                                SelectedForeground="{StaticResource PinBrush}" 
                                                PressedForeground="{StaticResource PinBrush}"
+                                               ForegroundBrush="{StaticResource MenuBarForegroundBrush}"
                                                Visibility="{x:Bind converters:BooleanOperator.VisAndNot(PointerEntered,IsFavorite), Mode=OneWay}" 
                                                Command="{x:Bind AddToFavoritesCommand}"/>
                                     <local:HoverButton x:Name="UnPinItemButton" 
@@ -282,6 +285,7 @@
                                                Glyph="&#xE77A;"
                                                SelectedForeground="{StaticResource UnPinBrush}" 
                                                PressedForeground="{StaticResource UnPinBrush}"
+                                               ForegroundBrush="{StaticResource MenuBarForegroundBrush}"
                                                Visibility="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" 
                                                Command="{x:Bind RemoveFromFavoritesCommand}"/>
                                 </Grid>
@@ -575,7 +579,7 @@
                     <StackPanel x:Name="ShowFavoritesButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="ShowFavorites"
                                     FontFamily="Segoe UI Symbol" 
-                                    FontSize="18" 
+                                    FontSize="30" 
                                     Content="&#xE141;"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Center" 
@@ -726,11 +730,12 @@
 
                     <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp"
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" >
-                            <AppBarButton.Icon>
-                                <fa:FontAwesome Icon="Question" FontWeight="ExtraLight" FontSize="25"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
+                                  Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                  FontFamily="Segoe UI Symbol" 
+                                  FontSize="20" 
+                                  FontWeight="SemiBold"
+                                  Content="&#xE11B;" 
+                            />
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18" FontFamily="Segoe UI"
                     		VerticalAlignment="Center"
@@ -839,7 +844,7 @@
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top" 
                                     Orientation="Horizontal">
-                        <AppBarButton x:Name="changeSortOrder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Sort">
+                        <AppBarButton x:Name="changeSortOrder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Sort" Margin="0,15,0,0">
                             <Button.Flyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem x:Uid="NameAscending" Text="" Click="SortNameAscending_Click"/>
