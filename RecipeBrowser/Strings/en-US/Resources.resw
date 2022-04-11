@@ -931,4 +931,7 @@
   <data name="ZoomButtonsSwitch.Header" xml:space="preserve">
     <value>Display buttons for zooming</value>
   </data>
+  <data name="Font.Text" xml:space="preserve">
+    <value>Font</value>
+  </data>
 </root>

@@ -934,4 +934,7 @@
   <data name="ZoomButtonsSwitch.Header" xml:space="preserve">
     <value>Zoom-Schaltflächen anzeigen</value>
   </data>
+  <data name="Font.Text" xml:space="preserve">
+    <value>Schriftart</value>
+  </data>
 </root>
