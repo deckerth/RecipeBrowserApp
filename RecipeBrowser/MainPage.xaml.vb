@@ -2,6 +2,9 @@
 
 Imports Windows.Foundation.Metadata
 Imports Windows.UI.Core
+
+Imports RecipeBrowser.NavigationSystem
+
 ''' <summary>
 ''' Eine leere Seite, die eigenständig verwendet oder zu der innerhalb eines Rahmens navigiert werden kann.
 ''' </summary>
@@ -17,6 +20,8 @@ Public NotInheritable Class MainPage
         ' this class and override this behavior:
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(PropertyName))
     End Sub
+
+    Public Property NavigationTargets As ObservableCollection(Of BrowserPageBase)
 
     Public ReadOnly Property ShowTimersPaneButtonVisibility As Visibility
         Get
@@ -83,6 +88,18 @@ Public NotInheritable Class MainPage
         AllTimers = Timers.Factory.Current.Timers
         App.Logger.Write("Main page initialized, TimerController bound:" + (Timers.Controller.Current IsNot Nothing).ToString)
     End Sub
+
+#Region "Navigation"
+    Private Sub NavigationView_SelectionChanged(sender As Microsoft.UI.Xaml.Controls.NavigationView, args As Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs)
+        If args.IsSettingsSelected Then
+        Else
+            Dim selectedItem = DirectCast(args.SelectedItem, BrowserPage)
+            If selectedItem.TargetType IsNot Nothing Then
+                MainFrame.Navigate(selectedItem.TargetType)
+            End If
+        End If
+    End Sub
+#End Region
 
 #Region "Timers"
     Private Sub HideTimers_Click(sender As Object, e As RoutedEventArgs) Handles HideTimers.Click

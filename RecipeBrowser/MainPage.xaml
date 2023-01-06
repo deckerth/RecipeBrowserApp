@@ -6,6 +6,8 @@
     xmlns:timers="using:Timers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:fa="using:FontAwesome.UWP"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -76,6 +78,21 @@
                 <MediaElement x:Name="Ringer" Source="Assets/alarm-clock-01.mp3" AutoPlay="False"/>
             </StackPanel>
         </SplitView.Pane>
-        <Frame x:Name="MainFrame"/>
+        <!--<Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <muxc:NavigationView SelectionChanged="NavigationView_SelectionChanged">
+                <muxc:NavigationView.MenuItems>
+                    <muxc:NavigationViewItem x:Name="NavigationBar" Content="Home" Tag="CategoryOverview">
+                        <muxc:NavigationViewItem.Icon>
+                            <fa:FontAwesome Icon="Home" FontWeight="Medium"/>
+                        </muxc:NavigationViewItem.Icon>
+                    </muxc:NavigationViewItem>
+                </muxc:NavigationView.MenuItems>
+            </muxc:NavigationView>
+        </Grid>-->
+        <Frame Grid.Column="1" x:Name="MainFrame"/>
     </SplitView>
 </Page>

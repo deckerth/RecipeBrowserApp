@@ -27,7 +27,7 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>DE987D5FDFA19628D01BE7416623A1C567C4233C</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>9B6E04F9086C86270CE2BCE843CFF69F30BC5B50</PackageCertificateThumbprint>
     <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -173,6 +173,7 @@
     <Content Include="Assets\Template Modern 11.rtf" />
     <Content Include="Assets\Template Modern.rtf" />
     <None Include="MyRecipes_StoreKey.pfx" />
+    <None Include="RecipeBrowser_ManualKey.pfx" />
     <None Include="VisualStudioZertifikat.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
     <PRIResource Include="Strings\de-DE\Resources.resw" />
@@ -241,6 +242,7 @@
     <Compile Include="Model\SubCategory.vb" />
     <Compile Include="Model\TagRepository.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="NavigationSystem\BrowserPage.vb" />
     <Compile Include="PageWithTimers.vb" />
     <Compile Include="PDFScanner.vb" />
     <Compile Include="Persistency\CookedRecipe.vb" />

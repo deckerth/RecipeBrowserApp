@@ -984,7 +984,11 @@ Public NotInheritable Class RecipeEditor
         If CurrentRecipe.RecipeSource IsNot Nothing Then
             'Prevent updates to the remote version of the file until we 
             ' finish making changes And call CompleteUpdatesAsync.
-            CachedFileManager.DeferUpdates(CurrentRecipe.RecipeSource)
+            Try
+                CachedFileManager.DeferUpdates(file:=CurrentRecipe.RecipeSource)
+            Catch ex As Exception
+            End Try
+
             Dim randAccStream As Windows.Storage.Streams.IRandomAccessStream =
                   Await CurrentRecipe.RecipeSource.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)
             Texteditor.Document.SaveToStream(Windows.UI.Text.TextGetOptions.FormatRtf, randAccStream)
@@ -993,11 +997,14 @@ Public NotInheritable Class RecipeEditor
 
             'Let Windows know that we're finished changing the file so the 
             'other app can update the remote version of the file.
-            Dim status As FileUpdateStatus = Await CachedFileManager.CompleteUpdatesAsync(CurrentRecipe.RecipeSource)
-            If status <> FileUpdateStatus.Complete Then
-                Dim errorBox As Windows.UI.Popups.MessageDialog = New Windows.UI.Popups.MessageDialog(App.Texts.GetString("UnableToSaveNotes"))
-                Await errorBox.ShowAsync()
-            End If
+            Try
+                Dim status As FileUpdateStatus = Await CachedFileManager.CompleteUpdatesAsync(CurrentRecipe.RecipeSource)
+                If status <> FileUpdateStatus.Complete Then
+                    Dim errorBox As Windows.UI.Popups.MessageDialog = New Windows.UI.Popups.MessageDialog(App.Texts.GetString("UnableToSaveNotes"))
+                    Await errorBox.ShowAsync()
+                End If
+            Catch ex As Exception
+            End Try
         End If
 
     End Function
