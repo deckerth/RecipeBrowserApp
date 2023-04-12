@@ -937,4 +937,10 @@
   <data name="Font.Text" xml:space="preserve">
     <value>Schriftart</value>
   </data>
+  <data name="ChooseRandomRecipe.Label" xml:space="preserve">
+    <value>Würfeln</value>
+  </data>
+  <data name="ChooseRandomRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Ein zufälliges Rezept auswählen</value>
+  </data>
 </root>

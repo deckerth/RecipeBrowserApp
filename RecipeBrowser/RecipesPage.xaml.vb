@@ -409,6 +409,14 @@ Public NotInheritable Class RecipesPage
         Await SelectRecipe(clickedItem)
 
     End Sub
+
+    Private Async Sub ChooseRandomRecipe_Click(sender As Object, e As RoutedEventArgs)
+        Dim item As Recipe = CurrentRecipeFolder.GetRandomRecipe()
+        If item IsNot Nothing Then
+            Await SelectRecipe(item)
+            MasterListView.ScrollIntoView(item, ScrollIntoViewAlignment.Leading)
+        End If
+    End Sub
 #End Region
 
 #Region "ItemSorter"

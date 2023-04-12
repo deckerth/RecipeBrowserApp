@@ -795,6 +795,16 @@ Public Class RecipeFolder
 
     End Function
 
+    Public Function GetRandomRecipe() As Recipe
+
+        Dim rand As New Random()
+        If ContentLoaded() AndAlso _RecipeList.Count > 0 Then
+            Return _RecipeList(rand.Next(_RecipeList.Count))
+        End If
+        Return Nothing
+
+    End Function
+
     Public Async Function GetRecipeAsync(category As String, title As String) As Task(Of Recipe)
         If ContentLoaded() Then
             Return GetRecipe(category, title)
