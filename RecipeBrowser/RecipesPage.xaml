@@ -827,7 +827,11 @@
                         <AppBarButton x:Uid="ChangeCategoryCommand" x:Name="ChangeCategory" />
                         <AppBarButton x:Uid="RenameRecipeCommand" x:Name="RenameRecipe" Icon="Rename"/>
                         <AppBarButton x:Uid="DeleteRecipeCommand" x:Name="deleteRecipe" Icon="Delete" />
-                        <AppBarButton x:Uid="ChangeCaloriesCommand" x:Name="ChangeCalories" />
+                        <AppBarButton x:Uid="ChangeCaloriesCommand" x:Name="ChangeCalories" >
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xECAD;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
                         <AppBarSeparator/>
                         <AppBarButton x:Uid="ScanForCaloriesCommand"  x:Name="ScanForCalories" />
                     </CommandBar.SecondaryCommands>
@@ -842,9 +846,9 @@
                     <StackPanel x:Name="searchFieldPanel" 
                                     Grid.Row="0" 
                                     HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top" 
+                                    VerticalAlignment="Center" 
                                     Orientation="Horizontal">
-                        <AppBarButton x:Name="changeSortOrder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon="Sort" Margin="0,15,0,0">
+                        <AppBarButton x:Name="changeSortOrder" x:Uid="changeSortOrder" HorizontalAlignment="Center" VerticalAlignment="Center" Icon="Sort">
                             <Button.Flyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem x:Uid="NameAscending" Text="" Click="SortNameAscending_Click"/>
@@ -853,8 +857,8 @@
                                 </MenuFlyout>
                             </Button.Flyout>
                         </AppBarButton>
-                        <AppBarButton x:Name="setFilter" x:Uid="setFilter" Icon="Filter" Visibility="Collapsed"/>
-                        <AppBarButton x:Name="deleteFilter" x:Uid="deleteFilter" Icon="Undo" Visibility="Collapsed"/>
+                        <AppBarButton x:Name="setFilter" x:Uid="setFilter" Icon="Filter" Visibility="Collapsed" />
+                        <AppBarButton x:Name="deleteFilter" x:Uid="deleteFilter" Icon="Undo" Visibility="Collapsed" />
                         <TextBlock x:Name="SearchBoxSpaceHolder" Height="50"/>
                         <SearchBox x:Name="RecipeSearchBox" Background="{StaticResource RecipesItemsBackgroundBrush}" Width="374" Height="34" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed"/>
                         <AutoSuggestBox x:Name="RecipeAutoSuggestBox"
@@ -863,7 +867,7 @@
                                         Visibility="Collapsed"  
                                         VerticalAlignment="Center"
                                         QueryIcon="Find"/>
-                        <AppBarButton x:Name="chooseRandomRecipe" x:Uid="ChooseRandomRecipe" Margin="0, 10, 10, 0" Click="ChooseRandomRecipe_Click">
+                        <AppBarButton x:Name="chooseRandomRecipe" x:Uid="ChooseRandomRecipe" Click="ChooseRandomRecipe_Click">
                             <AppBarButton.Icon>
                                 <PathIcon Data="M74.5 36A38.5 38.5 0 0 0 36 74.5v363A38.5 38.5 0 0 0 74.5 476h363a38.5 38.5 0 0 0 38.5-38.5v-363A38.5 38.5 0 0 0 437.5 36h-363zm48.97 36.03A50 50 0 0 1 172 122a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97zm268 0A50 50 0 0 1 440 122a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97zm-268 268A50 50 0 0 1 172 390a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97zm268 0A50 50 0 0 1 440 390a50 50 0 0 1-100 0 50 50 0 0 1 51.47-49.97z"/>
                             </AppBarButton.Icon>

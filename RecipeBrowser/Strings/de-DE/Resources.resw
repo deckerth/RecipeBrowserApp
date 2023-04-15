@@ -943,4 +943,13 @@
   <data name="ChooseRandomRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Ein zufälliges Rezept auswählen</value>
   </data>
+  <data name="changeSortOrder.Label" xml:space="preserve">
+    <value>Sortieren</value>
+  </data>
+  <data name="deleteFilter.Label" xml:space="preserve">
+    <value>Filter löschen</value>
+  </data>
+  <data name="setFilter.Label" xml:space="preserve">
+    <value>Filtern</value>
+  </data>
 </root>

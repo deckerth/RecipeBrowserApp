@@ -940,4 +940,13 @@
   <data name="ChooseRandomRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Select a random recipe</value>
   </data>
+  <data name="changeSortOrder.Label" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="deleteFilter.Label" xml:space="preserve">
+    <value>Reset filter</value>
+  </data>
+  <data name="setFilter.Label" xml:space="preserve">
+    <value>Filter</value>
+  </data>
 </root>
