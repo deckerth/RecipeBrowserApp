@@ -30,6 +30,45 @@
             Timers.Factory.Current.Timers(CurrentTimer).SetTimer(args.NewTime.TotalSeconds)
         End Sub
 
+        Private Sub SetTimer_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        End Sub
+
+        Private Sub SetTimer_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        End Sub
+
+        Private Sub StartTimer_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        End Sub
+
+        Private Sub StartTimer_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        End Sub
+
+        Private Sub ContinueTimer_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        End Sub
+
+        Private Sub ContinueTimer_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        End Sub
+
+        Private Sub PauseTimer_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        End Sub
+
+        Private Sub PauseTimer_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        End Sub
+
+        Private Sub StopTimer_PointerEntered(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        End Sub
+
+        Private Sub StopTimer_PointerExited(sender As Object, e As PointerRoutedEventArgs)
+            sender.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        End Sub
     End Class
 
 End Namespace

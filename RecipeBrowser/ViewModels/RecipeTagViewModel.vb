@@ -19,6 +19,7 @@ Namespace Global.RecipeBrowser.ViewModels
         Public Property Tag As String
         Public Property Background As Color
         Public Property Foreground As Color
+        Public Property IsSelected As Boolean = False
 
         Public Property IsPlus As Boolean
 

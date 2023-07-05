@@ -482,7 +482,10 @@ Public Class RecipeFolder
                 Dim parent As StorageFolder
 
                 If checkForNotes Or loadMetadata Then
-                    parent = RecipeFolders.GetInstance().GetFolder(_recipe.Category).Folder
+                    Dim folder = RecipeFolders.GetInstance().GetFolder(_recipe.Category)
+                    If folder IsNot Nothing Then
+                        parent = folder.Folder
+                    End If
                 End If
                 If checkForNotes And parent IsNot Nothing Then
                     _recipe.Notes = TryCast(Await parent.TryGetItemAsync(_recipe.Name + ".rtf"), Windows.Storage.StorageFile)

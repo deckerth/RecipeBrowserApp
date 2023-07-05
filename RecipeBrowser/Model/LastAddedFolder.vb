@@ -51,7 +51,7 @@ Public Class LastAddedFolder
 
         Dim queryOptions = New Windows.Storage.Search.QueryOptions()
         queryOptions.FolderDepth = Windows.Storage.Search.FolderDepth.Deep
-        queryOptions.ApplicationSearchFilter = "System.DateCreated:>=" + addedSince
+        queryOptions.ApplicationSearchFilter = "System.DateModified:>=" + addedSince
 
         Dim startFolder = Await FolderDirectory.GetStorageFolderAsync("")
         Dim query = startFolder.CreateFileQueryWithOptions(queryOptions)

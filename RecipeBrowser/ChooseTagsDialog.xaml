@@ -33,7 +33,7 @@
             <AutoSuggestBox x:Name="TagSearchPattern" QueryIcon="Find" />
             <ListView x:Name="TagListView" Height="300" Margin="0,20,0,0"
                   ItemTemplate="{StaticResource TagDataTemplate}"
-                  SelectionMode="Multiple"/>
+                  SelectionMode="Multiple" SelectionChanged="TagListView_SelectionChanged"/>
             <Button x:Name="CreateNewTag" x:Uid="CreateNewTag" Margin="0,20,0,0" />
         </StackPanel>
     </Grid>

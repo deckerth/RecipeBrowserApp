@@ -205,7 +205,7 @@
     <value>Pinned recipes</value>
   </data>
   <data name="FolderSelectionText.Text" xml:space="preserve">
-    <value>Other Category</value>
+    <value>Choose Category</value>
   </data>
   <data name="FullscreenView.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Fullscreen</value>
@@ -948,5 +948,65 @@
   </data>
   <data name="setFilter.Label" xml:space="preserve">
     <value>Filter</value>
+  </data>
+  <data name="CategoryMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Display categories</value>
+  </data>
+  <data name="CriteriaMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Display criteria</value>
+  </data>
+  <data name="ShowFavorites.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show favorites</value>
+  </data>
+  <data name="ShowLastAddedTooltip.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Last added recipes...</value>
+  </data>
+  <data name="ShowHistory.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show history</value>
+  </data>
+  <data name="AppHelpTooltip.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="AppRecipe.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rezept hinzufügen</value>
+  </data>
+  <data name="CriteriaSelection.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Choose label</value>
+  </data>
+  <data name="EditMode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Change or add categories / criteria</value>
+  </data>
+  <data name="EditNote.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Create or edit note</value>
+  </data>
+  <data name="EditTags.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add or change labels</value>
+  </data>
+  <data name="ExportImport.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export / Import...</value>
+  </data>
+  <data name="FolderSelection.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Choose category</value>
+  </data>
+  <data name="HomeTooltip.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Übersicht</value>
+  </data>
+  <data name="LogAsCooked.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Log as cooked</value>
+  </data>
+  <data name="RefreshRecipesTooltip.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="ShowTimers.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show timers</value>
+  </data>
+  <data name="AddRecipeTooltip.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add recipe</value>
+  </data>
+  <data name="HideTimers.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Hide timers</value>
+  </data>
+  <data name="TakePicture.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Take a picture</value>
   </data>
 </root>

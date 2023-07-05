@@ -61,7 +61,7 @@
         <SplitView.Pane>
             <StackPanel>
                 <StackPanel x:Name="TimerHeader" Orientation="Horizontal">
-                    <AppBarButton x:Name="HideTimers"
+                    <AppBarButton x:Name="HideTimers" x:Uid="HideTimers" Style="{StaticResource MenuBarButtonStyle}"
                                   VerticalAlignment="Center" 
                                   HorizontalAlignment="Left" 
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 

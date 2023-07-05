@@ -14,51 +14,62 @@
                                    VerticalAlignment="Center" FontSize="20" Margin="10,-5,10,0" Width="100"
                                    />
             </Border>
-            <AppBarButton x:Name="SetTimer"
+            <AppBarButton x:Name="SetTimer" Style="{StaticResource MenuBarButtonStyle}"
             		            FontFamily="Segoe MDL2 Assets" 
             		            FontSize="20"
             		            Content="&#xECC5;"
                                 Tag="{x:Bind TimerIndex, Mode=OneWay}"
             		            Visibility="{x:Bind SetAllowed, Mode=OneWay}"
                                 Width="50" Margin="20,0,0,0" Foreground="{StaticResource MenuBarForegroundBrush}"
-                                Click="SetTimer_Click" >
-                <AppBarButton.Flyout>
+                                Click="SetTimer_Click"
+                                PointerEntered="SetTimer_PointerEntered"
+                                PointerExited="SetTimer_PointerExited"
+                          >
+            <AppBarButton.Flyout>
                     <TimePickerFlyout x:Name="TimePicker" Placement="Bottom" TimePicked="SetTimer_TimePicked"
                                       Time="{x:Bind PickedTime, Mode=TwoWay}" ClockIdentifier="24HourClock" />
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="StartTimer"
-                 		      FontFamily="Segoe MDL2 Assets" 
+            <AppBarButton x:Name="StartTimer" Style="{StaticResource MenuBarButtonStyle}"
+                 		      FontFamily="{StaticResource Icons}" 
             		          FontSize="20"
             		          Content="&#xE768;"
                               Width="50" Foreground="{StaticResource MenuBarForegroundBrush}"
                               Tag="{x:Bind TimerIndex, Mode=OneWay}"
                               Visibility="{x:Bind StartAllowed, Mode=OneWay}" Margin="20,0,0,0"
-                              Click="StartTimer_Click"/>
-            <AppBarButton x:Name="ContinueTimer"
-                 		      FontFamily="Segoe MDL2 Assets" 
+                              Click="StartTimer_Click"
+                              PointerEntered="SetTimer_PointerEntered"
+                              PointerExited="SetTimer_PointerExited"/>
+            <AppBarButton x:Name="ContinueTimer" Style="{StaticResource MenuBarButtonStyle}"
+                 		      FontFamily="{StaticResource Icons}" 
             		          FontSize="20"
             		          Content="&#xE768;"
                               Width="50" Foreground="{StaticResource MenuBarForegroundBrush}"
                               Tag="{x:Bind TimerIndex, Mode=OneWay}"
                               Visibility="{x:Bind ContinueAllowed, Mode=OneWay}" Margin="20,0,0,0"
-                              Click="StartTimer_Click"/>
-            <AppBarButton x:Name="PauseTimer" 
-                 		      FontFamily="Segoe MDL2 Assets" 
+                              Click="StartTimer_Click"
+                              PointerEntered="ContinueTimer_PointerEntered"
+                              PointerExited="ContinueTimer_PointerExited"/>
+            <AppBarButton x:Name="PauseTimer" Style="{StaticResource MenuBarButtonStyle}"
+                 		      FontFamily="{StaticResource Icons}" 
             		          FontSize="20"
             		          Content="&#xE769;"
                               Width="50" Foreground="{StaticResource MenuBarForegroundBrush}"
                               Tag="{x:Bind TimerIndex, Mode=OneWay}"
                               Visibility="{x:Bind StopAllowed, Mode=OneWay}" Margin="20,0,0,0"
-                              Click="PauseTimer_Click"/>
-            <AppBarButton x:Name="StopTimer"
-                 		      FontFamily="Segoe MDL2 Assets" 
+                              Click="PauseTimer_Click"
+                              PointerEntered="PauseTimer_PointerEntered"
+                              PointerExited="PauseTimer_PointerExited"/>
+            <AppBarButton x:Name="StopTimer" Style="{StaticResource MenuBarButtonStyle}"
+                 		      FontFamily="{StaticResource Icons}" 
             		          FontSize="20"
             		          Content="&#xE71A;"
                               Width="50" Foreground="{StaticResource MenuBarForegroundBrush}"
                               Tag="{x:Bind TimerIndex, Mode=OneWay}"
                               Visibility="{x:Bind StopAllowed, Mode=OneWay}" Margin="10,0,0,0"
-                              Click="StopTimer_Click" />
+                              Click="StopTimer_Click" 
+                              PointerEntered="StopTimer_PointerEntered"
+                              PointerExited="StopTimer_PointerExited"/>
         </StackPanel>
     </DataTemplate>
 

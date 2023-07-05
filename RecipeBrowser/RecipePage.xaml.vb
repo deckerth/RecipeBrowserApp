@@ -324,6 +324,21 @@ Public NotInheritable Class RecipePage
 #End Region
 
 #Region "EnableDisableControls"
+
+    Private Sub SetEditNoteIcon()
+        Dim icon_message As Integer = &HE8BD
+        Dim icon_goto_message As Integer = &HF716
+        Dim icon As Integer
+        If _lastSelectedItem Is Nothing OrElse (_lastSelectedItem.Notes Is Nothing AndAlso _lastSelectedItem.InternetLink Is Nothing) Then
+            icon = icon_message
+        Else
+            icon = icon_goto_message
+        End If
+        Dim chars As Char() = {ChrW(icon)}
+        Dim fontIcon As FontIcon = editNote.Icon
+        fontIcon.Glyph = chars
+    End Sub
+
     Private Sub DisableControls(Optional visualizeProgress As Boolean = True)
 
         ShowFavorites.IsEnabled = False
@@ -348,7 +363,6 @@ Public NotInheritable Class RecipePage
         logAsCooked.IsEnabled = False
         Share.IsEnabled = False
         EditTags.IsEnabled = False
-
     End Sub
 
     Private Sub EnableControls()
@@ -363,6 +377,8 @@ Public NotInheritable Class RecipePage
 
         RenderPageControl(_lastSelectedItem) ' currentRecipe may be nothing
 
+        SetEditNoteIcon()
+
         ' Functions for the current recipe
         If _lastSelectedItem Is Nothing Then
             ' Hide if nothing is selected
@@ -374,9 +390,9 @@ Public NotInheritable Class RecipePage
             ChangeCalories.IsEnabled = False
             logAsCooked.IsEnabled = False
             EditTags.IsEnabled = False
-            editNote.Label = ""
-            editNote.SetValue(ForegroundProperty, New SolidColorBrush(Windows.UI.Colors.Gray))
+            'editNote.Label = ""
             editNote.IsEnabled = False
+            editNote.SetValue(ForegroundProperty, App.Current.Resources("AppBarItemDisabledForegroundThemeBrush")) 'App.Current.Resources("MenuBarForegroundBrush")
             Share.IsEnabled = False
             RenameRecipe.IsEnabled = False
             EditFileButton.IsEnabled = False
@@ -400,7 +416,7 @@ Public NotInheritable Class RecipePage
                     editNote.IsEnabled = True
                     If _lastSelectedItem.Notes Is Nothing AndAlso _lastSelectedItem.InternetLink Is Nothing Then
                         editNote.Label = App.Texts.GetString("CreateNote")
-                        editNote.SetValue(ForegroundProperty, App.Current.Resources("MenuBarForegroundBrush"))
+                        editNote.SetValue(ForegroundProperty, App.Current.Resources("AppBarButtonForegroundBrush")) 'App.Current.Resources("MenuBarForegroundBrush")
                     Else
                         editNote.Label = App.Texts.GetString("DisplayNote")
                         editNote.SetValue(ForegroundProperty, App.Current.Resources("NoteExistsColor"))
@@ -638,7 +654,7 @@ Public NotInheritable Class RecipePage
         Me.Frame.Navigate(GetType(RecipesPage), Favorites.FolderName)
     End Sub
 
-    Private Sub FavoriteRecipesText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles FavoriteRecipesText.Tapped
+    Private Sub FavoriteRecipesText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles FavoriteRecipesTextblock.Tapped
         RootSplitView.IsPaneOpen = False
         Me.Frame.Navigate(GetType(RecipesPage), Favorites.FolderName)
     End Sub
@@ -652,16 +668,115 @@ Public NotInheritable Class RecipePage
         Me.Frame.Navigate(GetType(CategoryOverview))
     End Sub
 
-    Private Sub HomeText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles HomeText.Tapped
+    Private Sub HomeText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles HomeTextblock.Tapped
         RootSplitView.IsPaneOpen = False
         Me.Frame.Navigate(GetType(CategoryOverview))
     End Sub
 
-    Private Sub CommandBar_Opened(sender As Object, e As Object)
-        Dim cb = DirectCast(sender, CommandBar)
-        If cb IsNot Nothing Then
-            cb.Background.Opacity = 1.0
-        End If
+    Private Sub CommandBar_Opening(sender As Object, e As Object)
+        Dim cb As CommandBar = sender
+        If cb IsNot Nothing Then cb.Background.Opacity = 1.0
+    End Sub
+
+    Private Sub CommandBar_Closing(sender As Object, e As Object)
+        Dim cb As CommandBar = sender
+        If cb IsNot Nothing Then cb.Background.Opacity = 0.5
+    End Sub
+
+    Private Sub ToggleSplitView_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ToggleSplitView.PointerEntered
+        ToggleSplitView.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+    End Sub
+
+    Private Sub ToggleSplitView_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ToggleSplitView.PointerExited
+        ToggleSplitView.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+    End Sub
+
+    Private Sub Home_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles HomeButton.PointerExited
+        Dim icon_home As Integer = &HE80F
+        Dim chars As Char() = {ChrW(icon_home)}
+        Home.Content = New String(chars)
+        HomeTextblock.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub Home_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles HomeButton.PointerEntered
+        Dim icon_home_filled As Integer = &HEA8A
+        Dim chars As Char() = {ChrW(icon_home_filled)}
+        Home.Content = New String(chars)
+        HomeTextblock.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowFavorites_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowFavoritesButton.PointerEntered
+        ShowFavorites_Filled.Visibility = Visibility.Visible
+        FavoriteRecipesTextblock.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowFavorites_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowFavoritesButton.PointerExited
+        ShowFavorites_Filled.Visibility = Visibility.Collapsed
+        FavoriteRecipesTextblock.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub LastAddedSearchButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles LastAddedSearchButton.PointerEntered
+        ShowLastAdded.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowLastAddedText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub LastAddedSearchButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles LastAddedSearchButton.PointerExited
+        ShowLastAdded.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowLastAddedText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub ShowHistoryButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowHistoryButton.PointerEntered
+        ShowHistory.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowHistoryText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowHistoryButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowHistoryButton.PointerExited
+        ShowHistory.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowHistoryText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub ShowTimersButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowTimersButton.PointerEntered
+        ShowTimers.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowTimersText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowTimersButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowTimersButton.PointerExited
+        ShowTimers.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowTimersText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub FolderSelectionButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles FolderSelectionButton.PointerExited
+        Dim icon_folder As Integer = &HF12B
+        Dim chars As Char() = {ChrW(icon_folder)}
+        FolderSelection.Content = New String(chars)
+        FolderSelectionText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub FolderSelectionButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles FolderSelectionButton.PointerEntered
+        Dim icon_folder_filled As Integer = &HE8D5
+        Dim chars As Char() = {ChrW(icon_folder_filled)}
+        FolderSelection.Content = New String(chars)
+        FolderSelectionText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub CriteriaSelectionPane_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles CriteriaSelectionPane.PointerEntered
+        CriteriaSelection.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        CriteriaSelectionText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub CriteriaSelectionPane_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles CriteriaSelectionPane.PointerExited
+        CriteriaSelection.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        CriteriaSelectionText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub AppHelpButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles AppHelpButton.PointerEntered
+        AppHelp.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        AppHelpText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub AppHelpButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles AppHelpButton.PointerExited
+        AppHelp.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        AppHelpText.FontWeight = Windows.UI.Text.FontWeights.Normal
     End Sub
 
 #End Region

@@ -255,7 +255,7 @@
                             <AppBarToggleButton x:Uid="Itemize" x:Name="ItemizeOnFlyout" HorizontalAlignment="Left" 
                                                 Height="45" Click="Itemize_Click">
                                 <AppBarToggleButton.Icon>
-                                    <fa:FontAwesome Icon="ListUl" FontWeight="ExtraLight"/>
+                                    <PathIcon Data="M6.15,14 C7.88985,14 9.3,15.343 9.3,17 C9.3,18.657 7.88985,20 6.15,20 C4.41015,20 3,18.657 3,17 C3,15.343 4.41015,14 6.15,14 L6.15,14 Z M6.15,16 C5.57145,16 5.1,16.449 5.1,17 C5.1,17.551 5.57145,18 6.15,18 C6.72855,18 7.2,17.551 7.2,17 C7.2,16.449 6.72855,16 6.15,16 L6.15,16 Z M6.15,0 C7.88985,0 9.3,1.343 9.3,3 C9.3,4.657 7.88985,6 6.15,6 C4.41015,6 3,4.657 3,3 C3,1.343 4.41015,0 6.15,0 L6.15,0 Z M6.15,2 C5.57145,2 5.1,2.449 5.1,3 C5.1,3.551 5.57145,4 6.15,4 C6.72855,4 7.2,3.551 7.2,3 C7.2,2.449 6.72855,2 6.15,2 L6.15,2 Z M6.15,7 C7.88985,7 9.3,8.343 9.3,10 C9.3,11.657 7.88985,13 6.15,13 C4.41015,13 3,11.657 3,10 C3,8.343 4.41015,7 6.15,7 L6.15,7 Z M6.15,9 C5.57145,9 5.1,9.449 5.1,10 C5.1,10.551 5.57145,11 6.15,11 C6.72855,11 7.2,10.551 7.2,10 C7.2,9.449 6.72855,9 6.15,9 L6.15,9 Z M11.4,18 L24,18 L24,16 L11.4,16 L11.4,18 Z M11.4,4 L24,4 L24,2 L11.4,2 L11.4,4 Z M11.4,11 L24,11 L24,9 L11.4,9 L11.4,11 Z"/>
                                 </AppBarToggleButton.Icon>
                             </AppBarToggleButton>
 
@@ -264,7 +264,7 @@
                                           Height="45"
                                           Flyout="{StaticResource EnumTypeFlyout}">
                                 <AppBarButton.Icon>
-                                    <fa:FontAwesome Icon="ListOl" FontWeight="ExtraLight"/>
+                                    <PathIcon Data="M10 11.5H20V13H10V11.5Z M10 16.5H20V18H10V16.5Z M10 6.5H20V8H10V6.5Z M7.99847 10H4.44745V8.68805H5.48827V5.87172C5.20838 5.98834 4.87311 6.04665 4.48244 6.04665V4.74344C4.83229 4.74344 5.10634 4.68805 5.30459 4.57726C5.50868 4.4723 5.68069 4.27988 5.82063 4H7.0801V8.68805H7.99847V10Z M8.29928 19H4.12086V17.9986L6.19281 15.9525C6.49784 15.659 6.65036 15.3223 6.65036 14.9424C6.65036 14.5568 6.48921 14.364 6.16691 14.364C5.77554 14.364 5.57986 14.6288 5.57986 15.1583H4C4 14.4619 4.19568 13.9266 4.58705 13.5525C4.97266 13.1842 5.49928 13 6.16691 13C6.82878 13 7.34101 13.1727 7.7036 13.518C8.06619 13.8691 8.24748 14.3439 8.24748 14.9424C8.24748 15.3683 8.16691 15.7252 8.00576 16.0129C7.8446 16.3007 7.5482 16.6518 7.11655 17.0662L6.4518 17.705H8.29928V19Z"/>
                                 </AppBarButton.Icon>
                             </AppBarButton>
                         </StackPanel>
@@ -444,9 +444,6 @@
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" 
                             Visibility="Collapsed">
-                    <!--<AppBarButton x:Name="LeaveEditor"
-                                  x:Uid="LeaveEditor"
-                                  Foreground="{StaticResource MenuBarForegroundBrush}" Icon="Back" />-->
                     <TextBlock x:Uid="LeaveEditorText" x:Name="LeaveEditorText"
                     		FontSize="18"
                     		VerticalAlignment="Center"
@@ -543,16 +540,15 @@
                             <AppBarToggleButton x:Uid="Itemize" x:Name="Itemize" HorizontalAlignment="Left" 
                                                 Width="40" Click="Itemize_Click">
                                 <AppBarToggleButton.Icon>
-                                    <fa:FontAwesome Icon="ListUl" FontWeight="ExtraLight"/>
+                                    <PathIcon Data="M6 4C4.89543 4 4 4.89543 4 6V9C4 10.1046 4.89543 11 6 11H9C10.1046 11 11 10.1046 11 9V6C11 4.89543 10.1046 4 9 4H6ZM6 6H9V9H6V6ZM14 6C13.4477 6 13 6.44772 13 7C13 7.55228 13.4477 8 14 8H19C19.5523 8 20 7.55228 20 7C20 6.44772 19.5523 6 19 6H14ZM14 15C13.4477 15 13 15.4477 13 16C13 16.5523 13.4477 17 14 17H19C19.5523 17 20 16.5523 20 16C20 15.4477 19.5523 15 19 15H14ZM4 15C4 13.8954 4.89543 13 6 13H9C10.1046 13 11 13.8954 11 15V18C11 19.1046 10.1046 20 9 20H6C4.89543 20 4 19.1046 4 18V15ZM9 15H6V18H9V15Z"/>
                                 </AppBarToggleButton.Icon>
                             </AppBarToggleButton>
 
-                            <AppBarButton x:Uid="EnumerateButton" x:Name="Enumerate" 
+                            <AppBarButton x:Uid="EnumerateButton" x:Name="Enumerate"
                                           HorizontalAlignment="Left" 
-                                          Width="40"
                                           Flyout="{StaticResource EnumTypeFlyout}">
                                 <AppBarButton.Icon>
-                                    <fa:FontAwesome Icon="ListOl" FontWeight="ExtraLight"/>
+                                    <PathIcon Data="M10 11.5H20V13H10V11.5Z M10 16.5H20V18H10V16.5Z M10 6.5H20V8H10V6.5Z M7.99847 10H4.44745V8.68805H5.48827V5.87172C5.20838 5.98834 4.87311 6.04665 4.48244 6.04665V4.74344C4.83229 4.74344 5.10634 4.68805 5.30459 4.57726C5.50868 4.4723 5.68069 4.27988 5.82063 4H7.0801V8.68805H7.99847V10Z M8.29928 19H4.12086V17.9986L6.19281 15.9525C6.49784 15.659 6.65036 15.3223 6.65036 14.9424C6.65036 14.5568 6.48921 14.364 6.16691 14.364C5.77554 14.364 5.57986 14.6288 5.57986 15.1583H4C4 14.4619 4.19568 13.9266 4.58705 13.5525C4.97266 13.1842 5.49928 13 6.16691 13C6.82878 13 7.34101 13.1727 7.7036 13.518C8.06619 13.8691 8.24748 14.3439 8.24748 14.9424C8.24748 15.3683 8.16691 15.7252 8.00576 16.0129C7.8446 16.3007 7.5482 16.6518 7.11655 17.0662L6.4518 17.705H8.29928V19Z"/>
                                 </AppBarButton.Icon>
                             </AppBarButton>
 

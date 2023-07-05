@@ -137,6 +137,7 @@ NotInheritable Class App
             Logger.Write("Navigating to main page")
             If categories IsNot Nothing AndAlso categories.ContentLoaded Then
                 rootFrame.Navigate(GetType(MainPage), e.Arguments)
+                'rootFrame.Navigate(GetType(BlankPage1), e.Arguments)
             Else
                 rootFrame.Navigate(GetType(StartPage), e.Arguments)
             End If
@@ -151,7 +152,6 @@ NotInheritable Class App
         titleBar.BackgroundColor = DirectCast(App.Current.Resources("MenuBarBackgroundBrush"), SolidColorBrush).Color
         titleBar.ButtonForegroundColor = DirectCast(App.Current.Resources("MenuBarForegroundBrush"), SolidColorBrush).Color
         titleBar.ButtonBackgroundColor = DirectCast(App.Current.Resources("MenuBarBackgroundBrush"), SolidColorBrush).Color
-
     End Sub
 
     ''' <summary>

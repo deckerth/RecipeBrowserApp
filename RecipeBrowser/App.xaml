@@ -13,11 +13,13 @@
     <Application.Resources>
         <muxc:XamlControlsResources>
             <muxc:XamlControlsResources.MergedDictionaries>
-                <ResourceDictionary Source="/Styles/AppBarButtonStyle.xaml">
-
+                <ResourceDictionary Source="/Styles/MenuBarStyle.xaml">
+                <!--<ResourceDictionary>-->
                     <local:RecipeFolders x:Key="recipeFolders"/>
                     <local:DateConverter x:Key="DateToString"/>
 
+                    <FontFamily x:Key="Icons">Assets/Fonts/SegoeFluentIcons.ttf#Segoe Fluent Icons</FontFamily>
+ 
                     <ItemsPanelTemplate x:Key="HorizontalItemsPanel">
                         <controls:WrapPanel/>
                     </ItemsPanelTemplate>
@@ -130,7 +132,9 @@
                             <SolidColorBrush x:Key="RecipesItemsBackgroundBrush" Color="#FFF4ECD0"/>
                             <SolidColorBrush x:Key="MenuBarBackgroundBrush" Color="#FF5F3D02"/>
                             <SolidColorBrush x:Key="MenuBarForegroundBrush" Color="#FFF4ECD0"/>
-                            <SolidColorBrush x:Key="AppBarButtonForegroundBrush" Color="#FF5F3D02"/>
+                            <SolidColorBrush x:Key="MenuBarButtonForegroundPointerOver" Color="White"/>
+                            <SolidColorBrush x:Key="MenuBarBottomSeparatorLine" Color="Gray" Opacity="0.5"/>
+                            <SolidColorBrush x:Key="AppBarButtonForegroundBrush" Color="Black"/>
                             <SolidColorBrush x:Key="NoteExistsColor" Color="Orange"/>
                             <SolidColorBrush x:Key="ListViewItemSelectedForegroundThemeBrush" Color="#FFF4ECD0"/>
                             <SolidColorBrush x:Key="ListViewItemSelectedBackgroundThemeBrush" Color="#FF5F3D02"/>
@@ -228,6 +232,8 @@
                             <SolidColorBrush x:Key="RecipesItemsBackgroundBrush" Color="#FF3E3E3E"/>
                             <SolidColorBrush x:Key="MenuBarBackgroundBrush" Color="Black"/>
                             <SolidColorBrush x:Key="MenuBarForegroundBrush" Color="White"/>
+                            <SolidColorBrush x:Key="MenuBarButtonForegroundPointerOver" Color="White"/>
+                            <SolidColorBrush x:Key="MenuBarBottomSeparatorLine" Color="Gray"/>
                             <SolidColorBrush x:Key="AppBarButtonForegroundBrush" Color="White"/>
                             <SolidColorBrush x:Key="NoteExistsColor" Color="#FF69AFE5"/>
                             <SolidColorBrush x:Key="ListViewItemSelectedForegroundThemeBrush" Color="Green"/>

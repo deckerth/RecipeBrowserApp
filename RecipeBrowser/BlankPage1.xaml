@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="RecipeBrowser.BlankPage1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RecipeBrowser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <SplitView x:Name="RootSplitView"
+          IsPaneOpen="False"
+           OpenPaneLength="350" 
+           CompactPaneLength="70" 
+           DisplayMode="CompactOverlay" PaneBackground="{StaticResource MenuBarBackgroundBrush}">
+            <SplitView.Pane>
+                <StackPanel Orientation="Vertical" Width="70" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <AppBarButton Style="{StaticResource MenuBarButtonStyle}" x:Name="Home"
+                                    FontFamily="Segoe Fluent Icons" 
+                                    FontSize="20" 
+                                    Content="&#xE80F;"
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center"  
+                                    Foreground="{StaticResource MenuBarForegroundBrush}" 
+                                    />
+                    <Button x:Name="AButton" Content="Test"/>
+                </StackPanel>
+            </SplitView.Pane>
+
+        </SplitView>
+    </Grid>
+</Page>

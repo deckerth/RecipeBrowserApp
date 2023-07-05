@@ -35,8 +35,10 @@ Public NotInheritable Class ChooseTagsDialog
 
     Private Sub ContentDialog_PrimaryButtonClick(sender As ContentDialog, args As ContentDialogButtonClickEventArgs)
         Dim SelectedTags As New List(Of RecipeTagViewModel)
-        For Each i In TagListView.SelectedItems
-            SelectedTags.Add(i)
+        For Each i In AllTags
+            If i.IsSelected Then
+                SelectedTags.Add(i)
+            End If
         Next
         TaggedRecipe.SetTags(SelectedTags)
     End Sub
@@ -70,14 +72,16 @@ Public NotInheritable Class ChooseTagsDialog
             If add Then
                 If visTagsIndex = VisibleTags.Count OrElse Not VisibleTags(visTagsIndex).Equals(t) Then
                     VisibleTags.Insert(visTagsIndex, t)
-                    If TaggedRecipe.HasTag(t.Tag) Then
+                    If t.IsSelected Then
                         TagListView.SelectRange(New ItemIndexRange(visTagsIndex, 1))
                     End If
                 End If
                 visTagsIndex = visTagsIndex + 1
             Else
-                    If visTagsIndex < VisibleTags.Count AndAlso VisibleTags(visTagsIndex).Equals(t) Then
+                If visTagsIndex < VisibleTags.Count AndAlso VisibleTags(visTagsIndex).Equals(t) Then
+                    Dim isSelected = t.IsSelected  ' Save this information, as it gets deleted when the item is removed from the list
                     VisibleTags.RemoveAt(visTagsIndex)
+                    t.IsSelected = isSelected ' Restore
                 End If
             End If
         Next
@@ -87,5 +91,22 @@ Public NotInheritable Class ChooseTagsDialog
         CreateTagRequested = True
         ContentDialog_PrimaryButtonClick(Nothing, Nothing)
         Hide()
+    End Sub
+
+    Private Sub TagListView_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        For Each i In e.AddedItems
+            Dim t As RecipeTagViewModel = DirectCast(i, RecipeTagViewModel)
+            t.IsSelected = True
+        Next
+        For Each i In e.RemovedItems
+            Dim t As RecipeTagViewModel = DirectCast(i, RecipeTagViewModel)
+            t.IsSelected = False
+        Next
+        For Each i In AllTags
+            If i.IsSelected Then
+                Dim x = 0
+            End If
+        Next
+
     End Sub
 End Class

@@ -393,9 +393,97 @@ Public NotInheritable Class CategoryOverview
         Me.Frame.Navigate(GetType(RecipesPage), Favorites.FolderName)
     End Sub
 
-    Private Sub FavoriteRecipesText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles FavoriteRecipesText.Tapped
+    Private Sub FavoriteRecipesText_Tapped(sender As Object, e As TappedRoutedEventArgs) Handles FavoriteRecipesTextblock.Tapped
         RootSplitView.IsPaneOpen = False
         Me.Frame.Navigate(GetType(RecipesPage), Favorites.FolderName)
+    End Sub
+
+    Private Sub CommandBar_Opening(sender As Object, e As Object)
+        Dim cb As CommandBar = sender
+        If cb IsNot Nothing Then cb.Background.Opacity = 1.0
+    End Sub
+
+    Private Sub CommandBar_Closing(sender As Object, e As Object)
+        Dim cb As CommandBar = sender
+        If cb IsNot Nothing Then cb.Background.Opacity = 0.5
+    End Sub
+
+    Private Sub ToggleSplitView_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ToggleSplitView.PointerEntered
+        ToggleSplitView.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+    End Sub
+
+    Private Sub ToggleSplitView_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ToggleSplitView.PointerExited
+        ToggleSplitView.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+    End Sub
+
+    Private Sub CategoryModePanel_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles CategoryModePanel.PointerEntered
+        CategoryMode.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        CategoryModeText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub CategoryModePanel_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles CategoryModePanel.PointerExited
+        CategoryMode.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        CategoryModeText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub CriteriaModePanel_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles CriteriaModePanel.PointerEntered
+        CriteriaMode.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        CriteriaModeText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub CriteriaModePanel_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles CriteriaModePanel.PointerExited
+        CriteriaMode.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        CriteriaModeText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub ShowFavorites_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowFavoritesButton.PointerEntered
+        ShowFavorites_Filled.Visibility = Visibility.Visible
+        FavoriteRecipesTextblock.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowFavorites_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowFavoritesButton.PointerExited
+        ShowFavorites_Filled.Visibility = Visibility.Collapsed
+        FavoriteRecipesTextblock.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub LastAddedSearchButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles LastAddedSearchButton.PointerEntered
+        ShowLastAdded.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowLastAddedText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub LastAddedSearchButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles LastAddedSearchButton.PointerExited
+        ShowLastAdded.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowLastAddedText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub ShowHistoryButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowHistoryButton.PointerEntered
+        ShowHistory.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowHistoryText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowHistoryButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowHistoryButton.PointerExited
+        ShowHistory.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowHistoryText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub ShowTimersButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles ShowTimersButton.PointerEntered
+        ShowTimers.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        ShowTimersText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub ShowTimersButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles ShowTimersButton.PointerExited
+        ShowTimers.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        ShowTimersText.FontWeight = Windows.UI.Text.FontWeights.Normal
+    End Sub
+
+    Private Sub AppHelpButton_PointerEntered(sender As Object, e As PointerRoutedEventArgs) Handles AppHelpButton.PointerEntered
+        AppHelp.FontWeight = Windows.UI.Text.FontWeights.ExtraBlack
+        AppHelpText.FontWeight = Windows.UI.Text.FontWeights.Bold
+    End Sub
+
+    Private Sub AppHelpButton_PointerExited(sender As Object, e As PointerRoutedEventArgs) Handles AppHelpButton.PointerExited
+        AppHelp.FontWeight = Windows.UI.Text.FontWeights.ExtraLight
+        AppHelpText.FontWeight = Windows.UI.Text.FontWeights.Normal
     End Sub
 
 #End Region
@@ -496,13 +584,6 @@ Public NotInheritable Class CategoryOverview
     Private Async Sub ImportDatabase_Click(sender As Object, e As RoutedEventArgs)
         Await MetaDataDatabase.Current.ImportMetadataAsync()
     End Sub
-
-    Private Sub CommandBar_Opened(sender As Object, e As Object)
-        Dim cb = DirectCast(sender, CommandBar)
-        If cb IsNot Nothing Then
-            cb.Background.Opacity = 1.0
-        End If
-    End Sub
 #End Region
 
 #Region "Calories scan"
@@ -534,6 +615,7 @@ Public NotInheritable Class CategoryOverview
         Dim scanProgress = New ScanForCaloriesProgressDialog
         Await scanProgress.ShowAsync()
     End Sub
+
 #End Region
 End Class
 
