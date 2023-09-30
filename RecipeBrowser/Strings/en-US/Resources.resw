@@ -871,9 +871,6 @@
   <data name="ExportDatabase.Text" xml:space="preserve">
     <value>Export database</value>
   </data>
-  <data name="ExportImport.Label" xml:space="preserve">
-    <value>Export / import data</value>
-  </data>
   <data name="HistoryEntriesCount.Text" xml:space="preserve">
     <value>Entries:</value>
   </data>

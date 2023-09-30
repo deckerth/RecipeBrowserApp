@@ -388,7 +388,7 @@ Public NotInheritable Class CategoryOverview
         End If
     End Sub
 
-    Private Sub ShowFavorites_Click(sender As Object, e As RoutedEventArgs)
+    Private Sub ShowFavorites_Click(sender As Object, e As RoutedEventArgs) Handles ShowFavorites.Click
         RootSplitView.IsPaneOpen = False
         Me.Frame.Navigate(GetType(RecipesPage), Favorites.FolderName)
     End Sub
