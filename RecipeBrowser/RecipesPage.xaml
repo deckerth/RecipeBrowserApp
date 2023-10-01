@@ -410,7 +410,13 @@
 
             <Flyout x:Key="NoteEditorFlyout" Closed="NoteEditorFlyoutClosed" >
                 <StackPanel Orientation="Vertical">
-                    <RichEditBox x:Uid="NoteEditor" x:Name="noteEditor" Height="450" Width="400" />
+                    <RichEditBox x:Uid="NoteEditor" x:Name="noteEditor" Height="450" Width="400" RequestedTheme="Light" Background="White">
+                        <RichEditBox.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Foreground="{StaticResource AppBarItemForegroundThemeBrush}"/>
+                            </DataTemplate>
+                        </RichEditBox.HeaderTemplate>
+                    </RichEditBox>
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="335"/>

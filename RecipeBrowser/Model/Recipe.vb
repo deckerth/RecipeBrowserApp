@@ -404,7 +404,7 @@ Public Class Recipe
 
             ' Prevent updates to the remote version of the file until we 
             ' finish making changes and call CompleteUpdatesAsync.
-            CachedFileManager.DeferUpdates(file)
+            ' CachedFileManager.DeferUpdates(file)
             ' write to file
             Dim randAccStream As Windows.Storage.Streams.IRandomAccessStream = Await file.OpenAsync(Windows.Storage.FileAccessMode.ReadWrite)
 

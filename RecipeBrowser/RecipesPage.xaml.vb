@@ -857,6 +857,7 @@ Public NotInheritable Class RecipesPage
         Dim skipSave As Boolean = False
         If noteTextChanged Then
             If recipeWithNote.Notes Is Nothing Then
+                ' Prevent creating a new file, if nothing was entered
                 Dim content As String = ""
                 noteEditor.Document.GetText(Windows.UI.Text.TextGetOptions.None, content)
                 skipSave = content.Length <= 1

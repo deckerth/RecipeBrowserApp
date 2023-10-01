@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="16412ThomasDecker.Rezepte" Publisher="CN=1330FAFF-275D-4496-A785-CC38B2A4FE2F" Version="2.1.196.0" />
+  <Identity Name="16412ThomasDecker.Rezepte" Publisher="CN=1330FAFF-275D-4496-A785-CC38B2A4FE2F" Version="2.1.197.0" />
   <mp:PhoneIdentity PhoneProductId="cf0232eb-4c2b-406d-9df4-c8fa5e12d6b3" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Rezepte</DisplayName>
