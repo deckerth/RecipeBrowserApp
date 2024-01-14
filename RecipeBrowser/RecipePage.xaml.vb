@@ -6,6 +6,7 @@ Imports Windows.Globalization.DateTimeFormatting
 Imports Windows.Storage
 Imports Windows.UI.Core
 Imports Windows.UI.Popups
+Imports Windows.UI.Text
 Imports Windows.UI.Xaml.Media.Animation
 ''' <summary>
 ''' Eine leere Seite, die eigenständig verwendet oder zu der innerhalb eines Rahmens navigiert werden kann.
@@ -530,6 +531,26 @@ Public NotInheritable Class RecipePage
         Await Windows.System.Launcher.LaunchUriAsync(New Uri(InternetLinkTextBox.Text))
 
     End Function
+
+    Private Sub NoteTextBoldClicked(sender As Object, e As RoutedEventArgs)
+        noteEditor.Document.Selection.CharacterFormat.Bold = FormatEffect.Toggle
+    End Sub
+
+    Private Sub NoteTextItalicClicked(sender As Object, e As RoutedEventArgs)
+        noteEditor.Document.Selection.CharacterFormat.Italic = FormatEffect.Toggle
+    End Sub
+
+    Private Sub ColorButton_Click(sender As Object, e As RoutedEventArgs)
+        ' Extract the color of the button that was clicked.
+        Dim clickedColor As Button = DirectCast(sender, Button)
+        Dim rectangle = DirectCast(clickedColor.Content, Windows.UI.Xaml.Shapes.Rectangle)
+        Dim color = DirectCast(rectangle.Fill, Windows.UI.Xaml.Media.SolidColorBrush)
+
+        noteEditor.Document.Selection.CharacterFormat.ForegroundColor = color.Color
+
+        NoteTextFontColor.Flyout.Hide()
+        noteEditor.Focus(Windows.UI.Xaml.FocusState.Keyboard)
+    End Sub
 
 #End Region
 

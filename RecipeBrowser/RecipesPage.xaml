@@ -10,6 +10,7 @@
     xmlns:fa="using:FontAwesome.UWP"      
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d" FontFamily="Segoe MDL2 Assets">
 
     <Page.Transitions>
@@ -106,9 +107,10 @@
                                                Glyph="&#xE718;"
                                                SelectedForeground="{StaticResource PinBrush}" 
                                                PressedForeground="{StaticResource PinBrush}"
+                                               ForegroundBrush="{StaticResource AppBarButtonForegroundBrush}"
                                                HorizontalAlignment="Right" 
                                                Visibility="{x:Bind converters:BooleanOperator.VisAndNot(PointerEntered,IsFavorite), Mode=OneWay}" 
-                                               Command="{x:Bind AddToFavoritesCommand}" ForegroundBrush="{StaticResource MenuBarForegroundBrush}"/>
+                                               Command="{x:Bind AddToFavoritesCommand}" />
                             <local:HoverButton x:Name="UnPinItemButton" 
                                                Grid.Column="1" 
                                                FontFamily="Segoe MDL2 Assets" 
@@ -116,7 +118,7 @@
                                                Glyph="&#xE77A;"
                                                SelectedForeground="{StaticResource UnPinBrush}" 
                                                PressedForeground="{StaticResource UnPinBrush}"
-                                               ForegroundBrush="{StaticResource MenuBarForegroundBrush}"
+                                               ForegroundBrush="{StaticResource AppBarButtonForegroundBrush}"
                                                HorizontalAlignment="Right" 
                                                Visibility="{x:Bind IsFavorite, Mode=OneWay, Converter={StaticResource boolToVisConverter}}" 
                                                Command="{x:Bind RemoveFromFavoritesCommand}"/>
@@ -410,10 +412,94 @@
 
             <Flyout x:Key="NoteEditorFlyout" Closed="NoteEditorFlyoutClosed" >
                 <StackPanel Orientation="Vertical">
+                    <TextBlock x:Name="NoteEditorHeader" x:Uid="NoteEditorHeader"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Margin" Value="0,0,8,0" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Button x:Name="NoteTextBold" Click="NoteTextBoldClicked">
+                            <Button.Content>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8DD;"/>
+                            </Button.Content>
+                        </Button>
+                        <Button x:Name="NoteTextItalic" Click="NoteTextItalicClicked">
+                            <Button.Content>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8DB;"/>
+                            </Button.Content>
+                        </Button>
+                        <muxc:DropDownButton x:Name="NoteTextFontColor" AutomationProperties.Name="Font color"
+                                BorderThickness="0" ToolTipService.ToolTip="Font color"
+                                Background="Transparent"
+                                >
+                            <SymbolIcon Symbol="FontColor"/>
+                            <muxc:DropDownButton.Flyout>
+                                <Flyout Placement="Bottom">
+                                    <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
+                                        <VariableSizedWrapGrid.Resources>
+                                            <Style TargetType="Rectangle">
+                                                <Setter Property="Width" Value="32"/>
+                                                <Setter Property="Height" Value="32"/>
+                                            </Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Padding" Value="0"/>
+                                                <Setter Property="MinWidth" Value="0"/>
+                                                <Setter Property="MinHeight" Value="0"/>
+                                                <Setter Property="Margin" Value="6"/>
+                                            </Style>
+                                        </VariableSizedWrapGrid.Resources>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Red">
+                                            <Button.Content>
+                                                <Rectangle Fill="Red"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Orange">
+                                            <Button.Content>
+                                                <Rectangle Fill="Orange"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Yellow">
+                                            <Button.Content>
+                                                <Rectangle Fill="Yellow"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Green">
+                                            <Button.Content>
+                                                <Rectangle Fill="Green"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Blue">
+                                            <Button.Content>
+                                                <Rectangle Fill="Blue"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Indigo">
+                                            <Button.Content>
+                                                <Rectangle Fill="Indigo"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="White">
+                                            <Button.Content>
+                                                <Rectangle Fill="White"/>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Click="ColorButton_Click" AutomationProperties.Name="Black">
+                                            <Button.Content>
+                                                <Rectangle Fill="Black"/>
+                                            </Button.Content>
+                                        </Button>
+                                    </VariableSizedWrapGrid>
+                                </Flyout>
+                            </muxc:DropDownButton.Flyout>
+                        </muxc:DropDownButton>
+                    </StackPanel>
                     <RichEditBox x:Uid="NoteEditor" x:Name="noteEditor" Height="450" Width="400" RequestedTheme="Light" Background="White">
                         <RichEditBox.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" Foreground="{StaticResource AppBarItemForegroundThemeBrush}"/>
                             </DataTemplate>
                         </RichEditBox.HeaderTemplate>
                     </RichEditBox>
@@ -721,10 +807,9 @@
                     <StackPanel x:Name="AppHelpButton" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" >
                         <AppBarButton x:Name="AppHelp" x:Uid="AppHelpTooltip" Style="{StaticResource MenuBarButtonStyle}"
                                   Foreground="{StaticResource MenuBarForegroundBrush}" 
-                                  FontFamily="Segoe UI Symbol" 
+                                  FontFamily="{StaticResource Icons}" 
                                   FontSize="20" 
-                                  FontWeight="ExtraLight"
-                                  Content="&#xE11B;" 
+                                  Content="&#xE897;" 
                             />
                         <TextBlock x:Uid="AppHelp" x:Name="AppHelpText"
                     		FontSize="18" FontFamily="Segoe UI"

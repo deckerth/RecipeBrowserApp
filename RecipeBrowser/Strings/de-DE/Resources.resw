@@ -1009,4 +1009,7 @@
   <data name="TakePicture.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Foto aufnehmen</value>
   </data>
+  <data name="NoteEditorHeader.Text" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
 </root>
